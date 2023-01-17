@@ -18,4 +18,4 @@ Python flask backend for the QTime system.
 TBD
 
 Quick Note (TODO):
-- Under the app folder create a key folder and store your personal firebase key there
+- Under the app folder create a key folder and store your personal firebase key there named serviceAccountKey.json
