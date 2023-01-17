@@ -19,3 +19,4 @@ TBD
 
 Quick Note (TODO):
 - Under the app folder create a key folder and store your personal firebase key there named serviceAccountKey.json
+- How to use requirements.txt
