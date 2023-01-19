@@ -1,0 +1,51 @@
+# swagger.yml
+# navigate to localhost:xxxx/api/ui to view API documentation
+
+# title: Title included in the Connexion-generated UI system
+# description: Description of what the API provides or is about
+# version: Version value for the API
+openapi: 3.0.0
+info:
+  title: "QueueTime Flask REST API"
+  description: "QueueTime API for finding wait times of various points of interests at McMaster University"
+  version: "1.0.0"
+
+# By providing "/api" as the value of url, you’ll be able to access all of your API paths relative to http://localhost:xxxx/api.
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Person:
+      type: "object"
+      required:
+        - lname
+      properties:
+        fname:
+          type: "string"
+        lname:
+          type: "string"
+    POI:
+      type: "object"
+      required:
+        - poi_name
+      properties:
+        poi_name:
+          type: "string"
+
+# /endpoint_name: The relative URL of your API endpoint
+# get: The HTTP method that this URL endpoint will respond to
+# operationId: The Python function that’ll respond to the request
+# tags: The tags assigned to this endpoint, which allow you to group the operations in the UI
+# summary: The UI display text for this endpoint
+# responses: The status codes that the endpoint responds with
+paths:
+  /poi:
+    get:
+      operationId: "app.poi_api.poi.read_all"
+      tags:
+        - "POI"
+      summary: "Read the list of POI"
+      responses:
+        "200":
+          description: "Successfully read POI list"
