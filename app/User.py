@@ -27,7 +27,7 @@ class User(common.FirebaseDataEntity):
     
     def get(db_ref, id):
         target_data = db_ref.document(id).get()
-        data = target_data.to_json()
+        data = target_data.to_dict()
         new_user = User(
             db_ref,
             data["email"],
@@ -58,6 +58,9 @@ class User(common.FirebaseDataEntity):
     def push(self, merge=True):
         target_ref = self.db_reference.document(self.email)
         target_ref.set(self.to_dict(), merge=merge)
+
+    def __eq__(self, other):
+        return self.email == other.email
 
         
 
