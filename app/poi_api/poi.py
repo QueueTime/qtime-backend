@@ -1,28 +1,9 @@
 from datetime import datetime
+from app import firestore_db
+from flask import jsonify
 
 
-def get_timestamp():
-    return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
-
-
-PEOPLE = {
-    "Fairy": {
-        "fname": "Tooth",
-        "lname": "Fairy",
-        "timestamp": get_timestamp(),
-    },
-    "Ruprecht": {
-        "fname": "Knecht",
-        "lname": "Ruprecht",
-        "timestamp": get_timestamp(),
-    },
-    "Bunny": {
-        "fname": "Easter",
-        "lname": "Bunny",
-        "timestamp": get_timestamp(),
-    },
-}
-
-
-def read_all():
-    return list(PEOPLE.values())
+def list_places():
+    poi_ref = firestore_db.collection("POI")
+    all_poi = [doc.to_dict() for doc in poi_ref.stream()]
+    return jsonify(all_poi), 200

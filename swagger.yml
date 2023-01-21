@@ -16,21 +16,26 @@ servers:
 
 components:
   schemas:
-    Person:
-      type: "object"
-      required:
-        - lname
-      properties:
-        fname:
-          type: "string"
-        lname:
-          type: "string"
     POI:
       type: "object"
       required:
-        - poi_name
+        - _id
       properties:
-        poi_name:
+        _id:
+          type: "string"
+        name:
+          type: "string"
+        address:
+          type: "string"
+        class:
+          type: "string"
+        hours_of_operation:
+          type: "object"
+        image_url:
+          type: "string"
+        location:
+          type: "object"
+        type:
           type: "string"
 
 # /endpoint_name: The relative URL of your API endpoint
@@ -40,9 +45,11 @@ components:
 # summary: The UI display text for this endpoint
 # responses: The status codes that the endpoint responds with
 paths:
-  /poi:
+  /places/list:
     get:
-      operationId: "app.poi_api.poi.read_all"
+      x-openapi-router-controller: app.poi_api.poi
+      operationId: list_places
+      # parameters:
       tags:
         - "POI"
       summary: "Read the list of POI"
