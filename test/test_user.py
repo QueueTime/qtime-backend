@@ -1,6 +1,7 @@
 import unittest
 from firebase_admin import credentials, initialize_app, firestore
-from app.User import User
+from app.user_api.User import User
+from app.user_api.errors import UserNotFoundError
 import json
 
 class TestUser(unittest.TestCase):
@@ -17,6 +18,9 @@ class TestUser(unittest.TestCase):
         user.push()
         fetched_user = User.get(self.users_ref, "test@test.com")
         self.assertEqual(user.to_json(), fetched_user.to_json())
+
+    def test_error_handling(self):
+        self.assertRaises(UserNotFoundError, User.get, self.users_ref, "test@dl.com")
 
     def tearDown(self):
         self.users_ref.document('test@test.com').delete()

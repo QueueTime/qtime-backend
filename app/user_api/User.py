@@ -1,4 +1,5 @@
 from app import common
+from app.user_api.errors import UserNotFoundError
 import json
 
 class User(common.FirebaseDataEntity):
@@ -27,18 +28,24 @@ class User(common.FirebaseDataEntity):
     
     def get(db_ref, id):
         target_data = db_ref.document(id).get()
+        if not target_data.exists:
+            raise UserNotFoundError(id)
         data = target_data.to_dict()
-        new_user = User(
-            db_ref,
-            data["email"],
-            data["referral_code"],
-            data["reward_point_balance"],
-            data["notification_setting"],
-            data["color_theme"],
-            data["time_in_line"],
-            data["num_lines_participated"],
-            data["poi_frequency"]
-        )
+        new_user = {}
+        try:
+            new_user = User(
+                db_ref,
+                data["email"],
+                data["referral_code"],
+                data["reward_point_balance"],
+                data["notification_setting"],
+                data["color_theme"],
+                data["time_in_line"],
+                data["num_lines_participated"],
+                data["poi_frequency"]
+            )
+        except KeyError as e:
+            raise common.BadDataError("Missing data from user data: " + str(e))
         return new_user
 
 
