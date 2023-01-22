@@ -1,5 +1,3 @@
-# create_app depreciated with the use of swagger
-# from app import create_app
 import connexion
 
 # connecting swagger.yml configuration file with the Flask app
@@ -7,8 +5,6 @@ import connexion
 app = connexion.App(__name__, specification_dir="./")
 # Telling app to read the swagger.yml file from specification_dir
 app.add_api("swagger.yml")
-
-# app = create_app()
 
 
 @app.route("/")

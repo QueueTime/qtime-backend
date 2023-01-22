@@ -38,8 +38,8 @@ components:
         type:
           type: "string"
   parameters:
-    poi_name:
-      name: "poi_name"
+    poi_id:
+      name: "poi_id"
       description: "Point of interest name of the POI to get"
       in: path
       required: True
@@ -57,7 +57,7 @@ paths:
   /places/list:
     get:
       x-openapi-router-controller: app.poi_api.poi.POI
-      operationId: list_POI
+      operationId: get_all_POI
       tags:
         - POI
       summary: "Read the list of POI"
@@ -70,21 +70,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/POI'
-  /places/list/{poi_name}:
+  /places/list/{poi_id}:
     get:
-      x-openapi-router-controller: app.poi_api.poi
-      operationId: get_details_for_POI
+      x-openapi-router-controller: app.poi_api.poi.POI
+      operationId: get_POI
       tags:
         - POI
       summary: "Read one POI"
       parameters:
-        - $ref: "#/components/parameters/poi_name"
+        - $ref: "#/components/parameters/poi_id"
       responses:
         "200":
           description: "Successfully read the POI"
           content:
             application/json:
               schema:
-                type: array
+                type: object
                 items:
                   $ref: '#/components/schemas/POI'
