@@ -37,6 +37,14 @@ components:
           type: "object"
         type:
           type: "string"
+  parameters:
+    poi_name:
+      name: "poi_name"
+      description: "Point of interest name of the POI to get"
+      in: path
+      required: True
+      schema:
+        type: "string"
 
 # /endpoint_name: The relative URL of your API endpoint
 # get: The HTTP method that this URL endpoint will respond to
@@ -45,14 +53,38 @@ components:
 # summary: The UI display text for this endpoint
 # responses: The status codes that the endpoint responds with
 paths:
+  # POI API endpoints
   /places/list:
     get:
-      x-openapi-router-controller: app.poi_api.poi
-      operationId: list_places
-      # parameters:
+      x-openapi-router-controller: app.poi_api.poi.POI
+      operationId: list_POI
       tags:
-        - "POI"
+        - POI
       summary: "Read the list of POI"
       responses:
         "200":
           description: "Successfully read POI list"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/POI'
+  /places/list/{poi_name}:
+    get:
+      x-openapi-router-controller: app.poi_api.poi
+      operationId: get_details_for_POI
+      tags:
+        - POI
+      summary: "Read one POI"
+      parameters:
+        - $ref: "#/components/parameters/poi_name"
+      responses:
+        "200":
+          description: "Successfully read the POI"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/POI'
