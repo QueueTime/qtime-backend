@@ -21,6 +21,11 @@ class FirebaseDataEntity(ABC):
     def get(db_ref, id):
         ''' Class function that fetches a specified entity from a given Firebase reference by ID and creates a new Python instance '''
         raise NotImplementedError("Base class cannot be used")
+    
+    @abstractclassmethod
+    def from_dict(dict):
+        '''Class function that creates a new data class from a Python dictionary'''
+        raise NotImplementedError("Base class cannot be used")
 
     @abstractmethod
     def push(self):
@@ -40,3 +45,8 @@ class FirebaseDataEntity(ABC):
     def __eq__(self, other):
         ''' Compares equality by looking at primary keys '''
         raise NotImplementedError("Base class cannot be used")
+
+class BadDataError(Exception):
+    '''Used when receiving unexpected data from Firebase or clients'''
+    def __init__(self, message):
+        super().__init__(message)
