@@ -88,3 +88,37 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/POI'
+        "404":
+          description: "POI with specified id name not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/POI'
+  /places/suggest:
+    post:
+      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      operationId: suggest_new_POI
+      tags:
+        - POI
+      summary: "Suggest a new POI"
+      parameters:
+        - $ref: "#/components/parameters/poi_id"
+      responses:
+        "200":
+          description: "Successfully read the POI"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/POI'
+        "400":
+          description: "Invalid POI submission"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/POI'
