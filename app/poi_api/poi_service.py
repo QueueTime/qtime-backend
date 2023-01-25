@@ -28,11 +28,11 @@ class POI_Service(POIApi):
     def suggest_new_POI(self):
         pass
 
-    def save_POI_suggestion(self):
+    def _save_POI_suggestion(self):
         pass
 
-    def fetch_latest_estimated_value(self):
+    def _fetch_latest_estimated_value(self):
         pass
 
-    def generate_histogram_for_POI(self):
+    def _generate_histogram_for_POI(self):
         pass
