@@ -1,6 +1,7 @@
 # Common classes and utility methods used by POI API
 
 from abc import ABC, abstractmethod
+from .poi_api import User
 
 
 class POIApi(ABC):
@@ -15,6 +16,6 @@ class POIApi(ABC):
         raise NotImplementedError("Base class cannot be used")
 
     @abstractmethod
-    def suggest_new_POI():
+    def suggest_new_POI(self, user: User, suggestion_name, notes):
         """Allows client to suugest a new POI to be added to the POI Collection"""
         raise NotImplementedError("Base class cannot be used")
