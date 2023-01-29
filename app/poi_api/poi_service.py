@@ -28,9 +28,15 @@ class POI_Service(POIApi):
             if poi_dict is not None:
                 return self._create_poi_object(poi_dict)
             else:
-                raise Exception(f"The POI with the id: {poi_id} could not be found")
+                raise POINotFoundError(
+                    f"The POI with the id: {poi_id} could not be found", 404
+                )
+        except POINotFoundError as e:
+            raise POINotFoundError(
+                f"The POI with the id: {poi_id} could not be found", 404
+            )
         except Exception as e:
-            raise POINotFoundError(f"{e}", 404)
+            raise Exception(f"An error occured: {e}", 404)
 
     def suggest_new_POI(self, poi_suggestion):
         try:
@@ -41,8 +47,7 @@ class POI_Service(POIApi):
                 poi_suggestion_instance, poi_suggestion_ref
             )
         except Exception as e:
-            error_code = 400
-            raise InvalidPOISuggestionError(f"Invalid POI submission: {e}", error_code)
+            raise InvalidPOISuggestionError(f"Invalid POI submission: {e}", 440)
 
     # TODO: Add User parameter
     # TODO: Create user object for submitted_by

@@ -1,7 +1,7 @@
 # Common classes and utility methods used by POI API
 
 from abc import ABC, abstractmethod
-from app import User
+from app.user_api import User
 
 
 class POIApi(ABC):
