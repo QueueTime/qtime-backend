@@ -12,11 +12,11 @@ class POI_Service(POIApi):
         try:
             poi_ref = firestore_db.collection("POI")
             all_poi = [doc.to_dict() for doc in poi_ref.stream()]
-            list_all_poi = list()
+            list_all_poi = []
             for poi in all_poi:
                 poi_object = self._create_poi_object(poi)
                 list_all_poi.append(poi_object)
-            return list_all_poi, 200
+            return list_all_poi
         except Exception as e:
             raise Exception(f"An error occured: {e}")
 
@@ -26,7 +26,7 @@ class POI_Service(POIApi):
             poi = poi_ref.document(poi_id).get()
             poi_dict = poi.to_dict()
             if poi_dict is not None:
-                return self._create_poi_object(poi_dict), 200
+                return self._create_poi_object(poi_dict)
             else:
                 raise Exception(f"The POI with the id: {poi_id} could not be found")
         except Exception as e:
