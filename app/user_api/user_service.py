@@ -11,7 +11,7 @@ class User_Service():
 
     def findUser(self, email):
         '''Given email, find and return corresponding User. Raises UserNotFoundError if user not found'''
-        return User.get(users_ref, email)
+        return User.get(self.users_ref, email)
 
     def updateUser(self, user):
         '''Push updated User object to Firestore'''
@@ -32,14 +32,6 @@ class User_Service():
     def getTotalLineTime(self ,user):
         '''Return total time in line spent by User as an integer'''
         return user.time_in_line
-
-    def signInUser(self ,user):
-        '''Signs in a specified User'''
-        pass    # TODO
-
-    def signOutUser(self, user):
-        '''Signs out a specified user'''
-        pass    # TODO
 
     def deleteUser(self, user):
         ''' Deletes a specified user'''
