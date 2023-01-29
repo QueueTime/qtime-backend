@@ -11,7 +11,8 @@ class TestUser(unittest.TestCase):
         cred = credentials.Certificate("app/key/serviceAccountKey.json")
         # default_app = initialize_app(cred)     (not needed when running unittest)
         self.firestore_db = firestore.client()
-        self.users_ref = self.firestore_db.collection("POI")
+        self.poi_ref = self.firestore_db.collection("POI")
+        self.poi_suggestion_ref = self.firestore_db.collection("POI_proposal")
         app = Flask(__name__)
         app.app_context()
 
