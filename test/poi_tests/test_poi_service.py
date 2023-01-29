@@ -1,28 +1,17 @@
 import unittest
-from firebase_admin import credentials, firestore
-from app.poi_api.poi_service import get_all_POI
-from flask import jsonify, Flask
-import json
+from app.poi_api.poi_service import POI_Service
+from firebase_admin import credentials, initialize_app, firestore
 
 
 class TestUser(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         cred = credentials.Certificate("app/key/serviceAccountKey.json")
-        # default_app = initialize_app(cred)     (not needed when running unittest)
         self.firestore_db = firestore.client()
         self.poi_ref = self.firestore_db.collection("POI")
-        self.poi_suggestion_ref = self.firestore_db.collection("POI_proposal")
-        app = Flask(__name__)
-        app.app_context()
+        self.poi_service = POI_Service()
 
     def test_get_all_poi(self):
-        app = Flask(__name__)
-        with app.app_context():
-            valid_poi_ids = ["tim_hortons_musc"]
-            poi_list = get_all_POI()
-            print(poi_list)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        poi_obj_list = self.poi_service.get_all_POI()
+        all_poi_db = [doc.to_dict() for doc in self.poi_ref.stream()]
+        self.assertEquals([poi._to_dict() for poi in poi_obj_list])

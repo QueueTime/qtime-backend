@@ -4,8 +4,9 @@ from app.poi_api.poi import POI
 
 
 class TestPOI(unittest.TestCase):
-    def test_to_dict(self):
-        poi = POI(
+    @classmethod
+    def setUpClass(self):
+        self.poi = POI(
             _id="0",
             name="test",
             clasification="TEST",
@@ -15,6 +16,8 @@ class TestPOI(unittest.TestCase):
             location={"longitude": "0", "latitude": "0"},
             image_url="picture",
         )
+
+    def test_to_dict(self):
         poi_dict = {
             "_id": "0",
             "name": "test",
@@ -25,4 +28,4 @@ class TestPOI(unittest.TestCase):
             "location": {"longitude": "0", "latitude": "0"},
             "image_url": "picture",
         }
-        self.assertEqual(poi._to_dict(), poi_dict)
+        self.assertEqual(self.poi._to_dict(), poi_dict)
