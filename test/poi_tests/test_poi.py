@@ -28,4 +28,4 @@ class TestPOI(unittest.TestCase):
             "location": {"longitude": "0", "latitude": "0"},
             "image_url": "picture",
         }
-        self.assertEqual(self.poi._to_dict(), poi_dict)
+        self.assertEqual(self.poi.to_dict(), poi_dict)
