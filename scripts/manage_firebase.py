@@ -4,7 +4,7 @@ import argparse
 import json
 import os
 
-DEFAULT_FIREBASE_KEY_PATH = "serviceAccountKey.json"
+DEFAULT_FIREBASE_KEY_PATH = "./serviceAccountKey.json"
 
 # Add new command line arguments here
 parser = argparse.ArgumentParser()
