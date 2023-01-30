@@ -9,6 +9,7 @@ class TestUser(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         cred = credentials.Certificate("./serviceAccountKey.json")
+        self.default_app = initialize_app(cred)
         self.firestore_db = firestore.client()
         self.users_ref = self.firestore_db.collection("users")
 
