@@ -1,4 +1,3 @@
-# run with: python -m unittest test/poi_tests/test_poi_service.py
 import unittest
 from app.poi_api.poi_service import POI_Service
 from app.poi_api.poi_suggestion import POI_suggestions
