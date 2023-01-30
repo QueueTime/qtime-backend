@@ -2,10 +2,10 @@ from app import common
 from app.user_api.errors import UserNotFoundError
 import json
 
-class User(common.FirebaseDataEntity):
 
+class User(common.FirebaseDataEntity):
     def __init__(
-        self, 
+        self,
         db_ref,
         email,
         referral_code="",
@@ -15,7 +15,7 @@ class User(common.FirebaseDataEntity):
         time_in_line=0,
         num_lines_participated=0,
         poi_frequency={},
-        hasCompletedOnboarding=False
+        hasCompletedOnboarding=False,
     ):
         super().__init__(db_ref)
         self.email = email
@@ -27,7 +27,7 @@ class User(common.FirebaseDataEntity):
         self.num_lines_participated = num_lines_participated
         self.poi_frequency = poi_frequency
         self.hasCompletedOnboarding = hasCompletedOnboarding
-    
+
     def get(db_ref, id):
         target_data = db_ref.document(id).get()
         if not target_data.exists:
@@ -46,22 +46,22 @@ class User(common.FirebaseDataEntity):
                 dict["time_in_line"],
                 dict["num_lines_participated"],
                 dict["poi_frequency"],
-                dict["hasCompletedOnboarding"]
+                dict["hasCompletedOnboarding"],
             )
         except KeyError as e:
             raise common.BadDataError("Missing data from user data: " + str(e))
 
     def to_dict(self):
         new_dict = {
-            "email" : self.email,
-            "referral_code" : self.referral_code,
-            "reward_point_balance" : self.reward_point_balance,
-            "notification_setting" : self.notification_setting,
-            "color_theme" : self.color_theme,
-            "time_in_line" : self.time_in_line,
-            "num_lines_participated" : self.num_lines_participated,
-            "poi_frequency" : self.poi_frequency,
-            "hasCompletedOnboarding": self.hasCompletedOnboarding
+            "email": self.email,
+            "referral_code": self.referral_code,
+            "reward_point_balance": self.reward_point_balance,
+            "notification_setting": self.notification_setting,
+            "color_theme": self.color_theme,
+            "time_in_line": self.time_in_line,
+            "num_lines_participated": self.num_lines_participated,
+            "poi_frequency": self.poi_frequency,
+            "hasCompletedOnboarding": self.hasCompletedOnboarding,
         }
         return new_dict
 
@@ -71,9 +71,3 @@ class User(common.FirebaseDataEntity):
 
     def __eq__(self, other):
         return self.email == other.email
-
-        
-
-
-
-
