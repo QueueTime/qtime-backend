@@ -1,13 +1,12 @@
 from app import firestore_db
 from flask import jsonify
-from .poi_api import POIApi
 from .poi_suggestion import POI_suggestions
 from .poi import POI
 from .poi_errors import POINotFoundError, InvalidPOISuggestionError
 from datetime import datetime
 
 
-class POI_Service(POIApi):
+class POI_Service:
     def get_all_POI(self):
         try:
             poi_ref = firestore_db.collection("POI")
