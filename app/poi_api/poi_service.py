@@ -41,11 +41,11 @@ class POI_Service(POIApi):
     def suggest_new_POI(self, poi_suggestion):
         try:
             poi_suggestion_ref = firestore_db.collection("POI_proposal").document()
+            # Generate id for poi suggestion document
             pid = poi_suggestion_ref.id
             poi_suggestion_instance = self._create_POI_suggestion(pid, poi_suggestion)
-            return self._save_POI_suggestion(
-                poi_suggestion_instance, poi_suggestion_ref
-            )
+            self._save_POI_suggestion(poi_suggestion_instance, poi_suggestion_ref)
+            return {"success": True, "poi_suggestion_id": pid}
         except Exception as e:
             raise InvalidPOISuggestionError(f"Invalid POI submission: {e}", 440)
 
@@ -57,6 +57,8 @@ class POI_Service(POIApi):
             notes = poi_suggestion.get("notes")
             submission_time = datetime.now()
             submitted_by = poi_suggestion.get("submitted_by")
+            if suggestion_name is None or submitted_by is None:
+                raise Exception()
             return POI_suggestions(
                 pid, suggestion_name, notes, submission_time, submitted_by
             )
@@ -70,7 +72,7 @@ class POI_Service(POIApi):
             poi_suggestion_post_ref = poi_suggestion_ref.set(
                 poi_suggestion_dict, merge=True
             )
-            return poi_suggestion_post_ref
+            return str(poi_suggestion_post_ref)
         except Exception as e:
             raise Exception(f"An error occured: {e}")
 

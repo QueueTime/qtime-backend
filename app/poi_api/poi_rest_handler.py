@@ -9,7 +9,7 @@ poi_service_class = POI_Service()
 def get_all_POI():
     try:
         list_all_poi = poi_service_class.get_all_POI()
-        return [poi._to_dict() for poi in list_all_poi], 200
+        return [poi.to_dict() for poi in list_all_poi], 200
     except Exception as e:
         return jsonify({"success": False, "message": str(e), "error_code": 400}), 400
 
@@ -17,7 +17,7 @@ def get_all_POI():
 def get_POI(poi_id):
     try:
         get_poi = poi_service_class.get_POI(poi_id)
-        return get_poi._to_dict(), 200
+        return get_poi.to_dict(), 200
     except POINotFoundError as e:
         return jsonify({"success": False, "message": str(e), "error_code": 404}), 404
     except Exception as e:

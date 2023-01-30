@@ -24,7 +24,7 @@ class POI:
         self.location = location
         self.image_url = image_url
 
-    def _to_dict(self):
+    def to_dict(self):
         poi_suggestion_dict = {
             "_id": self._id,
             "address": self.address,
