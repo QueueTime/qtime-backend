@@ -1,5 +1,6 @@
 from datetime import datetime
-from app import firestore_db, common
+from app import common
+from app.firebase import firestore_db
 from flask import jsonify
 
 
