@@ -35,10 +35,10 @@ class User_Service():
 
     def deleteUser(self, user):
         ''' Deletes a specified user'''
-        target_user = users_ref.document(user.email).get()
-        if not target_user.exists:
+        target_user_snapshot = self.users_ref.document(user.email)
+        if not target_user_snapshot.get().exists:
             raise UserNotFoundError(user.email)
-        target_user.delete()
+        target_user_snapshot.delete()
         # TODO if there are any other references to the user that need to be deleted from other places,
         # add them here
 
