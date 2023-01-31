@@ -1,14 +1,13 @@
 import connexion
 from utils import combine_specifications
-from pathlib import Path
 
 app = connexion.App(__name__)
 # Telling app to read the combined openapi specification
 app.add_api(
     combine_specifications(
-        Path("./base_swagger.yaml"),
-        Path("./app/poi_api/spec.yaml"),
-        Path("./app/user_api/spec.yaml"),
+        "./base_swagger.yaml",
+        "./app/poi_api/spec.yaml",
+        "./app/user_api/spec.yaml",
     )
 )
 

@@ -19,8 +19,8 @@ def _parse_spec_file(file: Path) -> Dict[str, Any]:
     return parser.specification
 
 
-def combine_specifications(baseSpecPath: Path, *paths: List[Path]) -> Dict[str, Any]:
-    baseSpec = _parse_spec_file(baseSpecPath)
+def combine_specifications(baseSpecPath: str, *paths: List[str]) -> Dict[str, Any]:
+    baseSpec = _parse_spec_file(Path(baseSpecPath))
     if not paths:
         return baseSpec
 
@@ -36,7 +36,7 @@ def combine_specifications(baseSpecPath: Path, *paths: List[Path]) -> Dict[str, 
 
     # Combine additional specs
     for path in paths:
-        spec = _parse_spec_file(path)
+        spec = _parse_spec_file(Path(path))
 
         if "paths" in spec:
             baseSpec["paths"] = dict(baseSpec["paths"], **spec["paths"])
