@@ -37,9 +37,28 @@ def combine_specifications(baseSpecPath: Path, *paths: List[Path]) -> Dict[str, 
     # Combine additional specs
     for path in paths:
         spec = _parse_spec_file(path)
-        for attr in ("paths", "components"):  # Dict-based specs
-            if attr in spec:
-                baseSpec[attr] = dict(baseSpec[attr], **spec[attr])
+
+        if "paths" in spec:
+            baseSpec["paths"] = dict(baseSpec["paths"], **spec["paths"])
+
+        if "components" in spec:
+            for attr in (
+                "schemas",
+                "responses",
+                "parameters",
+                "examples",
+                "requestBodies",
+                "headers",
+                "securitySchemes",
+                "links",
+                "callbacks",
+            ):
+                if attr in spec["components"]:
+                    baseSpec["components"][attr] = dict(
+                        baseSpec["components"].get(attr, dict()),
+                        **spec["components"][attr]
+                    )
+
         for attr in ("security", "tags"):  # List-based specs
             if attr in spec:
                 baseSpec[attr].append(spec[attr])
