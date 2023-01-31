@@ -6,14 +6,15 @@ from app.user_api import user_service
 from app.user_api import user_api
 import json
 
-class TestUser(unittest.TestCase):
 
+class TestUser(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        cred = credentials.Certificate("app/key/serviceAccountKey.json")
+        cred = credentials.Certificate("./serviceAccountKey.json")
+        self.default_app = initialize_app(cred)
         self.firestore_db = firestore.client()
-        self.users_ref = self.firestore_db.collection('users')
-    
+        self.users_ref = self.firestore_db.collection("users")
+
     def test_user_push_and_fetch(self):
         user = User(self.users_ref, "test@test.com", "", 0, False, "", 0, 0, {}, False)
         user.push()
@@ -21,11 +22,12 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.to_json(), fetched_user.to_json())
 
     def test_error_handling(self):
-        self.assertRaises(UserNotFoundError, User.get, self.users_ref, "test@nonexistent.com")
-    
-    def tearDown(self):
-        self.users_ref.document('test@test.com').delete()
+        self.assertRaises(
+            UserNotFoundError, User.get, self.users_ref, "test@nonexistent.com"
+        )
 
+    def tearDown(self):
+        self.users_ref.document("test@test.com").delete()
 class TestUserService(unittest.TestCase):
     
     @classmethod

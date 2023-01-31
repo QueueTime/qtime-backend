@@ -1,54 +1,39 @@
 from datetime import datetime
-from app import firestore_db, common
+from app import common
+from app.firebase import firestore_db
 from flask import jsonify
 
 
-class POI(common.FirebaseDataEntity):
+class POI:
     def __init__(
         self,
-        db_ref,
+        _id,
         name,
         clasification,
         hours_of_operation,
         address,
-        type,
-        longitude,
-        latitude,
+        poi_type,
+        location,
         image_url,
     ):
-        super().__init__(db_ref)
-        if db_ref is None:
-            self.db_ref = firestore_db
+        self._id = _id
         self.name = name
         self.classification = clasification
         self.hours_of_operation = hours_of_operation
         self.address = address
-        self.type = type
-        self.longitude = longitude
-        self.latitude = latitude
+        self.poi_type = poi_type
+        self.location = location
         self.image_url = image_url
 
-    def get_all_POI():
-        poi_ref = firestore_db.collection("POI")
-        all_poi = [doc.to_dict() for doc in poi_ref.stream()]
-        return jsonify(all_poi), 200
-
-    def get_POI(poi_id):
-        try:
-            poi_ref = firestore_db.collection("POI")
-            poi = poi_ref.document(poi_id).get()
-            return jsonify(poi.to_dict()), 200
-        except Exception as e:
-            return f"An Error Occured: {e}"
-
-    def save_POI_suggestion():
-        pass
-
-    def create_POI_suggestion():
-        pass
-
-    def fetch_latest_estimated_value():
-        pass
-
-    def generate_histogram_for_POI():
-        pass
+    def to_dict(self):
+        poi_suggestion_dict = {
+            "_id": self._id,
+            "address": self.address,
+            "class": self.classification,
+            "hours_of_operation": self.hours_of_operation,
+            "image_url": self.image_url,
+            "location": self.location,
+            "name": self.name,
+            "type": self.poi_type,
+        }
+        return poi_suggestion_dict
