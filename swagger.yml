@@ -48,10 +48,40 @@ components:
           type: "string"
         submitted_by:
           type: "string"
+    User:
+      type: "object"
+      required:
+        - email
+      properties:
+        email:
+          type: "string"
+        referral_code:
+          type: "string"
+        reward_point_balance:
+          type: "number"
+        notification_setting:
+          type: "boolean"
+        color_theme:
+          type: "string"
+        time_in_line:
+          type: "number"
+        num_lines_participated:
+          type: "number"
+        poi_frequency:
+          type: "object"
+        hasCompletedOnboarding:
+          type: "boolean"
   parameters:
     poi_id:
       name: "poi_id"
       description: "Point of interest name of the POI to get"
+      in: path
+      required: True
+      schema:
+        type: "string"
+    email:
+      name: "email"
+      description: "Email of a user profile"
       in: path
       required: True
       schema:
@@ -139,3 +169,75 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/POI'
+        "404":
+          description: "POI with specified id name not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/POI'
+  /places/suggest:
+    post:
+      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      operationId: suggest_new_POI
+      tags:
+        - POI
+      summary: "Suggest a new POI"
+      requestBody:
+          description: "POI suggestion to create"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "poi_suggestion"
+                $ref: "#/components/schemas/POI_suggestion"
+      responses:
+        "200":
+          description: "Successfully read the POI"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/POI'
+        "400":
+          description: "Invalid POI submission"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/POI'
+  # User API endpoints
+  /user/{email}/profile:  # TODO: change this to something other than email
+    get:
+      x-openapi-router-controller: app.user_api.user_api
+      operationId: get_user_profile
+      tags:
+        - User
+      summary: "Get details of a specified profile"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "200":
+          description: Return details of a specified user profile
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/User"
+  /user/{email}/delete:  # TODO: change this to something other than email
+    delete:
+      x-openapi-router-controller: app.user_api.user_api
+      operationId: delete_user_profile
+      tags:
+        - User
+      summary: "Deletes a specified user"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "200":
+          description: User deleted
+
