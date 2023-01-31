@@ -1,0 +1,24 @@
+# swagger.yml
+# navigate to localhost:xxxx/api/ui to view API documentation
+
+# title: Title included in the Connexion-generated UI system
+# description: Description of what the API provides or is about
+# version: Version value for the API
+openapi: 3.0.0
+info:
+  title: "QueueTime Flask REST API"
+  description: "QueueTime API for finding wait times of various points of interests at McMaster University"
+  version: "1.0.0"
+
+# # By providing "/api" as the value of url, you’ll be able to access all of your API paths relative to http://localhost:xxxx/api.
+servers:
+  - url: "/api"
+
+paths:
+  /health:
+    get:
+      x-openapi-router-controller: app.health
+      operationId: get_server_health
+      responses:
+        "200":
+          description: "All good"
