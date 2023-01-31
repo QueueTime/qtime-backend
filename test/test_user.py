@@ -28,26 +28,32 @@ class TestUser(unittest.TestCase):
 
     def tearDown(self):
         self.users_ref.document("test@test.com").delete()
+
+
 class TestUserService(unittest.TestCase):
-    
     @classmethod
     def setUpClass(self):
         self.firestore_db = firestore.client()
-        self.users_ref = self.firestore_db.collection('users')
+        self.users_ref = self.firestore_db.collection("users")
         self.user_service = user_service.User_Service()
-        self.test_user = User(self.users_ref, "test@test.com", "", 0, False, "", 0, 0, {}, False)
+        self.test_user = User(
+            self.users_ref, "test@test.com", "", 0, False, "", 0, 0, {}, False
+        )
         self.test_user.push()
 
     def test_find_user(self):
         self.assertEqual(self.test_user, self.user_service.findUser("test@test.com"))
-        self.assertRaises(UserNotFoundError, self.user_service.findUser, "test@nonexistent.com")
+        self.assertRaises(
+            UserNotFoundError, self.user_service.findUser, "test@nonexistent.com"
+        )
 
     def test_delete_user(self):
-        self.assertRaises(UserNotFoundError, self.user_service.deleteUser, User(self.users_ref, "test@nonexistent.com"))
+        self.assertRaises(
+            UserNotFoundError,
+            self.user_service.deleteUser,
+            User(self.users_ref, "test@nonexistent.com"),
+        )
         self.user_service.deleteUser(self.test_user)
         self.assertRaises(UserNotFoundError, User.get, self.users_ref, "test@test.com")
         # cleanup
         self.test_user.push()
-
-
-    
