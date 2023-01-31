@@ -1,11 +1,11 @@
-from app import firestore_db
+from app.firebase import firestore_db
 from flask import jsonify
 from .poi_suggestion import POI_suggestions
 from .poi import POI
 from .poi_errors import POINotFoundError, InvalidPOISuggestionError
 from datetime import datetime
 
-
+# TODO: Fix error handling
 class POI_Service:
     def get_all_POI(self):
         try:
@@ -37,16 +37,16 @@ class POI_Service:
         except Exception as e:
             raise Exception(f"An error occured: {e}", 404)
 
-    def suggest_new_POI(self, poi_suggestion):
+    def suggest_new_POI(self, poi_suggestion) -> int:
         try:
             poi_suggestion_ref = firestore_db.collection("POI_proposal").document()
             # Generate id for poi suggestion document
             pid = poi_suggestion_ref.id
             poi_suggestion_instance = self._create_POI_suggestion(pid, poi_suggestion)
             self._save_POI_suggestion(poi_suggestion_instance, poi_suggestion_ref)
-            return {"success": True, "poi_suggestion_id": pid}
-        except Exception as e:
-            raise InvalidPOISuggestionError(f"Invalid POI submission: {e}", 440)
+            return {"success": True}
+        except InvalidPOISuggestionError as e:
+            raise InvalidPOISuggestionError(f"{e}", 404)
 
     # TODO: Add User parameter
     # TODO: Create user object for submitted_by
@@ -57,10 +57,12 @@ class POI_Service:
             submission_time = datetime.now()
             submitted_by = poi_suggestion.get("submitted_by")
             if suggestion_name is None or submitted_by is None:
-                raise Exception()
+                raise InvalidPOISuggestionError(f"Invalid POI submission: {e}", 404)
             return POI_suggestions(
                 pid, suggestion_name, notes, submission_time, submitted_by
             )
+        except InvalidPOISuggestionError as e:
+            raise InvalidPOISuggestionError(f"{e}", 404)
         except Exception as e:
             raise Exception(f"An error occured: {e}")
 
