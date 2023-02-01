@@ -1,10 +1,15 @@
 import connexion
+from utils import combine_specifications
 
-# connecting swagger.yml configuration file with the Flask app
-# specification_dir tells Connexion which directory to look for the config file
-app = connexion.App(__name__, specification_dir="./")
-# Telling app to read the swagger.yml file from specification_dir
-app.add_api("swagger.yml")
+app = connexion.App(__name__)
+# Telling app to read the combined openapi specification
+app.add_api(
+    combine_specifications(
+        "./base_swagger.yaml",
+        "./app/poi_api/spec.yaml",
+        "./app/user_api/spec.yaml",
+    )
+)
 
 
 @app.route("/")
