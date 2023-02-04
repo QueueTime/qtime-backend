@@ -4,7 +4,8 @@
 
 from abc import ABC, abstractmethod, abstractclassmethod
 from firebase_admin import auth
-from user_api.errors import UserAuthenticationError
+from .user_api.errors import UserAuthenticationError
+from werkzeug.exceptions import Unauthorized
 import json
 
 
@@ -69,7 +70,7 @@ def decode_token(token):
         dict: A dictionary of the key-value pairs from the decoded JWT
 
     Raises:
-        UserAuthenticationError: if an error occurs authenticating the token
+        Unauthorized: if the token is invalid or expired
         ValueError: if `token` is not a string or is empty
     """
     try:
@@ -77,6 +78,5 @@ def decode_token(token):
     except (
         auth.InvalidIdTokenError,
         auth.ExpiredIdTokenError,
-        auth.CertificateFetchError,
     ) as e:
-        raise UserAuthenticationError(str(e)) from e
+        raise Unauthorized("Invalid token") from e
