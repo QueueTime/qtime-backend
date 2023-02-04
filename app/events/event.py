@@ -104,6 +104,6 @@ class Event:
         return {
             "type": self.type.value,
             "user": self.user,
-            "payload": self.payload.to_dict(),
+            "payload": self.payload.to_dict() if self.payload is not None else None,
             "created": self.created,
         }
