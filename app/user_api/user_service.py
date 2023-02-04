@@ -11,7 +11,18 @@ class User_Service:
         self.users_ref = firestore.client().collection("users")
 
     def findUser(self, email):
-        """Given email, find and return corresponding User. Raises UserNotFoundError if user not found"""
+        """Given email, find and return corresponding User. Raises UserNotFoundError if user not found
+
+         Args:
+             email: A string of the target user email
+
+        Returns:
+             User: An associated User object with the specified email
+
+         Raises:
+             UserNotFoundError: if user with specified email does not exist
+             BadDataError: if user data retrieved is missing essential data
+        """
         return User.get(self.users_ref, email)
 
     def updateUser(self, user):
@@ -35,7 +46,15 @@ class User_Service:
         return user.time_in_line
 
     def deleteUser(self, user):
-        """Deletes a specified user"""
+        """
+        Deletes a specified user
+
+        Args:
+            user: User object for target user to delete
+
+        Raises:
+            UserNotFoundError: If target user does not exist
+        """
         target_user_snapshot = self.users_ref.document(user.email)
         if not target_user_snapshot.get().exists:
             raise UserNotFoundError(user.email)

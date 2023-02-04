@@ -29,29 +29,61 @@ class User(common.FirebaseDataEntity):
         self.hasCompletedOnboarding = hasCompletedOnboarding
 
     def get(db_ref, id):
+        """
+        Fetches a specified user from a database.
+
+        Args:
+            db_ref: A `CollectionReference` to the users table from Firestore
+            id: A string of the user email to fetch
+
+        Returns:
+            User: specified by `id`
+
+        Raises:
+            UserNotFoundError: if the target user does not exist
+        """
         target_data = db_ref.document(id).get()
         if not target_data.exists:
             raise UserNotFoundError(id)
         return User.from_dict(db_ref, target_data.to_dict())
 
     def from_dict(db_ref, dict):
+        """
+        Creates a new User object from a Python Dictionary
+
+        Args:
+            db_ref: A `CollectionReference` to the users table from Firestore
+            dict: Dictionary of key-value pairs corresponding to user.
+
+        Returns:
+            User: from specified data
+
+        Raises:
+            BadDataError: If required data is missing from the dictionary
+        """
         try:
             return User(
                 db_ref,
                 dict["email"],
-                dict["referral_code"],
-                dict["reward_point_balance"],
-                dict["notification_setting"],
-                dict["color_theme"],
-                dict["time_in_line"],
-                dict["num_lines_participated"],
-                dict["poi_frequency"],
-                dict["hasCompletedOnboarding"],
+                dict.get("referral_code", ""),
+                dict.get("reward_point_balance", 0),
+                dict.get("notification_setting", False),
+                dict.get("color_theme", "SYSTEM"),
+                dict.get("time_in_line", 0),
+                dict.get("num_lines_participated", 0),
+                dict.get("poi_frequency", {}),
+                dict.get("hasCompletedOnboarding", False),
             )
         except KeyError as e:
             raise common.BadDataError("Missing data from user data: " + str(e))
 
     def to_dict(self):
+        """
+        Returns a dictionary containing all properties from the User
+
+        Returns:
+            dict: containing key-value pairs with all User data
+        """
         new_dict = {
             "email": self.email,
             "referral_code": self.referral_code,
@@ -66,6 +98,7 @@ class User(common.FirebaseDataEntity):
         return new_dict
 
     def push(self, merge=True):
+        """Pushes data to Firebase"""
         target_ref = self.db_reference.document(self.email)
         target_ref.set(self.to_dict(), merge=merge)
 
