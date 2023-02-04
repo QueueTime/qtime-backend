@@ -5,12 +5,6 @@ info:
   version: "1.0.0"
 
 components:
-  securitySchemes:
-    jwt:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      x-bearerInfoFunc: app.common.decode_token
   schemas:
     User:
       type: "object"
