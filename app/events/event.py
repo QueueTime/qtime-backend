@@ -2,14 +2,14 @@ from enum import Enum
 from datetime import datetime
 from typing import Dict, Any
 
-from .utils import SimpleMap
+from app.events.utils import SimpleMap
 
 
 class EventType(Enum):
     """Types of events logged"""
 
     ACCOUNT_SIGNUP = "account_signup_event"
-    ACCOUNT_DELETION = "account_delete_event"
+    ACCOUNT_DELETION = "account_deletion_event"
     WAITTIME_SUBMIT = "waittime_submit_event"
     WAITTIME_CONFIRM = "waittime_confirm_event"
     REWARD_POINTS_ADD = "reward_points_add_event"
@@ -19,8 +19,7 @@ class EventType(Enum):
 class RewardSource(Enum):
     """Ways users can earn rewards points"""
 
-    REFERRAL_BONUS = "referral_bonus"  # For users who referred new users
-    REFERRED_BONUS = "referred_bonus"  # For new users who were referred
+    REFERRAL_BONUS = "referral_bonus"
     WAITTIME_CONFIRM = "waittime_confirm"
     WAITTIME_SUBMIT = "waittime_submit"
 
@@ -89,10 +88,29 @@ class Event:
         self.payload = payload
         self.created = created
 
+<<<<<<< HEAD
+=======
+    @staticmethod
+    def submitWaitTimeEstimate(user: str, payload: WaitTimeSubmitPayload) -> "Event":
+        return Event(EventType.WAITTIME_SUBMIT, user, payload)
+
+    @staticmethod
+    def confirmWaitTime(user: str, payload: WaitTimeConfirmPayload) -> "Event":
+        return Event(EventType.WAITTIME_CONFIRM, user, payload)
+
+    @staticmethod
+    def addRewardPoints(user: str, payload: RewardPointsAddPayload) -> "Event":
+        return Event(EventType.REWARD_POINTS_ADD, user, payload)
+
+>>>>>>> Create event object
     def to_dict(self) -> Dict[str, Any]:
         return {
             "type": self.type.value,
             "user": self.user,
+<<<<<<< HEAD
             "payload": self.payload.to_dict() if self.payload is not None else None,
+=======
+            "payload": self.payload.to_dict(),
+>>>>>>> Create event object
             "created": self.created,
         }
