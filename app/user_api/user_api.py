@@ -29,10 +29,10 @@ def delete_user_profile(email):
     return {"message": "Success"}, 200
 
 
-def test_authenticate(user, token_info):
+def test_authenticate(token_info):
     try:
-        new_user = auth.get_user(token_info["uid"])
-        return f"Success, you are {user}", 200
+        user = auth.get_user(token_info["uid"])
+        return f"Success, you are {user.email}", 200
     except ValueError as e:
         return {"error": "Invalid user ID", "details": str(e)}, 400
     except auth.UserNotFoundError as e:
