@@ -2,7 +2,7 @@ from enum import Enum
 from datetime import datetime
 from typing import Dict, Any
 
-from app.events.utils import SimpleMap
+from .utils import SimpleMap
 
 
 class EventType(Enum):
@@ -19,7 +19,8 @@ class EventType(Enum):
 class RewardSource(Enum):
     """Ways users can earn rewards points"""
 
-    REFERRAL_BONUS = "referral_bonus"
+    REFERRAL_BONUS = "referral_bonus"  # For users who referred new users
+    REFERRED_BONUS = "referred_bonus"  # For new users who were referred
     WAITTIME_CONFIRM = "waittime_confirm"
     WAITTIME_SUBMIT = "waittime_submit"
 
