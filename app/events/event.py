@@ -9,7 +9,7 @@ class EventType(Enum):
     """Types of events logged"""
 
     ACCOUNT_SIGNUP = "account_signup_event"
-    ACCOUNT_DELETION = "account_deletion_event"
+    ACCOUNT_DELETION = "account_delete_event"
     WAITTIME_SUBMIT = "waittime_submit_event"
     WAITTIME_CONFIRM = "waittime_confirm_event"
     REWARD_POINTS_ADD = "reward_points_add_event"
