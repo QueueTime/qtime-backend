@@ -81,7 +81,11 @@ def generate_referral_event(
     :param user: User who signed up using a referral code
     :param user_with_referral_code: User who's referral code was used
     :param points_awarded: Number of points awarded to both users
+    :throws ValueError: If the user who signed up and the user who's referral code was used are the same
     """
+    if user.email == user_with_referral_code.email:
+        raise ValueError("User cannot refer themselves")
+
     _generate_reward_point_change_event(
         user.email, RewardSource.REFERRED_BONUS, points_awarded
     )
