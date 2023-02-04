@@ -3,6 +3,8 @@
 ###
 
 from abc import ABC, abstractmethod, abstractclassmethod
+from firebase_admin import auth
+from user_api.errors import UserAuthenticationError
 import json
 
 
@@ -54,3 +56,27 @@ class BadDataError(Exception):
 
     def __init__(self, message):
         super().__init__(message)
+
+
+def decode_token(token):
+    """
+    Decodes a JWT token using Firebase
+
+    Args:
+        token: A string of the encoded JWT
+
+    Returns:
+        dict: A dictionary of the key-value pairs from the decoded JWT
+
+    Raises:
+        UserAuthenticationError: if an error occurs authenticating the token
+        ValueError: if `token` is not a string or is empty
+    """
+    try:
+        return auth.verify_id_token(token)
+    except (
+        auth.InvalidIdTokenError,
+        auth.ExpiredIdTokenError,
+        auth.CertificateFetchError,
+    ) as e:
+        raise UserAuthenticationError(str(e)) from e
