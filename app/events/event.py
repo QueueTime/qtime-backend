@@ -88,8 +88,6 @@ class Event:
         self.payload = payload
         self.created = created
 
-<<<<<<< HEAD
-=======
     @staticmethod
     def submitWaitTimeEstimate(user: str, payload: WaitTimeSubmitPayload) -> "Event":
         return Event(EventType.WAITTIME_SUBMIT, user, payload)
@@ -102,15 +100,10 @@ class Event:
     def addRewardPoints(user: str, payload: RewardPointsAddPayload) -> "Event":
         return Event(EventType.REWARD_POINTS_ADD, user, payload)
 
->>>>>>> Create event object
     def to_dict(self) -> Dict[str, Any]:
         return {
             "type": self.type.value,
             "user": self.user,
-<<<<<<< HEAD
             "payload": self.payload.to_dict() if self.payload is not None else None,
-=======
-            "payload": self.payload.to_dict(),
->>>>>>> Create event object
             "created": self.created,
         }
