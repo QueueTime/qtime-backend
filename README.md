@@ -49,9 +49,9 @@ python3 -m pip freeze > requirements.txt
 
 This project leverages [Connexion](https://pypi.org/project/connexion/) as a framework to manage http requests based on OpenAPI specifications.
 
-### Formatting
+### Linting
 
-This project leverages the opinionated [Black](https://github.com/psf/black) formatter for code formatting.
+This project leverages the opinionated [Black](https://github.com/psf/black) formatter for code formatting and [mypy](https://mypy.readthedocs.io/en/stable/) for static typechecking.
 
 ## Testing
 
