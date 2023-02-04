@@ -89,18 +89,6 @@ class Event:
         self.payload = payload
         self.created = created
 
-    @staticmethod
-    def submitWaitTimeEstimate(user: str, payload: WaitTimeSubmitPayload) -> "Event":
-        return Event(EventType.WAITTIME_SUBMIT, user, payload)
-
-    @staticmethod
-    def confirmWaitTime(user: str, payload: WaitTimeConfirmPayload) -> "Event":
-        return Event(EventType.WAITTIME_CONFIRM, user, payload)
-
-    @staticmethod
-    def addRewardPoints(user: str, payload: RewardPointsAddPayload) -> "Event":
-        return Event(EventType.REWARD_POINTS_ADD, user, payload)
-
     def to_dict(self) -> Dict[str, Any]:
         return {
             "type": self.type.value,
