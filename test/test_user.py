@@ -1,5 +1,6 @@
 import unittest
-from firebase_admin import credentials, initialize_app, firestore
+from firebase_admin import firestore
+from app import firebase
 from app.user_api.User import User
 from app.user_api.errors import UserNotFoundError
 from app.user_api import user_service
@@ -10,8 +11,6 @@ import json
 class TestUser(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        cred = credentials.Certificate("./serviceAccountKey.json")
-        self.default_app = initialize_app(cred)
         self.firestore_db = firestore.client()
         self.users_ref = self.firestore_db.collection("users")
 
