@@ -28,11 +28,16 @@ components:
       type: object
       required:
         - error
+        - message
       properties:
         error:
           type: string
-          description: Error message
-          example: SAMPLE_ERROR_MESSAGE
+          description: Error type
+          example: Bad Data
+        message:
+          type: string
+          description: Error description
+          example: "Invalid data provided"
 
 paths:
   /user/referral/{code}:
@@ -66,6 +71,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # security:
+      #   - jwt: []
   /user/rewards/events:
     get:
       x-openapi-router-controller: app.rewards.api
@@ -74,6 +81,14 @@ paths:
         - User
       summary: Retrieve events impacting user point score
       description: List all events that have impacted the user's point score either through additions stemming from submitting wait time estimates, etc. or reductions from redeeming rewards
+      parameters:
+        - name: before
+          in: query
+          description: Timestamp to retrieve events before
+          required: False
+          schema:
+            type: string
+            format: date-time
       responses:
         "200":
           description: List of events impacting user point score
@@ -83,3 +98,11 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/RewardEvent"
+        "400":
+          description: Bad data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      # security:
+      #   - jwt: []
