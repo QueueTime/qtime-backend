@@ -2,7 +2,7 @@ from enum import Enum
 from datetime import datetime
 from typing import Dict, Any
 
-from .utils import SimpleMap
+from app.common import SimpleMap
 
 
 class EventType(Enum):
