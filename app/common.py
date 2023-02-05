@@ -7,6 +7,7 @@ from firebase_admin import auth
 from .user_api.errors import UserAuthenticationError
 from werkzeug.exceptions import Unauthorized
 import json
+from typing import Dict, Any
 
 
 class FirebaseDataEntity(ABC):
@@ -44,7 +45,11 @@ class BadDataError(Exception):
     """Used when receiving unexpected data from Firebase or clients"""
 
     def __init__(self, message):
+        self.message = message
         super().__init__(message)
+
+    def jsonify(self):
+        return {"error": "BadDataError", "message": self.message}
 
 
 def decode_token(token):
@@ -68,3 +73,14 @@ def decode_token(token):
         auth.ExpiredIdTokenError,
     ) as e:
         raise Unauthorized("Invalid token") from e
+
+
+class SimpleMap:
+    """If an object has a simple mapping allow it to be converted to a dict straight from its attributes"""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return self.__dict__
+
+    @staticmethod
+    def from_dict(dict: Dict[str, Any]):
+        return SimpleMap(**dict)
