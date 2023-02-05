@@ -5,12 +5,20 @@ from firebase_admin._user_mgt import UserRecord
 from app.common import SimpleMap, BadDataError
 from app.events.service import find_all_reward_events_for_user
 from app.auth import with_auth_user
+from app.events.event import Event
 
 
 class RewardEventApiResponse(SimpleMap):
-    def __init__(self, source: str, points: int):
+    def __init__(self, source: str, points: int, timestamp: datetime):
         self.source = source
         self.points = points
+        self.timestamp = timestamp
+
+    @staticmethod
+    def from_event(event: Event) -> "RewardEventApiResponse":
+        return RewardEventApiResponse(
+            event.payload.source.value, event.payload.points_change, event.created
+        )
 
 
 @with_auth_user
@@ -41,6 +49,6 @@ def list_reward_events(
         return BadDataError(str(e)).jsonify(), 400
 
     return [
-        e.to_dict()
+        RewardEventApiResponse.from_event(e).to_dict()
         for e in find_all_reward_events_for_user(user.email, limit, before_datetime)
     ], 200
