@@ -1,6 +1,6 @@
 from typing import Iterator, Optional
 from firebase_admin import firestore
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.firebase import firestore_db, EVENTS_COLLECTION
 from app.user_api.user_api import User
@@ -99,12 +99,15 @@ def generate_referral_event(
 
 
 def find_all_reward_events_for_user(
-    user_email: str, before_datetime: Optional[datetime] = None
+    user_email: str,
+    limit: int,
+    before_datetime: Optional[datetime] = None,
 ) -> Iterator[Event]:
     """
     Find all reward events for a user. Reward events are returned in reverse chronological order.
 
     :param user_email: Email of user to find reward events for
+    :param limit: Maximum number of reward events to return
     :param before_datetime: Datetime to start searching for reward events before
     :return: List of reward events for the user
     """
@@ -115,11 +118,11 @@ def find_all_reward_events_for_user(
     )
 
     if before_datetime:
-        query = query.start_after({"created": before_datetime})
+        query = query.start_after({"created": before_datetime.astimezone(timezone.utc)})
 
     return map(
         lambda d: Event.from_dict(d.to_dict()),
-        query.stream(),
+        query.limit(limit).stream(),
     )
 
 
@@ -149,3 +152,8 @@ def _save_to_events_collection(event: Event):
     :param event: Event to save
     """
     firestore_db.collection(EVENTS_COLLECTION).add(event.to_dict())
+
+
+# _generate_reward_point_change_event(
+#     "benkostiuk1@gmail.com", RewardSource.REFERRAL_BONUS, 25
+# )

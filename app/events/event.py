@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
@@ -81,7 +81,7 @@ class Event:
         type: EventType,
         user: str,
         payload: Any = None,
-        created: datetime = datetime.now(),
+        created: datetime = datetime.now(timezone.utc),
     ):
         """
         Tracking Event used for logging of user actions in the app.
