@@ -1,6 +1,7 @@
 from enum import Enum
 from datetime import datetime
 from typing import Dict, Any
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
 from app.common import SimpleMap
 
@@ -62,6 +63,12 @@ class RewardPointsAddPayload:
             "points_change": self.points_change,
         }
 
+    @staticmethod
+    def from_dict(dict: Dict[str, Any]):
+        return RewardPointsAddPayload(
+            RewardSource(dict["source"]), dict["points_change"]
+        )
+
 
 # TODO: Implement Reward redemption events upon implementing of reward redemption
 class RewardRedemptionPayload:
@@ -96,3 +103,24 @@ class Event:
             "payload": self.payload.to_dict() if self.payload is not None else None,
             "created": self.created,
         }
+
+    @staticmethod
+    def from_dict(dict: Dict[str, Any]) -> "Event":
+        """Parse a dict into an Event object"""
+        event_type = EventType(dict["type"])
+
+        if event_type == EventType.WAITTIME_SUBMIT:
+            payload = WaitTimeSubmitPayload.from_dict(dict["payload"])
+        elif event_type == EventType.WAITTIME_CONFIRM:
+            payload = WaitTimeConfirmPayload.from_dict(dict["payload"])
+        elif event_type == EventType.REWARD_POINTS_ADD:
+            payload = RewardPointsAddPayload.from_dict(dict["payload"])
+        else:  # (EventType.ACCOUNT_SIGNUP, EventType.ACCOUNT_DELETION)
+            payload = None
+
+        if type(dict["created"]) == DatetimeWithNanoseconds:
+            created = datetime.fromtimestamp(dict["created"].timestamp())
+        else:
+            created = dict["created"]
+
+        return Event(event_type, dict["user"], payload, created)
