@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import Optional
+from firebase_admin._user_mgt import UserRecord
 
 from app.common import SimpleMap, BadDataError
 from app.events.service import find_all_reward_events_for_user
+from app.auth import with_auth_user
 
 
 class RewardEventApiResponse(SimpleMap):
@@ -11,12 +13,23 @@ class RewardEventApiResponse(SimpleMap):
         self.points = points
 
 
-def submit_referral_code(code):
+@with_auth_user
+def submit_referral_code(user: UserRecord, code: str):
     print(code)
 
 
-# TODO: Add token and user finding logic
-def list_reward_events(before: Optional[str] = None):
+@with_auth_user
+def list_reward_events(
+    user: UserRecord, before: Optional[str] = None, limit: int = 30, **kwargs
+):
+    """
+    API endpoint to list reward events for a user. Returns a list of reward events in reverse chronological order.
+
+    :param user: Firebase user record of the user to list reward events for
+    :param before: Optional datetime query param to start listing reward events before
+    :param limit: Optional limit query param to limit the number of reward events returned
+    :return: List of reward events for the user
+    """
     try:
         before_datetime = (
             datetime.strptime(before, "%Y-%m-%dT%H:%M:%S.%fZ") if before else None
@@ -26,5 +39,5 @@ def list_reward_events(before: Optional[str] = None):
 
     return [
         e.to_dict()
-        for e in find_all_reward_events_for_user("A@test.com", before_datetime)
+        for e in find_all_reward_events_for_user(user.email, limit, before_datetime)
     ], 200
