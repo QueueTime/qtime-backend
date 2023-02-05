@@ -95,6 +95,7 @@ paths:
           required: False
           schema:
             type: integer
+            maximum: 100
       responses:
         "200":
           description: List of events impacting user point score
