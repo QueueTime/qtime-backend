@@ -19,7 +19,13 @@ def _parse_spec_file(file: Path) -> Dict[str, Any]:
     return parser.specification
 
 
-def combine_specifications(baseSpecPath: str, *paths: List[str]) -> Dict[str, Any]:
+def combine_specifications(baseSpecPath: str, *paths: str) -> Dict[str, Any]:
+    """
+    Combine multiple openapi specification files into a single dictionary object with specification information
+
+    :param baseSpecPath: Path to the base specification file that will serve as the base to build the combined spec
+    :param paths: Paths to additional specification files to combine with the base spec
+    """
     baseSpec = _parse_spec_file(Path(baseSpecPath))
     if not paths:
         return baseSpec
