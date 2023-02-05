@@ -30,6 +30,9 @@ def list_reward_events(
     :param limit: Optional limit query param to limit the number of reward events returned
     :return: List of reward events for the user
     """
+    if limit > 100:
+        return BadDataError("Limit cannot be greater than 100").jsonify(), 400
+
     try:
         before_datetime = (
             datetime.strptime(before, "%Y-%m-%dT%H:%M:%S.%fZ") if before else None
