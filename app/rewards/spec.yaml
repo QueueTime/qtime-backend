@@ -71,8 +71,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      # security:
-      #   - jwt: []
+      security:
+        - jwt: []
   /user/rewards/events:
     get:
       x-openapi-router-controller: app.rewards.api
@@ -104,5 +104,5 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      # security:
-      #   - jwt: []
+      security:
+        - jwt: []
