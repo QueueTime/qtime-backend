@@ -44,8 +44,8 @@ class TestUser(unittest.TestCase):
             poi_db = self.poi_ref.document(poi_id).get().to_dict()
             self.assertEqual(poi, poi_db)
 
-    # Testing that poi suggestion has been added to the data base by checking matching id
     # TODO: Update test as ID is no longer returned
+    # Testing that poi suggestion has been added to the data base by checking matching id
     # def test_suggest_new_POI(self):
     #     poi_suggestion_id = self.poi_service.suggest_new_POI(self.poi_suggestion)[
     #         "poi_suggestion_id"
