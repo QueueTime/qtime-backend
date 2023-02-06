@@ -11,6 +11,7 @@ components:
       required:
         - source
         - points
+        - timestamp
       properties:
         source:
           type: string
@@ -55,6 +56,7 @@ paths:
           required: True
           schema:
             type: string
+            pattern: "^[A-Z]{6}$"
           example: AHDBETX
       responses:
         "204":
