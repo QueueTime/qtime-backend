@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from firebase_admin._user_mgt import UserRecord
+import re
 
 from app.common import SimpleMap, BadDataError
 from app.events.service import find_all_reward_events_for_user
@@ -22,8 +23,21 @@ class RewardEventApiResponse(SimpleMap):
 
 
 @with_auth_user
-def submit_referral_code(user: UserRecord, code: str):
-    print(code)
+def submit_referral_code(user: UserRecord, code: str, **kwargs):
+    if not re.match(r"^[A-Z]{6}$", code):
+        return (
+            BadDataError(
+                "Invalid referral code format, must be 6 capital letters."
+            ).jsonify(),
+            400,
+        )
+
+    # Disallow referral code redemption after onboarding completed
+
+    # Find the user that the referral code belongs to -> doesn't exist throw error
+
+    # If exists and valid code then add reward points to users
+    return None, 204
 
 
 @with_auth_user
