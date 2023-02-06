@@ -1,18 +1,24 @@
 from datetime import datetime
-from app.poi_api.poi_errors import POINotFoundError
+from app.poi_api.poi_errors import POINotFoundError, InvalidPOISuggestionError
 from app import common
 
 
 class POI_suggestions(common.FirebaseDataEntity):
     def __init__(
-        self, db_ref, pid, suggestion_name, notes, submission_time, submitted_by
+        self,
+        db_ref,
+        pid,
+        suggestion_name,
+        notes,
+        submitted_by,
+        submission_time=datetime.now(),
     ) -> None:
         super().__init__(db_ref)
         self._pid = pid
         self.suggestion_name = suggestion_name
         self.notes = notes
-        self.submission_time = submission_time
         self.submitted_by = submitted_by
+        self.submission_time = submission_time
 
     def get_pid(self):
         return self._pid
