@@ -26,7 +26,7 @@ def get_POI(poi_id):
 
 def suggest_new_POI(poi_suggestion):
     try:
-        return jsonify(poi_service_class.suggest_new_POI(poi_suggestion)), 204
+        return poi_service_class.suggest_new_POI(poi_suggestion)
     except InvalidPOISuggestionError as e:
         return {"error": str(e)}, 400
     except Exception as e:
