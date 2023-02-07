@@ -1,12 +1,8 @@
 import unittest
-from unittest.mock import patch, Mock, MagicMock
-from firebase_admin import firestore
-from app import firebase
+from unittest.mock import patch, MagicMock
 from app.user_api.User import User
 from app.user_api.errors import UserNotFoundError
 from app.user_api import user_service
-from app.user_api import user_api
-import json
 
 
 class TestUser(unittest.TestCase):
