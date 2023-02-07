@@ -43,7 +43,6 @@ class TestUser(unittest.TestCase):
 class TestUserService(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.user_service = user_service.User_Service()
         self.sample_user_dict = {
             "email": "test@test.com",
             "referral_code": "",
@@ -69,22 +68,22 @@ class TestUserService(unittest.TestCase):
         user_collection_mock.document().get().to_dict = MagicMock(
             return_value=self.sample_user_dict
         )
-        self.assertEqual(self.sample_user, self.user_service.findUser("test@test.com"))
+        self.assertEqual(self.sample_user, user_service.find_user("test@test.com"))
         user_collection_mock.document().get().exists = False
         self.assertRaises(
-            UserNotFoundError, self.user_service.findUser, "test@nonexistent.com"
+            UserNotFoundError, user_service.find_user, "test@nonexistent.com"
         )
 
     def test_delete_user(self, user_collection_mock):
-        self.user_service.deleteUser(self.sample_user)
+        user_service.delete_user(self.sample_user)
         user_collection_mock.document().delete.assert_called_once()
         user_collection_mock.document().get().exists = False
         self.assertRaises(
             UserNotFoundError,
-            self.user_service.deleteUser,
+            user_service.delete_user,
             User("test@nonexistent.com"),
         )
 
     def test_update_user(self, user_collection_mock):
-        self.user_service.updateUser(self.sample_user)
+        user_service.update_user(self.sample_user)
         user_collection_mock.document().set.assert_called_once()
