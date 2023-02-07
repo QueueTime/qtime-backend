@@ -10,15 +10,7 @@ info:
   description: "QueueTime API for finding wait times of various points of interests at McMaster University"
   version: "1.0.0"
 
-components:
-  securitySchemes:
-    jwt:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      x-bearerInfoFunc: app.common.decode_token
-
-# # By providing "/api" as the value of url, you’ll be able to access all of your API paths relative to http://localhost:xxxx/api.
+# By providing "/api" as the value of url, you’ll be able to access all of your API paths relative to http://localhost:xxxx/api.
 servers:
   - url: "/api"
 

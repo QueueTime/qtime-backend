@@ -52,29 +52,6 @@ class BadDataError(Exception):
         return {"error": "BadDataError", "message": self.message}
 
 
-def decode_token(token):
-    """
-    Decodes a JWT token using Firebase
-
-    Args:
-        token: A string of the encoded JWT
-
-    Returns:
-        dict: A dictionary of the key-value pairs from the decoded JWT
-
-    Raises:
-        Unauthorized: if the token is invalid or expired
-        ValueError: if `token` is not a string or is empty
-    """
-    try:
-        return auth.verify_id_token(token)
-    except (
-        auth.InvalidIdTokenError,
-        auth.ExpiredIdTokenError,
-    ) as e:
-        raise Unauthorized("Invalid token") from e
-
-
 class SimpleMap:
     """If an object has a simple mapping allow it to be converted to a dict straight from its attributes"""
 
