@@ -5,7 +5,7 @@ from app.base_api_error import BaseApiError
 
 class ReferralCodeNotFound(BaseApiError):
     def __init__(self, message: str):
-        super(message, 404)
+        super().__init__(message, 404)
         self.message = message
 
     def jsonify(self) -> Tuple[Dict[str, str], int]:
@@ -14,7 +14,7 @@ class ReferralCodeNotFound(BaseApiError):
 
 class InvalidReferralOperation(BaseApiError):
     def __init__(self, message: str):
-        super(message, 400)
+        super().__init__(message, 400)
         self.message = message
 
     def jsonify(self) -> Tuple[Dict[str, str], int]:
