@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Optional
-from firebase_admin._user_mgt import UserRecord
 import re
 
 from app.common import SimpleMap, BadDataError
@@ -9,6 +8,7 @@ from app.auth import with_auth_user
 from app.events.event import Event
 from app.user_api.user_service import find_user_by_referral_code, find_user, update_user
 from app.user_api.errors import UserNotFoundError
+from app.user_api.User import User
 from .errors import ReferralCodeNotFound, InvalidReferralOperation
 
 POINTS_FOR_REFERRAL = 200
@@ -28,18 +28,12 @@ class RewardEventApiResponse(SimpleMap):
 
 
 @with_auth_user
-def submit_referral_code(user: UserRecord, code: str, **kwargs):
+def submit_referral_code(user: User, code: str, **kwargs):
     if not re.match(r"^[A-Z]{6}$", code):
         err_msg = "Invalid referral code format, must be 6 capital letters."
         return BadDataError(err_msg).jsonify(), 400
 
-    try:
-        referred_user = find_user(user.email)
-    except UserNotFoundError:
-        err_msg = f"User with email {user.email} not found."
-        return InvalidReferralOperation(err_msg).jsonify(), 404
-
-    if referred_user.hasCompletedOnboarding:
+    if user.hasCompletedOnboarding:
         err_msg = "User has already completed onboarding. Cannot use referral code after onboarding."
         return InvalidReferralOperation(err_msg).jsonify(), 400
 
@@ -49,23 +43,23 @@ def submit_referral_code(user: UserRecord, code: str, **kwargs):
         err_msg = f"User with referral code {code} not found."
         return ReferralCodeNotFound(err_msg).jsonify()
 
-    if user_with_code.email == referred_user.email:
+    if user_with_code.email == user.email:
         err_msg = "Invalid operation. Refer refer yourself."
         return InvalidReferralOperation(err_msg).jsonify()
 
-    referred_user.reward_point_balance += POINTS_FOR_REFERRAL
+    user.reward_point_balance += POINTS_FOR_REFERRAL
     user_with_code.reward_point_balance += POINTS_FOR_REFERRAL
 
-    update_user(referred_user)
+    update_user(user)
     update_user(user_with_code)
-    generate_referral_event(referred_user, user_with_code, POINTS_FOR_REFERRAL)
+    generate_referral_event(user, user_with_code, POINTS_FOR_REFERRAL)
 
     return None, 204
 
 
 @with_auth_user
 def list_reward_events(
-    user: UserRecord, before: Optional[str] = None, limit: int = 30, **kwargs
+    user: User, before: Optional[str] = None, limit: int = 30, **kwargs
 ):
     """
     API endpoint to list reward events for a user. Returns a list of reward events in reverse chronological order.
