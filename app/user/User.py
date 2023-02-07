@@ -1,5 +1,5 @@
 from app import common
-from app.user_api.errors import UserNotFoundError
+from app.user.errors import UserNotFoundError
 import json
 
 

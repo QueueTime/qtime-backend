@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from app.user_api.User import User
-from app.user_api.errors import UserNotFoundError
-from app.user_api import user_service
+from app.user.User import User
+from app.user.errors import UserNotFoundError
+from app.user.service import find_user, delete_user, update_user
 
 
 class TestUser(unittest.TestCase):
@@ -35,7 +35,7 @@ class TestUser(unittest.TestCase):
         )
 
 
-@patch("app.user_api.user_service.users_collection")
+@patch("app.user.service.users_collection")
 class TestUserService(unittest.TestCase):
     @classmethod
     def setUpClass(self):
@@ -64,22 +64,20 @@ class TestUserService(unittest.TestCase):
         user_collection_mock.document().get().to_dict = MagicMock(
             return_value=self.sample_user_dict
         )
-        self.assertEqual(self.sample_user, user_service.find_user("test@test.com"))
+        self.assertEqual(self.sample_user, find_user("test@test.com"))
         user_collection_mock.document().get().exists = False
-        self.assertRaises(
-            UserNotFoundError, user_service.find_user, "test@nonexistent.com"
-        )
+        self.assertRaises(UserNotFoundError, find_user, "test@nonexistent.com")
 
     def test_delete_user(self, user_collection_mock):
-        user_service.delete_user(self.sample_user)
+        delete_user(self.sample_user)
         user_collection_mock.document().delete.assert_called_once()
         user_collection_mock.document().get().exists = False
         self.assertRaises(
             UserNotFoundError,
-            user_service.delete_user,
+            delete_user,
             User("test@nonexistent.com"),
         )
 
     def test_update_user(self, user_collection_mock):
-        user_service.update_user(self.sample_user)
+        update_user(self.sample_user)
         user_collection_mock.document().set.assert_called_once()

@@ -1,5 +1,5 @@
 from app.firebase import firestore_db, EVENTS_COLLECTION
-from app.user_api.user_api import User
+from app.user.api import User
 from .event import (
     Event,
     EventType,

@@ -4,7 +4,7 @@
 
 from abc import ABC, abstractmethod, abstractclassmethod
 from firebase_admin import auth
-from .user_api.errors import UserAuthenticationError
+from .user.errors import UserAuthenticationError
 from werkzeug.exceptions import Unauthorized
 import json
 
