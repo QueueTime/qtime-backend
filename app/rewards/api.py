@@ -7,7 +7,11 @@ from app.common import SimpleMap, BadDataError
 from app.events.service import find_all_reward_events_for_user, generate_referral_event
 from app.auth import with_auth_user
 from app.events.event import Event
-from app.user_api.user_service import User_Service
+from app.user_api.user_service import find_user_by_referral_code, find_user, update_user
+from app.user_api.errors import UserNotFoundError
+from .errors import ReferralCodeNotFound, InvalidReferralOperation
+
+POINTS_FOR_REFERRAL = 200
 
 
 class RewardEventApiResponse(SimpleMap):
@@ -26,27 +30,37 @@ class RewardEventApiResponse(SimpleMap):
 @with_auth_user
 def submit_referral_code(user: UserRecord, code: str, **kwargs):
     if not re.match(r"^[A-Z]{6}$", code):
-        return (
-            BadDataError(
-                "Invalid referral code format, must be 6 capital letters."
-            ).jsonify(),
-            400,
-        )
+        err_msg = "Invalid referral code format, must be 6 capital letters."
+        return BadDataError(err_msg).jsonify(), 400
 
-    # TODO: Disallow referral code redemption after onboarding completed
+    try:
+        referred_user = find_user(user.email)
+    except UserNotFoundError:
+        err_msg = f"User with email {user.email} not found."
+        return InvalidReferralOperation(err_msg).jsonify(), 404
 
-    # # Find the user that the referral code belongs to -> doesn't exist throw error, same user throw error
-    # user_service = User_Service()
+    if referred_user.hasCompletedOnboarding:
+        err_msg = "User has already completed onboarding. Cannot use referral code after onboarding."
+        return InvalidReferralOperation(err_msg).jsonify(), 400
 
-    # user_with_referral_code = "x"
+    try:
+        user_with_code = find_user_by_referral_code(code)
+    except UserNotFoundError:
+        err_msg = f"User with referral code {code} not found."
+        ReferralCodeNotFound(err_msg).jsonify(), 404
 
-    # # If exists and valid code then add reward points to users
-    # user_service.findUser(user.email)
-    # user_service.findUser(user_with_referral_code)
+    if user_with_code.email == referred_user.email:
+        err_msg = "Invalid operation. Refer refer yourself."
+        return InvalidReferralOperation(err_msg).jsonify(), 400
 
-    # generate_referral_event("x1", "x2", 200)
+    referred_user.reward_point_balance += POINTS_FOR_REFERRAL
+    user_with_code.reward_point_balance += POINTS_FOR_REFERRAL
 
-    # return None, 204
+    update_user(referred_user)
+    update_user(user_with_code)
+    generate_referral_event(referred_user, user_with_code, POINTS_FOR_REFERRAL)
+
+    return None, 204
 
 
 @with_auth_user
