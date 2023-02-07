@@ -110,7 +110,7 @@ class TestEventService(unittest.TestCase):
         same_referral_user = User(referral_email, "ASDKGUE")
 
         event_service.generate_referral_event(
-            self.user.email, same_referral_user.email, self.points_awarded
+            self.user, same_referral_user, self.points_awarded
         )
 
         calls = [
