@@ -4,6 +4,10 @@ from werkzeug.exceptions import Unauthorized
 from typing import Dict, Any
 from functools import wraps
 
+from app.user_api.User import User
+from app.user_api.user_service import find_user
+from app.user_api.errors import UserNotFoundError
+
 
 def with_auth_user(func):
     """
@@ -25,12 +29,15 @@ def with_auth_user(func):
     @wraps(func)
     def wrapper(*args, token_info: Dict[str, Any], **kwargs):
         try:
-            user: UserRecord = auth.get_user(token_info["uid"])
+            firebase_user_record: UserRecord = auth.get_user(token_info["uid"])
+            user: User = find_user(firebase_user_record.email)
             kwargs["user"] = user
         except ValueError as e:
             return {"error": "Invalid user ID", "message": str(e)}, 400
         except auth.UserNotFoundError as e:
-            return {"error": "User not found", "message": str(e)}, 404
+            return {"error": "User not found in firebase auth", "message": str(e)}, 404
+        except UserNotFoundError as e:
+            return {"error": "User not found in database", "message": str(e)}, 404
         except Exception as e:
             return {"error": "Unknown error", "message": str(e)}, 500
 
