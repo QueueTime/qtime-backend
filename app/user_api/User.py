@@ -3,7 +3,7 @@ from app.user_api.errors import UserNotFoundError
 import json
 
 
-class User(common.FirebaseDataEntity):
+class User:
     def __init__(
         self,
         email,
@@ -24,7 +24,8 @@ class User(common.FirebaseDataEntity):
         self.poi_frequency = poi_frequency
         self.hasCompletedOnboarding = hasCompletedOnboarding
 
-    def from_dict(dict):
+    @staticmethod
+    def from_dict(email: str, dict):
         """
         Creates a new User object from a Python Dictionary
 
@@ -39,7 +40,7 @@ class User(common.FirebaseDataEntity):
         """
         try:
             return User(
-                dict["email"],
+                email,
                 dict["referral_code"],
                 dict["reward_point_balance"],
                 dict["notification_setting"],
