@@ -40,13 +40,13 @@ class User(common.FirebaseDataEntity):
         try:
             return User(
                 dict["email"],
-                dict.get("referral_code", ""),
-                dict.get("reward_point_balance", 0),
-                dict.get("notification_setting", False),
-                dict.get("time_in_line", 0),
-                dict.get("num_lines_participated", 0),
-                dict.get("poi_frequency", {}),
-                dict.get("hasCompletedOnboarding", False),
+                dict["referral_code"],
+                dict["reward_point_balance"],
+                dict["notification_setting"],
+                dict["time_in_line"],
+                dict["num_lines_participated"],
+                dict["poi_frequency"],
+                dict["hasCompletedOnboarding"],
             )
         except KeyError as e:
             raise common.BadDataError("Missing data from user data: " + str(e))
