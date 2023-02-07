@@ -47,11 +47,11 @@ def submit_referral_code(user: UserRecord, code: str, **kwargs):
         user_with_code = find_user_by_referral_code(code)
     except UserNotFoundError:
         err_msg = f"User with referral code {code} not found."
-        ReferralCodeNotFound(err_msg).jsonify(), 404
+        return ReferralCodeNotFound(err_msg).jsonify()
 
     if user_with_code.email == referred_user.email:
         err_msg = "Invalid operation. Refer refer yourself."
-        return InvalidReferralOperation(err_msg).jsonify(), 400
+        return InvalidReferralOperation(err_msg).jsonify()
 
     referred_user.reward_point_balance += POINTS_FOR_REFERRAL
     user_with_code.reward_point_balance += POINTS_FOR_REFERRAL
