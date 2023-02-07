@@ -11,30 +11,18 @@ import json
 
 class FirebaseDataEntity(ABC):
     """
-    Base class for data classes to be used wth Firestore. Supports both fetching an entity
-    from Firestore by ID or pushing/updating a new entity on the remote database
+    Base class for data classes to be used wth Firestore.
     """
 
-    def __init__(self, db_ref):
+    def __init__(self):
         """
-        Initialize new data instance with a specified CollectionReference. Additional parameters should be added to child classes
+        Initialize new data instance. Additional parameters should be added to child classes
         for any needed fields.
         """
-        self.db_reference = db_ref
-
-    @abstractclassmethod
-    def get(db_ref, id):
-        """Class function that fetches a specified entity from a given Firebase reference by ID and creates a new Python instance"""
-        raise NotImplementedError("Base class cannot be used")
 
     @abstractclassmethod
     def from_dict(dict):
         """Class function that creates a new data class from a Python dictionary"""
-        raise NotImplementedError("Base class cannot be used")
-
-    @abstractmethod
-    def push(self):
-        """Pushes data to Firebase"""
         raise NotImplementedError("Base class cannot be used")
 
     def to_json(self):
