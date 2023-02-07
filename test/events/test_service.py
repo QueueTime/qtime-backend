@@ -15,7 +15,7 @@ class TestEventService(unittest.TestCase):
         self.email = "test@sample.ca"
         self.poi_id = "SAMPLE_POI"
         self.points_awarded = 25
-        self.user = User(None, self.email, "XJFEKDG", 0)
+        self.user = User(self.email, "XJFEKDG", 0)
         self.poi = POI(
             self.poi_id, "Testing poi", "Testing", None, None, None, None, None
         )
@@ -107,7 +107,7 @@ class TestEventService(unittest.TestCase):
 
     def test_generate_referral_event(self, firebase_mock):
         referral_email = "refferer@sample.com"
-        same_referral_user = User(None, referral_email, "ASDKGUE")
+        same_referral_user = User(referral_email, "ASDKGUE")
 
         event_service.generate_referral_event(
             self.user, same_referral_user, self.points_awarded

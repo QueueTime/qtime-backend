@@ -70,3 +70,19 @@ paths:
       responses:
         "200":
           description: User deleted
+  /user/test_authenticate:
+    get:
+      x-openapi-router-controller: app.user_api.user_api
+      operationId: test_authenticate
+      tags:
+        - User
+      summary: "Authenticate using a JWT token"
+      responses:
+        "200":
+          description: Successful authentication, return user email"
+          content:
+            'text/plain':
+              schema:
+                type: string
+      security:
+      - jwt: []
