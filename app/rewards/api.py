@@ -4,9 +4,10 @@ from firebase_admin._user_mgt import UserRecord
 import re
 
 from app.common import SimpleMap, BadDataError
-from app.events.service import find_all_reward_events_for_user
+from app.events.service import find_all_reward_events_for_user, generate_referral_event
 from app.auth import with_auth_user
 from app.events.event import Event
+from app.user_api.user_service import User_Service
 
 
 class RewardEventApiResponse(SimpleMap):
@@ -32,12 +33,20 @@ def submit_referral_code(user: UserRecord, code: str, **kwargs):
             400,
         )
 
-    # Disallow referral code redemption after onboarding completed
+    # TODO: Disallow referral code redemption after onboarding completed
 
-    # Find the user that the referral code belongs to -> doesn't exist throw error
+    # # Find the user that the referral code belongs to -> doesn't exist throw error, same user throw error
+    # user_service = User_Service()
 
-    # If exists and valid code then add reward points to users
-    return None, 204
+    # user_with_referral_code = "x"
+
+    # # If exists and valid code then add reward points to users
+    # user_service.findUser(user.email)
+    # user_service.findUser(user_with_referral_code)
+
+    # generate_referral_event("x1", "x2", 200)
+
+    # return None, 204
 
 
 @with_auth_user
