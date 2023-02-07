@@ -152,8 +152,3 @@ def _save_to_events_collection(event: Event):
     :param event: Event to save
     """
     firestore_db.collection(EVENTS_COLLECTION).add(event.to_dict())
-
-
-# _generate_reward_point_change_event(
-#     "benkostiuk1@gmail.com", RewardSource.REFERRAL_BONUS, 25
-# )
