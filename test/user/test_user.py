@@ -9,7 +9,6 @@ class TestUser(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.sample_user_dict = {
-            "email": "test@test.com",
             "referral_code": "",
             "reward_point_balance": 0,
             "notification_setting": False,
@@ -17,6 +16,7 @@ class TestUser(unittest.TestCase):
             "num_lines_participated": 0,
             "poi_frequency": {},
             "hasCompletedOnboarding": False,
+            "hasUsedReferralCode": False,
         }
         self.sample_user = User(
             email="test@test.com",
@@ -27,11 +27,13 @@ class TestUser(unittest.TestCase):
             num_lines_participated=0,
             poi_frequency={},
             hasCompletedOnboarding=False,
+            hasUsedReferralCode=False,
         )
 
     def test_to_from_dict(self):
         self.assertEqual(
-            self.sample_user.to_json(), User.from_dict(self.sample_user_dict).to_json()
+            self.sample_user.to_json(),
+            User.from_dict("test@test.com", self.sample_user_dict).to_json(),
         )
 
 
@@ -48,6 +50,7 @@ class TestUserService(unittest.TestCase):
             "num_lines_participated": 0,
             "poi_frequency": {},
             "hasCompletedOnboarding": False,
+            "hasUsedReferralCode": False,
         }
         self.sample_user = User(
             email="test@test.com",
@@ -58,6 +61,7 @@ class TestUserService(unittest.TestCase):
             num_lines_participated=0,
             poi_frequency={},
             hasCompletedOnboarding=False,
+            hasUsedReferralCode=False,
         )
 
     def test_find_user(self, user_collection_mock):
