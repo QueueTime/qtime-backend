@@ -23,6 +23,9 @@ components:
       bearerFormat: JWT
       x-bearerInfoFunc: app.auth.validate_token
 
+security:
+  - jwt: []
+
 # /endpoint_name: The relative URL of your API endpoint
 # get: The HTTP method that this URL endpoint will respond to
 # operationId: The Python function that’ll respond to the request
@@ -37,3 +40,4 @@ paths:
       responses:
         "200":
           description: "All good"
+      security: []
