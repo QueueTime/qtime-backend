@@ -37,6 +37,12 @@ def submit_referral_code(user: User, code: str, **kwargs):
         err_msg = "User has already completed onboarding. Cannot use referral code after onboarding."
         return InvalidReferralOperation(err_msg).buildError()
 
+    if user.hasUsedReferralCode:
+        err_msg = (
+            "User has already used a referral code. Cannot use multiple referral codes."
+        )
+        return InvalidReferralOperation(err_msg).buildError()
+
     try:
         user_with_code = find_user_by_referral_code(code)
     except UserNotFoundError:

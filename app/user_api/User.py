@@ -14,6 +14,7 @@ class User:
         num_lines_participated=0,
         poi_frequency={},
         hasCompletedOnboarding=False,
+        hasUsedReferralCode=False,
     ):
         self.email = email
         self.referral_code = referral_code
@@ -23,6 +24,7 @@ class User:
         self.num_lines_participated = num_lines_participated
         self.poi_frequency = poi_frequency
         self.hasCompletedOnboarding = hasCompletedOnboarding
+        self.hasUsedReferralCode = hasUsedReferralCode
 
     @staticmethod
     def from_dict(email: str, dict):
@@ -48,6 +50,7 @@ class User:
                 dict["num_lines_participated"],
                 dict["poi_frequency"],
                 dict["hasCompletedOnboarding"],
+                dict["hasUsedReferralCode"],
             )
         except KeyError as e:
             raise common.BadDataError("Missing data from user data: " + str(e))
@@ -68,6 +71,7 @@ class User:
             "num_lines_participated": self.num_lines_participated,
             "poi_frequency": self.poi_frequency,
             "hasCompletedOnboarding": self.hasCompletedOnboarding,
+            "hasUsedReferralCode": self.hasUsedReferralCode,
         }
         return new_dict
 
