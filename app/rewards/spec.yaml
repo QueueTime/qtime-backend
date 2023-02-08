@@ -28,13 +28,8 @@ components:
     ErrorResponse:
       type: object
       required:
-        - error
         - message
       properties:
-        error:
-          type: string
-          description: Error type
-          example: Bad Data
         message:
           type: string
           description: Error description
@@ -73,8 +68,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      security:
-        - jwt: []
   /user/rewards/events:
     get:
       x-openapi-router-controller: app.rewards.api
@@ -113,5 +106,3 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      security:
-        - jwt: []
