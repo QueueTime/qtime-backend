@@ -4,9 +4,9 @@ from werkzeug.exceptions import Unauthorized
 from typing import Dict, Any
 from functools import wraps
 
-from app.user_api.User import User
-from app.user_api.user_service import find_user
-from app.user_api.errors import UserNotFoundError
+from app.user.user import User
+from app.user.service import find_user
+from app.user.errors import UserNotFoundError
 
 
 def with_auth_user(func):

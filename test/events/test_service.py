@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, Mock, MagicMock, ANY, call
 
 from app.events import service as event_service
-from app.user_api.user_api import User
+from app.user.api import User
 from app.poi_api.poi import POI
 
 

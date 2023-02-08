@@ -1,5 +1,4 @@
-from app import common
-from app.user_api.errors import UserNotFoundError
+from app.common import BadDataError
 import json
 
 
@@ -27,7 +26,7 @@ class User:
         self.hasUsedReferralCode = hasUsedReferralCode
 
     @staticmethod
-    def from_dict(email: str, dict):
+    def from_dict(email: str, dict: dict):
         """
         Creates a new User object from a Python Dictionary
 
@@ -53,27 +52,20 @@ class User:
                 dict["hasUsedReferralCode"],
             )
         except KeyError as e:
-            raise common.BadDataError("Missing data from user data: " + str(e))
+            raise BadDataError("Missing data from user data: " + str(e))
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """
         Returns a dictionary containing all properties from the User
 
         Returns:
             dict: containing key-value pairs with all User data
         """
-        new_dict = {
-            "email": self.email,
-            "referral_code": self.referral_code,
-            "reward_point_balance": self.reward_point_balance,
-            "notification_setting": self.notification_setting,
-            "time_in_line": self.time_in_line,
-            "num_lines_participated": self.num_lines_participated,
-            "poi_frequency": self.poi_frequency,
-            "hasCompletedOnboarding": self.hasCompletedOnboarding,
-            "hasUsedReferralCode": self.hasUsedReferralCode,
-        }
-        return new_dict
+        return self.__dict__
+
+    def to_json(self) -> str:
+        """Return all properties in a JSON string"""
+        return json.dumps(self.to_dict())
 
     def __eq__(self, other):
         return self.email == other.email

@@ -1,6 +1,6 @@
 # This file contains service functions for the user API
-from app.user_api.User import User
-from app.user_api.errors import UserNotFoundError, UserAuthenticationError
+from app.user.user import User
+from app.user.errors import UserNotFoundError, UserAuthenticationError
 from app.firebase import firestore_db, USERS_COLLECTION
 
 users_collection = firestore_db.collection(USERS_COLLECTION)

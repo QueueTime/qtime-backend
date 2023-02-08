@@ -1,6 +1,6 @@
-from . import user_service
+from . import service
 from .errors import UserNotFoundError, UserAuthenticationError
-from .User import User
+from .user import User
 from flask import jsonify
 from firebase_admin import auth
 import jwt
@@ -8,7 +8,7 @@ import jwt
 
 def get_user_profile(email):
     try:
-        user = user_service.find_user(email)
+        user = service.find_user(email)
     except UserNotFoundError:
         return {"error": "User not found"}, 404
     except Exception as e:
@@ -18,8 +18,8 @@ def get_user_profile(email):
 
 def delete_user_profile(email):
     try:
-        target_user = user_service.find_user(email)
-        user = user_service.delete_user(target_user)
+        target_user = service.find_user(email)
+        user = service.delete_user(target_user)
     except UserNotFoundError:
         return {"error": "User not found"}, 404
     except Exception as e:

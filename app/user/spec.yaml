@@ -42,7 +42,7 @@ paths:
   # User API endpoints
   /user/{email}/profile: # TODO: change this to something other than email
     get:
-      x-openapi-router-controller: app.user_api.user_api
+      x-openapi-router-controller: app.user.api
       operationId: get_user_profile
       tags:
         - User
@@ -60,7 +60,7 @@ paths:
                   $ref: "#/components/schemas/User"
   /user/{email}/delete: # TODO: change this to something other than email
     delete:
-      x-openapi-router-controller: app.user_api.user_api
+      x-openapi-router-controller: app.user.api
       operationId: delete_user_profile
       tags:
         - User
@@ -72,7 +72,7 @@ paths:
           description: User deleted
   /user/test_authenticate:
     get:
-      x-openapi-router-controller: app.user_api.user_api
+      x-openapi-router-controller: app.user.api
       operationId: test_authenticate
       tags:
         - User

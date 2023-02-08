@@ -6,9 +6,9 @@ from app.common import SimpleMap, BadDataError
 from app.events.service import find_all_reward_events_for_user, generate_referral_event
 from app.auth import with_auth_user
 from app.events.event import Event
-from app.user_api.user_service import find_user_by_referral_code, find_user, update_user
-from app.user_api.errors import UserNotFoundError
-from app.user_api.User import User
+from app.user.service import find_user_by_referral_code, find_user, update_user
+from app.user.errors import UserNotFoundError
+from app.user.user import User
 from .errors import ReferralCodeNotFound, InvalidReferralOperation
 
 POINTS_FOR_REFERRAL = 200
