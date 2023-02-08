@@ -54,6 +54,7 @@ def submit_referral_code(user: User, code: str, **kwargs):
         return InvalidReferralOperation(err_msg).buildError()
 
     user.reward_point_balance += POINTS_FOR_REFERRAL
+    user.hasUsedReferralCode = True
     user_with_code.reward_point_balance += POINTS_FOR_REFERRAL
 
     update_user(user)
