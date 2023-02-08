@@ -2,12 +2,13 @@ import connexion
 from utils import combine_specifications
 
 app = connexion.App(__name__)
-# Telling app to read the combined openapi specification
+# Tell app to read the combined openapi specification
 app.add_api(
     combine_specifications(
         "./base_swagger.yaml",
         "./app/poi_api/spec.yaml",
         "./app/user_api/spec.yaml",
+        "./app/rewards/spec.yaml",
     )
 )
 

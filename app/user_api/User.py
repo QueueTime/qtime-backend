@@ -3,7 +3,7 @@ from app.user_api.errors import UserNotFoundError
 import json
 
 
-class User(common.FirebaseDataEntity):
+class User:
     def __init__(
         self,
         email,
@@ -14,6 +14,7 @@ class User(common.FirebaseDataEntity):
         num_lines_participated=0,
         poi_frequency={},
         hasCompletedOnboarding=False,
+        hasUsedReferralCode=False,
     ):
         self.email = email
         self.referral_code = referral_code
@@ -23,8 +24,10 @@ class User(common.FirebaseDataEntity):
         self.num_lines_participated = num_lines_participated
         self.poi_frequency = poi_frequency
         self.hasCompletedOnboarding = hasCompletedOnboarding
+        self.hasUsedReferralCode = hasUsedReferralCode
 
-    def from_dict(dict):
+    @staticmethod
+    def from_dict(email: str, dict):
         """
         Creates a new User object from a Python Dictionary
 
@@ -39,7 +42,7 @@ class User(common.FirebaseDataEntity):
         """
         try:
             return User(
-                dict["email"],
+                email,
                 dict["referral_code"],
                 dict["reward_point_balance"],
                 dict["notification_setting"],
@@ -47,6 +50,7 @@ class User(common.FirebaseDataEntity):
                 dict["num_lines_participated"],
                 dict["poi_frequency"],
                 dict["hasCompletedOnboarding"],
+                dict["hasUsedReferralCode"],
             )
         except KeyError as e:
             raise common.BadDataError("Missing data from user data: " + str(e))
@@ -67,6 +71,7 @@ class User(common.FirebaseDataEntity):
             "num_lines_participated": self.num_lines_participated,
             "poi_frequency": self.poi_frequency,
             "hasCompletedOnboarding": self.hasCompletedOnboarding,
+            "hasUsedReferralCode": self.hasUsedReferralCode,
         }
         return new_dict
 

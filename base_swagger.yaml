@@ -10,17 +10,21 @@ info:
   description: "QueueTime API for finding wait times of various points of interests at McMaster University"
   version: "1.0.0"
 
+# By providing "/api" as the value of url, you’ll be able to access all of your API paths relative to http://localhost:xxxx/api.
+servers:
+  - url: "/api"
+
 components:
+  # Security scheme to require a Bearer token
   securitySchemes:
     jwt:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      x-bearerInfoFunc: app.common.decode_token
+      x-bearerInfoFunc: app.auth.validate_token
 
-# # By providing "/api" as the value of url, you’ll be able to access all of your API paths relative to http://localhost:xxxx/api.
-servers:
-  - url: "/api"
+security:
+  - jwt: []
 
 # /endpoint_name: The relative URL of your API endpoint
 # get: The HTTP method that this URL endpoint will respond to
@@ -36,3 +40,4 @@ paths:
       responses:
         "200":
           description: "All good"
+      security: []

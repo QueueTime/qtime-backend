@@ -2,8 +2,10 @@
 
 
 class UserNotFoundError(Exception):
-    def __init__(self, username):
-        super().__init__("User not found: " + username)
+    def __init__(self, email=None, referral_code=None):
+        super().__init__(
+            f"User not found for criteria email={email}, referral_code={referral_code}"
+        )
 
 
 class UserAuthenticationError(Exception):

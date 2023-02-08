@@ -3,10 +3,10 @@
 ###
 
 from abc import ABC, abstractmethod, abstractclassmethod
-from firebase_admin import auth
-from .user_api.errors import UserAuthenticationError
-from werkzeug.exceptions import Unauthorized
 import json
+from typing import Dict, Any
+
+from app.base_api_error import BaseApiError
 
 
 class FirebaseDataEntity(ABC):
@@ -40,31 +40,19 @@ class FirebaseDataEntity(ABC):
         raise NotImplementedError("Base class cannot be used")
 
 
-class BadDataError(Exception):
+class BadDataError(BaseApiError):
     """Used when receiving unexpected data from Firebase or clients"""
 
     def __init__(self, message):
-        super().__init__(message)
+        super().__init__(message, 400)
 
 
-def decode_token(token):
-    """
-    Decodes a JWT token using Firebase
+class SimpleMap:
+    """If an object has a simple mapping allow it to be converted to a dict straight from its attributes"""
 
-    Args:
-        token: A string of the encoded JWT
+    def to_dict(self) -> Dict[str, Any]:
+        return self.__dict__
 
-    Returns:
-        dict: A dictionary of the key-value pairs from the decoded JWT
-
-    Raises:
-        Unauthorized: if the token is invalid or expired
-        ValueError: if `token` is not a string or is empty
-    """
-    try:
-        return auth.verify_id_token(token)
-    except (
-        auth.InvalidIdTokenError,
-        auth.ExpiredIdTokenError,
-    ) as e:
-        raise Unauthorized("Invalid token") from e
+    @staticmethod
+    def from_dict(dict: Dict[str, Any]):
+        return SimpleMap(**dict)
