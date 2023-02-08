@@ -1,6 +1,6 @@
 from . import service
 from .errors import UserNotFoundError, UserAuthenticationError
-from .User import User
+from .user import User
 from flask import jsonify
 from firebase_admin import auth
 import jwt

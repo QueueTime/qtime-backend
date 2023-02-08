@@ -4,7 +4,7 @@ from werkzeug.exceptions import Unauthorized
 from typing import Dict, Any
 from functools import wraps
 
-from app.user.User import User
+from app.user.user import User
 from app.user.service import find_user
 from app.user.errors import UserNotFoundError
 

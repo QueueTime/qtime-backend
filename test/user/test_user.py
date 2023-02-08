@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from app.user.User import User
+from app.user.user import User
 from app.user.errors import UserNotFoundError
 from app.user.service import find_user, delete_user, update_user
 
