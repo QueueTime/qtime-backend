@@ -2,10 +2,18 @@
 # Common classes and utility methods used throughout the entire application
 ###
 
+from abc import ABC, abstractmethod, abstractclassmethod
 import json
 from typing import Dict, Any
 
 from app.base_api_error import BaseApiError
+
+
+class BadDataError(BaseApiError):
+    """Used when receiving unexpected data from Firebase or clients"""
+
+    def __init__(self, message):
+        super().__init__(message, 400)
 
 
 class SimpleMap:
