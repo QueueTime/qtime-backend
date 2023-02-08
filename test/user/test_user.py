@@ -1,5 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
+
+from test.mock_firebase_admin import firebase_admin
 from app.user.user import User
 from app.user.errors import UserNotFoundError
 from app.user.service import find_user, delete_user, update_user, create_user
