@@ -3,6 +3,7 @@ from firebase_admin import credentials, firestore, initialize_app
 
 EVENTS_COLLECTION = "events"
 USERS_COLLECTION = "users"
+REFERRAL_CODES_COLLECTION = "referral_codes"
 
 # Initializing Firestore database
 # Can import firestore_db to utilize database

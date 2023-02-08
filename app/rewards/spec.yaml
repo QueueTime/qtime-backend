@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: "QueueTime Flask REST API"
+  description: "QueueTime API for finding wait times of various points of interests at McMaster University"
+  version: "1.0.0"
+
+components:
+  schemas:
+    RewardEvent:
+      type: object
+      required:
+        - source
+        - points
+        - timestamp
+      properties:
+        source:
+          type: string
+          description: Source of the reward points change
+          example: referral_bonus
+        points:
+          type: integer
+          description: Number of points added or removed
+          example: 25
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the reward event
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error description
+          example: "Invalid data provided"
+
+paths:
+  /user/referral/{code}:
+    post:
+      x-openapi-router-controller: app.rewards.api
+      operationId: submit_referral_code
+      tags:
+        - User
+      summary: Submit a referral code
+      description: During signup submit a referral code to earn points as part of a referral bonus
+      parameters:
+        - name: code
+          in: path
+          description: User referral code
+          required: True
+          schema:
+            type: string
+            pattern: "^[A-Z]{6}$"
+          example: AHDBETX
+      responses:
+        "204":
+          description: Valid referral code submitted and accepted
+        "404":
+          description: Referral code not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "400":
+          description: Referral code invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /user/rewards/events:
+    get:
+      x-openapi-router-controller: app.rewards.api
+      operationId: list_reward_events
+      tags:
+        - User
+      summary: Retrieve events impacting user point score
+      description: List all events that have impacted the user's point score either through additions stemming from submitting wait time estimates, etc. or reductions from redeeming rewards
+      parameters:
+        - name: before
+          in: query
+          description: Timestamp to retrieve events before
+          required: False
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Limit the number of events returned
+          required: False
+          schema:
+            type: integer
+            maximum: 100
+      responses:
+        "200":
+          description: List of events impacting user point score
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RewardEvent"
+        "400":
+          description: Bad data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"

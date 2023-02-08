@@ -17,7 +17,21 @@ def find_user(email: str) -> User:
     user_ref = users_collection.document(email).get()
     if not user_ref.exists:
         raise UserNotFoundError(email)
-    return User.from_dict(user_ref.to_dict())
+    return User.from_dict(email, user_ref.to_dict())
+
+
+def find_user_by_referral_code(referral_code: str) -> User:
+    """Given referral code, find and return corresponding User. Raises UserNotFoundError if user not found
+
+    :param referral_code: A string of the target user referral code
+    :returns: An associated User object with the specified referral code
+    :raises UserNotFoundError: if user with specified referral code does not exist
+    :raises BadDataError: if user data retrieved is missing essential data
+    """
+    user_ref = users_collection.where("referral_code", "==", referral_code).get()
+    if not user_ref:
+        raise UserNotFoundError(referral_code)
+    return User.from_dict(user_ref[0].id, user_ref[0].to_dict())
 
 
 def update_user(user: User):
