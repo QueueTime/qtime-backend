@@ -3,11 +3,10 @@
 ###
 
 from abc import ABC, abstractmethod, abstractclassmethod
-from firebase_admin import auth
-from .user_api.errors import UserAuthenticationError
-from werkzeug.exceptions import Unauthorized
 import json
 from typing import Dict, Any
+
+from app.base_api_error import BaseApiError
 
 
 class FirebaseDataEntity(ABC):
@@ -41,15 +40,11 @@ class FirebaseDataEntity(ABC):
         raise NotImplementedError("Base class cannot be used")
 
 
-class BadDataError(Exception):
+class BadDataError(BaseApiError):
     """Used when receiving unexpected data from Firebase or clients"""
 
     def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-    def jsonify(self):
-        return {"error": "BadDataError", "message": self.message}
+        super().__init__(message, 400)
 
 
 class SimpleMap:
