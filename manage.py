@@ -7,7 +7,7 @@ app.add_api(
     combine_specifications(
         "./base_swagger.yaml",
         "./app/poi_api/spec.yaml",
-        "./app/user_api/spec.yaml",
+        "./app/user/spec.yaml",
         "./app/rewards/spec.yaml",
     )
 )

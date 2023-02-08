@@ -27,7 +27,7 @@ class User:
         self.hasUsedReferralCode = hasUsedReferralCode
 
     @staticmethod
-    def from_dict(email: str, dict):
+    def from_dict(email: str, dict: dict):
         """
         Creates a new User object from a Python Dictionary
 
@@ -55,7 +55,7 @@ class User:
         except KeyError as e:
             raise common.BadDataError("Missing data from user data: " + str(e))
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """
         Returns a dictionary containing all properties from the User
 
@@ -74,6 +74,10 @@ class User:
             "hasUsedReferralCode": self.hasUsedReferralCode,
         }
         return new_dict
+
+    def to_json(self) -> str:
+        """Return all properties in a JSON string"""
+        return json.dumps(self.to_dict())
 
     def __eq__(self, other):
         return self.email == other.email

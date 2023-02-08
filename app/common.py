@@ -25,10 +25,6 @@ class FirebaseDataEntity(ABC):
         """Class function that creates a new data class from a Python dictionary"""
         raise NotImplementedError("Base class cannot be used")
 
-    def to_json(self):
-        """Return all properties in a JSON string"""
-        return json.dumps(self.to_dict())
-
     @abstractmethod
     def to_dict(self):
         """Return all properties in a Python dict"""
