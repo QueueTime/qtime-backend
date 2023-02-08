@@ -1,3 +1,4 @@
+from typing import Dict, Any
 from app.common import BadDataError
 import json
 
@@ -26,7 +27,7 @@ class User:
         self.hasUsedReferralCode = hasUsedReferralCode
 
     @staticmethod
-    def from_dict(email: str, dict: dict):
+    def from_dict(email: str, dict: Dict[str, Any]) -> "User":
         """
         Creates a new User object from a Python Dictionary
 
@@ -54,7 +55,7 @@ class User:
         except KeyError as e:
             raise BadDataError("Missing data from user data: " + str(e))
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> Dict[str, Any]:
         """
         Returns a dictionary containing all properties from the User
 
