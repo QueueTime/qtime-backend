@@ -44,7 +44,7 @@ def submit_referral_code(user: User, code: str, **kwargs):
         return ReferralCodeNotFound(err_msg).jsonify()
 
     if user_with_code.email == user.email:
-        err_msg = "Invalid operation. Refer refer yourself."
+        err_msg = "Invalid operation. Cannot refer to yourself."
         return InvalidReferralOperation(err_msg).jsonify()
 
     user.reward_point_balance += POINTS_FOR_REFERRAL
