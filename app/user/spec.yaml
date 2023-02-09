@@ -43,7 +43,7 @@ paths:
           description: User deleted
         "404":
           description: User not found
-  /user/new_user_signup:
+  /user/signup
     put:
       x-openapi-router-controller: app.user.api
       operationId: new_user_signup
