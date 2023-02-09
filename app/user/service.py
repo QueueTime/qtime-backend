@@ -1,6 +1,11 @@
 # This file contains service functions for the user API
 from app.user.user import User
-from app.user.errors import UserNotFoundError, UserAuthenticationError
+from app.user.errors import UserNotFoundError, UserAlreadyExistsError
+from app.rewards.service import (
+    create_unique_referral_code,
+    add_referral_code,
+    delete_referral_code,
+)
 from app.firebase import firestore_db, USERS_COLLECTION
 
 users_collection = firestore_db.collection(USERS_COLLECTION)
@@ -34,29 +39,26 @@ def find_user_by_referral_code(referral_code: str) -> User:
     return User.from_dict(user_ref[0].id, user_ref[0].to_dict())
 
 
+def create_user(email: str) -> User:
+    """
+    Creates a new user with a specified email
+
+    :param email: email of new user to create
+    :returns: User object associated with the new user
+    :raises UserAlreadyExists: if a user with the specified email already exists in the database
+    """
+    if users_collection.document(email).get().exists:
+        raise UserAlreadyExistsError(email)
+
+    new_user = User(email=email, referral_code=create_unique_referral_code())
+    add_referral_code(new_user.referral_code)
+    update_user(new_user)
+    return new_user
+
+
 def update_user(user: User):
     """Push updated User object to Firestore"""
     users_collection.document(user.email).set(user.to_dict(), merge=True)
-
-
-def get_points(user: User):
-    """Returns user's reward points balance"""
-    return user.reward_point_balance
-
-
-def get_POI_frequency(user: User):
-    """Return POI object"""
-    pass  # TODO
-
-
-def get_num_lines_participated(user: User):
-    """Returns number of lines participated in by a User"""
-    return user.num_lines_participated
-
-
-def get_total_line_time(user: User):
-    """Return total time in line spent by User as an integer"""
-    return user.time_in_line
 
 
 def delete_user(user: User):
@@ -70,6 +72,8 @@ def delete_user(user: User):
     if not target_user_snapshot.get().exists:
         raise UserNotFoundError(user.email)
     target_user_snapshot.delete()
+    delete_referral_code(user.referral_code)
+
     # TODO if there are any other references to the user that need to be deleted from other places,
     # add them here
 
