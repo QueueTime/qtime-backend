@@ -16,7 +16,7 @@ def create_unique_referral_code() -> str:
     return code
 
 
-def add_referral_code(code: str):
+def save_referral_code(code: str):
     """
     Add a new referral code to the referral codes collection
 

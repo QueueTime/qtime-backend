@@ -3,7 +3,7 @@ from app.user.user import User
 from app.user.errors import UserNotFoundError, UserAlreadyExistsError
 from app.rewards.service import (
     create_unique_referral_code,
-    add_referral_code,
+    save_referral_code,
     delete_referral_code,
 )
 from app.firebase import firestore_db, USERS_COLLECTION
@@ -51,7 +51,7 @@ def create_user(email: str) -> User:
         raise UserAlreadyExistsError(email)
 
     new_user = User(email=email, referral_code=create_unique_referral_code())
-    add_referral_code(new_user.referral_code)
+    save_referral_code(new_user.referral_code)
     update_user(new_user)
     return new_user
 
