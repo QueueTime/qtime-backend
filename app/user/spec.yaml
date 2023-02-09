@@ -31,8 +31,7 @@ components:
           type: "boolean"
 
 paths:
-  # User API endpoints
-  /user/delete_profile: # TODO: change this to something other than email
+  /user/delete_profile:
     delete:
       x-openapi-router-controller: app.user.api
       operationId: delete_user_profile
