@@ -27,9 +27,8 @@ def new_user_signup(token_info: Dict[str, Any]):
 def delete_user_profile(user, **kwargs):
     try:
         delete_user(user)
-        generate_account_delete_event(user)
     except UserNotFoundError:
         return {"error": "User not found"}, 404
     except Exception as e:
         return {"error": str(e)}, 500
-    return {"message": "Success"}, 200
+    return "", 204

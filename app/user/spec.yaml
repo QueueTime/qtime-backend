@@ -39,7 +39,7 @@ paths:
         - User
       summary: "Deletes user account associated with client request"
       responses:
-        "200":
+        "204":
           description: User deleted
         "404":
           description: User not found
