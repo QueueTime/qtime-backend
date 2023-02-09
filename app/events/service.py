@@ -3,7 +3,7 @@ from firebase_admin import firestore
 from datetime import datetime, timezone
 
 from app.firebase import firestore_db, EVENTS_COLLECTION
-from app.user.api import User
+from app.user.user import User
 from .event import (
     Event,
     EventType,
