@@ -46,7 +46,7 @@ paths:
   /user/signup:
     put:
       x-openapi-router-controller: app.user.api
-      operationId: signup
+      operationId: new_user_signup
       tags:
         - User
       summary: "Creates a new user profile associated with a UID attached to the bearer of a JWT"

@@ -8,7 +8,7 @@ from typing import Dict, Any
 from app.auth import with_auth_user
 
 # Note: this endpoint will NOT use our middleware wrapper, since at this point we have no User record yet. We will default to the parameters connexion gives us
-def signup(token_info: Dict[str, Any]):
+def new_user_signup(token_info: Dict[str, Any]):
     try:
         firebase_user_record: auth.UserRecord = auth.get_user(token_info["uid"])
         new_user = create_user(firebase_user_record.email)
