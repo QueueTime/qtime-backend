@@ -31,7 +31,7 @@ components:
           type: "boolean"
 
 paths:
-  /user/delete_profile:
+  /user/delete-account:
     delete:
       x-openapi-router-controller: app.user.api
       operationId: delete_user_profile
