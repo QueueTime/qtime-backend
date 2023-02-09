@@ -23,8 +23,8 @@ def new_user_signup(token_info: Dict[str, Any]):
         return {"error": "User not found in firebase auth", "message": str(e)}, 404
     except UserAlreadyExistsError as e:
         return e.buildError()
-    # except Exception as e:
-    #   return {"error": "Unknown error", "message": str(e)}, 500
+    except Exception as e:
+        return {"error": "Unknown error", "message": str(e)}, 500
     return "", 204
 
 
