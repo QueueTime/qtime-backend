@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from app.user.user import User
 from app.user.errors import UserNotFoundError
-from app.user.service import find_user, delete_user, update_user
+from app.user.service import find_user, delete_user, update_user, create_user
 
 
 class TestUser(unittest.TestCase):
@@ -72,7 +72,8 @@ class TestUserService(unittest.TestCase):
         user_collection_mock.document().get().exists = False
         self.assertRaises(UserNotFoundError, find_user, "test@nonexistent.com")
 
-    def test_delete_user(self, user_collection_mock):
+    @patch("app.rewards.service.firestore_db")
+    def test_delete_user(self, rewards_db_mock, user_collection_mock):
         delete_user(self.sample_user)
         user_collection_mock.document().delete.assert_called_once()
         user_collection_mock.document().get().exists = False
@@ -81,6 +82,14 @@ class TestUserService(unittest.TestCase):
             delete_user,
             User("test@nonexistent.com"),
         )
+
+    @patch("app.rewards.service.firestore_db")
+    def test_create_user(self, rewards_db_mock, user_collection_mock):
+        user_collection_mock.document().get().exists = False
+        rewards_db_mock.collection().document().get().exists = False
+        new_user = create_user("test@test.com")
+        self.assertTrue(new_user.referral_code)
+        user_collection_mock.document().set.assert_called_once()
 
     def test_update_user(self, user_collection_mock):
         update_user(self.sample_user)
