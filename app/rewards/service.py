@@ -23,7 +23,6 @@ def save_referral_code(code: str):
     :param code: The referral code to add
     """
     firestore_db.collection(REFERRAL_CODES_COLLECTION).document(code).set({})
-    # TODO: add property to each referral code so that they can be traced back to original user
 
 
 def delete_referral_code(code: str):
