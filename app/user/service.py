@@ -6,6 +6,10 @@ from app.rewards.service import (
     save_referral_code,
     delete_referral_code,
 )
+from app.events.service import (
+    generate_account_signup_event,
+    generate_account_delete_event,
+)
 from app.firebase import firestore_db, USERS_COLLECTION
 
 users_collection = firestore_db.collection(USERS_COLLECTION)
@@ -53,6 +57,7 @@ def create_user(email: str) -> User:
     new_user = User(email=email, referral_code=create_unique_referral_code())
     save_referral_code(new_user.referral_code)
     update_user(new_user)
+    generate_account_signup_event(new_user)
     return new_user
 
 
@@ -73,6 +78,7 @@ def delete_user(user: User):
         raise UserNotFoundError(user.email)
     target_user_snapshot.delete()
     delete_referral_code(user.referral_code)
+    generate_account_delete_event(user)
 
     # TODO if there are any other references to the user that need to be deleted from other places,
     # add them here
