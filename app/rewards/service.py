@@ -16,6 +16,24 @@ def create_unique_referral_code() -> str:
     return code
 
 
+def save_referral_code(code: str):
+    """
+    Add a new referral code to the referral codes collection
+
+    :param code: The referral code to add
+    """
+    firestore_db.collection(REFERRAL_CODES_COLLECTION).document(code).set({})
+
+
+def delete_referral_code(code: str):
+    """
+    Deletes a referral code from the referral codes collection
+
+    :param code: The referral code to delete
+    """
+    firestore_db.collection(REFERRAL_CODES_COLLECTION).document(code).delete()
+
+
 def _generate_unique_code(CHARS: str, length: int) -> str:
     """
     Generate a unique code from a set of characters.

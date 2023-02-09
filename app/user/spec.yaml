@@ -29,60 +29,31 @@ components:
           type: "object"
         hasCompletedOnboarding:
           type: "boolean"
-  parameters:
-    email:
-      name: "email"
-      description: "Email of a user profile"
-      in: path
-      required: True
-      schema:
-        type: "string"
 
 paths:
-  # User API endpoints
-  /user/{email}/profile: # TODO: change this to something other than email
-    get:
-      x-openapi-router-controller: app.user.api
-      operationId: get_user_profile
-      tags:
-        - User
-      summary: "Get details of a specified profile"
-      parameters:
-        - $ref: "#/components/parameters/email"
-      responses:
-        "200":
-          description: Return details of a specified user profile
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/User"
-  /user/{email}/delete: # TODO: change this to something other than email
+  /user/delete-account:
     delete:
       x-openapi-router-controller: app.user.api
       operationId: delete_user_profile
       tags:
         - User
-      summary: "Deletes a specified user"
-      parameters:
-        - $ref: "#/components/parameters/email"
+      summary: "Deletes user account associated with client request"
       responses:
-        "200":
+        "204":
           description: User deleted
-  /user/test_authenticate:
-    get:
+        "404":
+          description: User not found
+  /user/signup:
+    put:
       x-openapi-router-controller: app.user.api
-      operationId: test_authenticate
+      operationId: new_user_signup
       tags:
         - User
-      summary: "Authenticate using a JWT token"
+      summary: "Creates a new user profile associated with a UID attached to the bearer of a JWT"
       responses:
-        "200":
-          description: Successful authentication, return user email"
-          content:
-            'text/plain':
-              schema:
-                type: string
-      security:
-      - jwt: []
+        "204":
+          description: "User successfully created"
+        "400":
+          description: "Invalid user ID"
+        "404":
+          description: "Given UID does not exist"
