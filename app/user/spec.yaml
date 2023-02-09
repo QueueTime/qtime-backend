@@ -43,10 +43,10 @@ paths:
           description: User deleted
         "404":
           description: User not found
-  /user/signup
+  /user/signup:
     put:
       x-openapi-router-controller: app.user.api
-      operationId: new_user_signup
+      operationId: signup
       tags:
         - User
       summary: "Creates a new user profile associated with a UID attached to the bearer of a JWT"
