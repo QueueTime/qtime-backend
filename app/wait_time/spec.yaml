@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: "QueueTime Flask REST API"
+  description: "QueueTime API for finding wait times of various points of interests at McMaster University"
+  version: "1.0.0"
+
+components:
+  schemas:
+    Location:
+      required:
+        - longitude
+        - latitude
+      properties:
+        longitude:
+          type: number
+          description: Current longitude
+          example: -79.92049747836754
+        latitude:
+          type: number
+          description: Current latitude
+          example: 43.26221322561139
+
+
+
+paths:
+  /user/location:
+    post:
+      x-openapi-router-controller: app.wait_time.api
+      operationId: update_user_location
+      tags:
+        - User
+        - Sourcing
+      summary: Submit current location of user
+      description: Submit the current GPS coordinates of the user to update their current location
+      requestBody:
+        description: "GPS Coordinates of user"
+        required: True
+        content:
+          application/json:
+            schema:
+              x-body-name: "location_data"
+              $ref: "#/components/schemas/Location"
+      responses:
+        "204":
+          description: "Successfully updated user location"
