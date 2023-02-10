@@ -58,10 +58,7 @@ def validate_token(token: str) -> Dict[str, Any]:
     :raises ValueError: If the token is not a string or empty
     """
     try:
-        return {
-            "sub": "2Nc3UKvI98YvhTlud9ZEomZHr9p2",
-            "uid": "2Nc3UKvI98YvhTlud9ZEomZHr9p2",
-        }
+        return auth.verify_id_token(token)
     except (
         auth.InvalidIdTokenError,
         auth.ExpiredIdTokenError,
