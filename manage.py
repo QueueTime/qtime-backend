@@ -18,6 +18,7 @@ app.add_api(
         "./app/poi_api/spec.yaml",
         "./app/user/spec.yaml",
         "./app/rewards/spec.yaml",
+        "./app/wait_time/spec.yaml",
     )
 )
 

@@ -33,12 +33,12 @@ paths:
       summary: Submit current location of user
       description: Submit the current GPS coordinates of the user to update their current location
       requestBody:
+        x-body-name: "location_data"
         description: "GPS Coordinates of user"
         required: True
         content:
           application/json:
             schema:
-              x-body-name: "location_data"
               $ref: "#/components/schemas/Location"
       responses:
         "204":
