@@ -43,3 +43,37 @@ paths:
       responses:
         "204":
           description: "Successfully updated user location"
+  /places/{poi_id}/estimate:
+    post:
+      x-openapi-router-controller: app.wait_time.api
+      operationId: submit_user_estimate
+      tags:
+        - POI
+        - Sourcing
+      summary: Submit wait time estimate
+      description: Submit wait time estimate for a specified POI ID
+      parameters:
+        - name: "poi_id"
+          description: "ID of specified POI"
+          in: path
+          required: True
+          schema:
+            type: string
+          example: "tim_hortons_musc"
+      requestBody:
+        x-body-name: "estimate_data"
+        description: "Wait time estimate to submit in minutes"
+        required: True
+        content:
+          application/json:
+            schema:
+              required:
+                - wait_time_estimate
+              properties:
+                wait_time_estimate:
+                  type: number
+                  description: Wait time estimate in minutes
+                  example: 5
+      responses:
+        "204":
+          description: "Successfully submitted wait time estimate"
