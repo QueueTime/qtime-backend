@@ -1,8 +1,7 @@
-from flask import Flask, jsonify, request
-from firebase_admin import credentials, firestore, initialize_app
+from firebase_admin import firestore
 
-# Initializing Firestore database
-# Can import firestore_db to utilize database
-cred = credentials.Certificate("serviceAccountKey.json")
-default_app = initialize_app(cred)
+EVENTS_COLLECTION = "events"
+USERS_COLLECTION = "users"
+REFERRAL_CODES_COLLECTION = "referral_codes"
+
 firestore_db = firestore.client()
