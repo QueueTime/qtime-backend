@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, Mock, MagicMock, ANY, call
+from unittest.mock import patch, ANY, call
 
 from test.mock_firebase_admin import firebase_admin  # Mock firebase_admin module
 from app.events import service as event_service
