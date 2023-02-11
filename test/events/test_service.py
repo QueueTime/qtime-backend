@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch, Mock, MagicMock, ANY, call
 
-from test.mock_firebase_admin import firebase_admin
+from test.mock_firebase_admin import firebase_admin  # Mock firebase_admin module
 from app.events import service as event_service
-from app.user.api import User
+from app.user.user import User
 from app.poi_api.poi import POI
 
 

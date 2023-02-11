@@ -1,9 +1,6 @@
 from .service import create_user, delete_user
 from .errors import UserNotFoundError, UserAlreadyExistsError
-from .user import User
-from flask import jsonify
 from firebase_admin import auth
-from firebase_admin.auth import UserRecord
 from typing import Dict, Any
 from app.auth import with_auth_user
 
@@ -11,7 +8,7 @@ from app.auth import with_auth_user
 def new_user_signup(token_info: Dict[str, Any]):
     try:
         firebase_user_record: auth.UserRecord = auth.get_user(token_info["uid"])
-        new_user = create_user(firebase_user_record.email)
+        create_user(firebase_user_record.email)
     except ValueError as e:
         return {"error": "Invalid user ID", "message": str(e)}, 400
     except auth.UserNotFoundError as e:
