@@ -3,12 +3,7 @@ from typing import Callable, Dict, Any, Optional
 import requests
 
 from setup import initialize_firebase, FIREBASE_CERT_PATH
-from app.firebase import (
-    firestore_db,
-    USERS_COLLECTION,
-    EVENTS_COLLECTION,
-    REFERRAL_CODES_COLLECTION,
-)
+from app.firebase import firestore_db, USERS_COLLECTION
 from app.user.user import User
 
 FIRESTORE_PROJECT_ID = "qtime-bd47e"
