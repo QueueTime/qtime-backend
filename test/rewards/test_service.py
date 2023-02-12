@@ -1,7 +1,6 @@
 import unittest
-from unittest.mock import patch, Mock, MagicMock, ANY, call
+from unittest.mock import patch, Mock
 
-from test.mock_firebase_admin import firebase_admin  # Mock firebase_admin module
 from app.rewards import service as rewards_service
 
 
@@ -14,7 +13,7 @@ class TestRewardsService(unittest.TestCase):
         self.email = "test@sample.ca"
 
     def test_generates_accurate_referral_code(self, firebase_mock):
-        firebase_mock.collection().document().get().exists = False
+        firebase_mock().collection().document().get().exists = False
         referral_code = rewards_service.create_unique_referral_code()
         self.assertTrue(len(referral_code) == 6)
 
@@ -26,6 +25,6 @@ class TestRewardsService(unittest.TestCase):
 
         with patch.object(rewards_service, "_generate_unique_code") as mock:
             mock.side_effect = ["ABCDEF", "XYZABC"]
-            firebase_mock.collection().document.side_effect = func
+            firebase_mock().collection().document.side_effect = func
             referral_code = rewards_service.create_unique_referral_code()
             self.assertTrue(referral_code == "XYZABC")
