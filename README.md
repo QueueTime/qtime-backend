@@ -64,3 +64,48 @@ python -m unittest tests/test_target.py
 ```
 
 The full instructions for testing with the command line are found in the [Unittest documentation](https://docs.python.org/3/library/unittest.html#command-line-interface).
+
+### Testing with Firebase Emulators
+
+In order to test functionality that connects to firebase we use firebase emulators to emulate a firebase instance.
+
+- Follow the [install steps](https://firebase.google.com/docs/emulator-suite/install_and_configure#install_the_local_emulator_suite) to setup firebase emulators.
+  - Run `firebase --version` to ensure you installed the firebase cli.
+- Setup the firestore and auth emulators with the following command
+
+```
+firebase setup:emulators:firestore
+firebase setup:emulators:auth
+```
+
+- Start the emulators with the command
+
+```
+firebase emulators:start --only firestore,auth --project qtime-bd47e --import=./sample_firebase_data
+```
+
+- You should now be able to visit the [firestore emulator UI](http://127.0.0.1:4000/firestore) and [firebase auth emulator UI](http://127.0.0.1:4000/auth) pages.
+
+- Export the following environment variables before running the flask app
+
+```
+export FIRESTORE_EMULATOR_HOST="localhost:8080"
+export FIREBASE_AUTH_EMULATOR_HOST="localhost:9099"
+```
+
+- Fetch a user authentication token by making a POST http call:
+
+```
+POST http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=key
+
+{
+  "email": "<USER_EMAIL>",
+  "password": "<PASSWORD>"
+}
+```
+
+- Export data from the firebase emulator with the command. The emulator must be running.
+
+```
+firebase emulators:export ./sample_firebase_data --project qtime-bd47e
+```
