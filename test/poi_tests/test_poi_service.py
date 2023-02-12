@@ -1,7 +1,7 @@
 import unittest
-from app.poi_api.poi_service import POI_Service
-from app.poi_api.poi_suggestion import POI_suggestions
-from app.poi_api.poi_errors import POINotFoundError, InvalidPOISuggestionError
+from app.poi_api.service import POI_Service
+from app.poi_api.poi_suggestion import POI_suggestion
+from app.poi_api.errors import POINotFoundError, InvalidPOISuggestionError
 from firebase_admin import credentials, initialize_app, firestore
 
 

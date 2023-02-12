@@ -1,11 +1,11 @@
 import unittest
-from app.poi_api.poi_suggestion import POI_suggestions
+from app.poi_api.poi_suggestion import POI_suggestion
 
 
 class TestPOI(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.poi_suggestion = POI_suggestions(
+        self.poi_suggestion = POI_suggestion(
             pid="0",
             suggestion_name="Petting Zoo",
             notes="Goat baa",

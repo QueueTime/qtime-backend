@@ -52,7 +52,7 @@ paths:
   # POI API endpoints
   /places/list:
     get:
-      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      x-openapi-router-controller: app.poi_api.api
       operationId: get_all_POI
       tags:
         - POI
@@ -68,7 +68,7 @@ paths:
                   $ref: "#/components/schemas/POI"
   /places/list/{poi_id}:
     get:
-      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      x-openapi-router-controller: app.poi_api.api
       operationId: get_POI
       tags:
         - POI
@@ -94,7 +94,7 @@ paths:
                   $ref: "#/components/schemas/POI"
   /places/suggest:
     post:
-      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      x-openapi-router-controller: app.poi_api.api
       operationId: suggest_new_POI
       tags:
         - POI

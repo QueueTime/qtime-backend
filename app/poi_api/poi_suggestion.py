@@ -1,48 +1,45 @@
 from datetime import datetime
-from app.poi_api.poi_errors import POINotFoundError, InvalidPOISuggestionError
-from app import common
+from app.poi_api.errors import POINotFoundError, InvalidPOISuggestionError
+from app.common import BadDataError
+from typing import Dict
+import json
 
 
-class POI_suggestions(common.FirebaseDataEntity):
+class POI_suggestion:
     def __init__(
         self,
-        db_ref,
         pid,
         suggestion_name,
         notes,
         submitted_by,
         submission_time=datetime.now(),
     ) -> None:
-        super().__init__(db_ref)
         self._pid = pid
         self.suggestion_name = suggestion_name
         self.notes = notes
         self.submitted_by = submitted_by
         self.submission_time = submission_time
 
-    def get_pid(self):
+    def get_pid(self) -> str:
+        """Return pid of the POI_suggestion"""
         return self._pid
 
-    def get(db_ref, id):
-        target_data = db_ref.document(id).get()
-        if not target_data.exists:
-            raise POINotFoundError(id)
-        return POI_suggestions.from_dict(db_ref, target_data.to_dict())
+    @staticmethod
+    def from_dict(dict: Dict[str, str]) -> "POI_suggestion":
+        """
+        Creates a new POI_suggestion object from a Python Dictionary
 
-    def to_dict(self):
-        poi_suggestion_dict = {
-            "_pid": self._pid,
-            "suggestion_name": self.suggestion_name,
-            "notes": self.notes,
-            "submission_time": self.submission_time,
-            "submitted_by": self.submitted_by,
-        }
-        return poi_suggestion_dict
+        Args:
+            dict: Dictionary of key-value pairs corresponding to user.
 
-    def from_dict(db_ref, dict):
+        Returns:
+            User: from specified data
+
+        Raises:
+            BadDataError: If required data is missing from the dictionary
+        """
         try:
-            return POI_suggestions(
-                db_ref,
+            return POI_suggestion(
                 dict["_pid"],
                 dict["suggestion_name"],
                 dict["notes"],
@@ -50,13 +47,20 @@ class POI_suggestions(common.FirebaseDataEntity):
                 dict["submitted_by"],
             )
         except KeyError as e:
-            raise common.BadDataError(
-                "Missing data from poi suggestion data: " + str(e)
-            )
+            raise BadDataError("Missing data from poi suggestion data: " + str(e))
 
-    def push(self, merge=True):
-        target_ref = self.db_reference.document(self._pid)
-        target_ref.set(self.to_dict(), merge=merge)
+    def to_dict(self) -> Dict[str, str]:
+        """
+        Returns a dictionary containing all properties from the POI_suggestion
+
+        Returns:
+            dict: containing key-value pairs with all POI_suggestion data
+        """
+        return self.__dict__
+
+    def to_json(self) -> str:
+        """Return all properties in a JSON string"""
+        return json.dumps(self.to_dict())
 
     def __eq__(self, other):
         return self._pid == other._pid
