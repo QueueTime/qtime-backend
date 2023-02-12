@@ -1,5 +1,5 @@
 import unittest
-from test.mixins import FlaskTestClientMixin
+from test.mixins.flask_client_mixin import FlaskTestClientMixin
 
 
 class TestBaseApi(unittest.TestCase, FlaskTestClientMixin):
