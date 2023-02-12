@@ -12,8 +12,6 @@ from app.events.service import (
 )
 from app.firebase import firestore_db, USERS_COLLECTION
 
-users_collection = firestore_db.collection(USERS_COLLECTION)
-
 
 def find_user(email: str) -> User:
     """Given email, find and return corresponding User. Raises UserNotFoundError if user not found
@@ -23,7 +21,7 @@ def find_user(email: str) -> User:
     :raises UserNotFoundError: if user with specified email does not exist
     :raises BadDataError: if user data retrieved is missing essential data
     """
-    user_ref = users_collection.document(email).get()
+    user_ref = _users().document(email).get()
     if not user_ref.exists:
         raise UserNotFoundError(email)
     return User.from_dict(email, user_ref.to_dict())
@@ -37,7 +35,7 @@ def find_user_by_referral_code(referral_code: str) -> User:
     :raises UserNotFoundError: if user with specified referral code does not exist
     :raises BadDataError: if user data retrieved is missing essential data
     """
-    user_ref = users_collection.where("referral_code", "==", referral_code).get()
+    user_ref = _users().where("referral_code", "==", referral_code).get()
     if not user_ref:
         raise UserNotFoundError(referral_code)
     return User.from_dict(user_ref[0].id, user_ref[0].to_dict())
@@ -51,7 +49,7 @@ def create_user(email: str) -> User:
     :returns: User object associated with the new user
     :raises UserAlreadyExists: if a user with the specified email already exists in the database
     """
-    if users_collection.document(email).get().exists:
+    if _users().document(email).get().exists:
         raise UserAlreadyExistsError(email)
 
     new_user = User(email=email, referral_code=create_unique_referral_code())
@@ -63,7 +61,7 @@ def create_user(email: str) -> User:
 
 def update_user(user: User):
     """Push updated User object to Firestore"""
-    users_collection.document(user.email).set(user.to_dict(), merge=True)
+    _users().document(user.email).set(user.to_dict(), merge=True)
 
 
 def delete_user(user: User):
@@ -73,7 +71,7 @@ def delete_user(user: User):
     :param user: User object for target user to delete
     :raises UserNotFoundError: If target user does not exist
     """
-    target_user_snapshot = users_collection.document(user.email)
+    target_user_snapshot = _users().document(user.email)
     if not target_user_snapshot.get().exists:
         raise UserNotFoundError(user.email)
     target_user_snapshot.delete()
@@ -88,3 +86,7 @@ def update_notification(user, setting):
     """Updates notification preference for specfied user"""
     user.notification_setting = setting
     update_user(user)
+
+
+def _users():
+    return firestore_db().collection(USERS_COLLECTION)
