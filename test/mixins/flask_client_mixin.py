@@ -1,7 +1,4 @@
-import connexion
-from manage import start_server
-
-flask_app = start_server("TestFlaskApp")
+from setup import start_server
 
 
 class FlaskTestClientMixin:
@@ -12,19 +9,19 @@ class FlaskTestClientMixin:
         class MyTest(unittest.TestCase, FlaskTestClientMixin):
             @classmethod
             def setUpClass(self):
-                FlaskTestClientMixin.setUpClass()
+                self.with_test_flask_client(self)
 
             def setUp(self):
-                return super().setup_rest_defaults()
+                return self.with_rest_defaults()
 
             def test_x(self):
                 response = self.client.get(f"{self.base_url}/my-endpoint")
                 # Response is a werkzeug.wrappers.response.Response object: https://werkzeug.palletsprojects.com/en/2.2.x/wrappers/#werkzeug.wrappers.Response
     """
 
-    @classmethod
-    def setUpClass(self):
+    def with_test_flask_client(self):
+        flask_app = start_server("TestFlaskApp")
         self.client = flask_app.app.test_client()
 
-    def setup_rest_defaults(self):
+    def with_rest_defaults(self):
         self.base_url = "/api"
