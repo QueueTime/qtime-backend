@@ -15,12 +15,28 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
-      - name: Run tests in context of firebase emulator
-        uses: w9jds/firebase-action@master
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          args: "emulators:exec --only firestore,auth --project qtime-bd47e 'python3 -m unittest discover -s ./test'"
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          node-version: 18
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+      - name: Setup firebase tools
+        uses: uses: w9jds/setup-firebase@main
+        with:
+          tools-version: 11.22.0
+          gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
+      - name: Run unit tests in firebase emulator
+        run: firebase emulators:exec --only firestore,auth --project qtime-bd47e 'python3 -m unittest discover -s ./test'
+
+      # - name: Run tests in context of firebase emulator
+      #   uses: w9jds/firebase-action@master
+      #   with:
+      #     args: "emulators:exec --only firestore,auth --project qtime-bd47e 'python3 -m unittest discover -s ./test'"
+      #   env:
+      #     GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
       # - name: Run unit tests
       #   run: python -m unittest discover -s ./test
