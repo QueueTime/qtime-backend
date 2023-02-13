@@ -32,6 +32,8 @@ jobs:
           gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
       - name: Run unit tests in firebase emulator
         run: firebase emulators:exec --only firestore,auth --project qtime-bd47e 'python3 -m unittest discover -s ./test'
+        env:
+          SERVICE_KEY_PATH: "/opt/gcp_key.json"
 
       # - name: Run tests in context of firebase emulator
       #   uses: w9jds/firebase-action@master
