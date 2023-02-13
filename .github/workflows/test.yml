@@ -19,7 +19,7 @@ jobs:
       - name: Run tests in context of firebase emulator
         uses: w9jds/firebase-action@master
         with:
-          args: "emulators:exec --only firestore,auth --project qtime-bd47e 'python -m unittest discover -s ./test'"
+          args: "emulators:exec --only firestore,auth --project qtime-bd47e 'python3 -m unittest discover -s ./test'"
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
       # - name: Run unit tests
