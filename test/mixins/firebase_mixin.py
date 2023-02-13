@@ -22,7 +22,25 @@ FIRESTORE_DELETE_ALL_URL = f"http://{FIRESTORE_EMULATOR_HOST}/emulator/v1/projec
 
 
 class FirebaseTestMixin:
-    """Mixin for testing with Firebase."""
+    """
+    Mixin for testing with Firebase and testing with firebase emulators.
+
+    Usage:
+
+    class MyTest(unittest.TestCase, FIrebaseTestMixin):
+        @classmethod
+        def setUpClass(self):
+            self.with_firebase_emulators(self)  # Call this only once
+
+        @classmethod
+        def tearDownClass(self):
+            self.clear_all_firestore_data(self) # Call this to clear firestore
+            self.delete_user_accounts(self) # Call this to clear firebase auth
+
+        def setUp(self):
+            # Create sample user in firebase
+            self.with_user_accounts(User(email="test@sample.com"))
+    """
 
     def with_firebase_emulators(self):
         """
@@ -31,6 +49,7 @@ class FirebaseTestMixin:
         os.environ["FIRESTORE_EMULATOR_HOST"] = FIRESTORE_EMULATOR_HOST
         os.environ["FIREBASE_AUTH_EMULATOR_HOST"] = FIRESTORE_AUTH_EMULATOR_HOST
 
+        # Needed to support the test.yaml github action that looks in /opt for the service key
         cert_path = os.environ.get(FIRESTORE_CERT_PATH_ENV_VAR)
         if cert_path is None:
             cert_path = FIREBASE_CERT_PATH
