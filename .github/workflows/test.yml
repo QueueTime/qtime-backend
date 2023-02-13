@@ -25,7 +25,7 @@ jobs:
         with:
           java-version: 17
       - name: Setup firebase tools
-        uses: uses: w9jds/setup-firebase@main
+        uses: w9jds/setup-firebase@main
         with:
           tools-version: 11.22.0
           gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
