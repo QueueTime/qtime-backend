@@ -115,6 +115,7 @@ def find_all_reward_events_for_user(
         firestore_db()
         .collection(EVENTS_COLLECTION)
         .where("user", "==", user_email)
+        .where("type", "==", EventType.REWARD_POINTS_ADD.value)
         .order_by("created", direction=firestore.Query.DESCENDING)
     )
 
