@@ -7,6 +7,7 @@ from app.firebase import firestore_db, USERS_COLLECTION
 from app.user.user import User
 
 FIRESTORE_PROJECT_ID = "qtime-bd47e"
+FIRESTORE_CERT_PATH_ENV_VAR = "SERVICE_KEY_PATH"
 
 # AUTH CONSTANTS
 FIRESTORE_AUTH_EMULATOR_HOST = "localhost:9099"
@@ -29,7 +30,12 @@ class FirebaseTestMixin:
         """
         os.environ["FIRESTORE_EMULATOR_HOST"] = FIRESTORE_EMULATOR_HOST
         os.environ["FIREBASE_AUTH_EMULATOR_HOST"] = FIRESTORE_AUTH_EMULATOR_HOST
-        initialize_firebase(FIREBASE_CERT_PATH)
+
+        cert_path = os.environ.get(FIRESTORE_CERT_PATH_ENV_VAR)
+        if cert_path is None:
+            cert_path = FIREBASE_CERT_PATH
+
+        initialize_firebase(cert_path)
 
     def with_user_accounts(self, *users: User) -> Dict[str, Callable]:
         """
