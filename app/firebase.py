@@ -6,4 +6,6 @@ REFERRAL_CODES_COLLECTION = "referral_codes"
 POI_COLLECTION = "POI"
 POI_PROPOSAL_COLLECTION = "POI_proposal"
 
-firestore_db = firestore.client()
+
+def firestore_db():
+    return firestore.client()

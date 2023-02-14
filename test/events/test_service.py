@@ -1,7 +1,6 @@
 import unittest
-from unittest.mock import patch, Mock, MagicMock, ANY, call
+from unittest.mock import patch, ANY, call
 
-from test.mock_firebase_admin import firebase_admin
 from app.events import service as event_service
 from app.user.api import User
 from app.locations.poi import POI
@@ -23,7 +22,7 @@ class TestEventService(unittest.TestCase):
 
     def test_generate_account_signup_event(self, firebase_mock):
         event_service.generate_account_signup_event(self.user)
-        firebase_mock.collection().add.assert_called_once_with(
+        firebase_mock().collection().add.assert_called_once_with(
             {
                 "type": "account_signup_event",
                 "user": self.email,
@@ -34,7 +33,7 @@ class TestEventService(unittest.TestCase):
 
     def test_generate_account_delete_event(self, firebase_mock):
         event_service.generate_account_delete_event(self.user)
-        firebase_mock.collection().add.assert_called_once_with(
+        firebase_mock().collection().add.assert_called_once_with(
             {
                 "type": "account_delete_event",
                 "user": self.email,
@@ -71,7 +70,7 @@ class TestEventService(unittest.TestCase):
                 }
             ),
         ]
-        firebase_mock.collection().add.assert_has_calls(calls, any_order=True)
+        firebase_mock().collection().add.assert_has_calls(calls, any_order=True)
 
     def test_generate_waittime_confirm_event(self, firebase_mock):
         event_service.generate_waittime_confirm_event(
@@ -98,7 +97,7 @@ class TestEventService(unittest.TestCase):
                 }
             ),
         ]
-        firebase_mock.collection().add.assert_has_calls(calls, any_order=True)
+        firebase_mock().collection().add.assert_has_calls(calls, any_order=True)
 
     def test_generate_referral_event_same_user(self, firebase_mock):
         with self.assertRaises(ValueError):
@@ -138,4 +137,4 @@ class TestEventService(unittest.TestCase):
                 }
             ),
         ]
-        firebase_mock.collection().add.assert_has_calls(calls, any_order=True)
+        firebase_mock().collection().add.assert_has_calls(calls, any_order=True)

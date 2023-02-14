@@ -1,25 +1,7 @@
-import connexion
-from utils import combine_specifications
-from firebase_admin import credentials, initialize_app
+from setup import initialize_firebase, start_server, FIREBASE_CERT_PATH
 
-
-# Initializing Firestore database
-# Can import firestore_db to utilize database
-def initialize_firebase():
-    initialize_app(credentials.Certificate("serviceAccountKey.json"))
-
-
-initialize_firebase()
-app = connexion.App(__name__)
-# Tell app to read the combined openapi specification
-app.add_api(
-    combine_specifications(
-        "./base_swagger.yaml",
-        "./app/locations/spec.yaml",
-        "./app/user/spec.yaml",
-        "./app/rewards/spec.yaml",
-    )
-)
+initialize_firebase(FIREBASE_CERT_PATH)
+app = start_server(__name__)
 
 
 @app.route("/")
