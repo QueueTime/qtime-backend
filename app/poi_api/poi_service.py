@@ -36,7 +36,7 @@ class POI_Service:
         except Exception as e:
             raise Exception(f"An error occured: {e}", 404)
 
-    def suggest_new_POI(self, poi_suggestion) -> int:
+    def suggest_new_POI(self, poi_suggestion):
         try:
             poi_suggestion_ref = firestore_db().collection("POI_proposal").document()
             # Generate id for poi suggestion document
