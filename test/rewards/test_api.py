@@ -1,15 +1,13 @@
 import unittest
-from unittest.mock import ANY, patch, Mock
+from unittest.mock import patch
 import json
 from datetime import datetime, timezone
-from freezegun import freeze_time
 
 from app.user.user import User
 from app.firebase import firestore_db, EVENTS_COLLECTION, USERS_COLLECTION
 from app.events.event import Event, EventType, RewardPointsAddPayload, RewardSource
 from test.mixins.flask_client_mixin import FlaskTestClientMixin
 from test.mixins.firebase_mixin import FirebaseTestMixin
-import app.events.event
 
 
 class TestRewardsApi(unittest.TestCase, FlaskTestClientMixin, FirebaseTestMixin):
