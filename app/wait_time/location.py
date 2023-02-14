@@ -27,7 +27,12 @@ class Location:
         :raises BadDataError: If required data is missing from the dictionary
         """
         try:
-            return Location(aid, dict["latitude"], dict["longitude"], dict["timestamp"])
+            return Location(
+                aid,
+                dict["latitude"],
+                dict["longitude"],
+                dict.get("timestamp", datetime.now(timezone.utc)),
+            )
         except KeyError as e:
             raise BadDataError("Missing data from Location data: " + str(e))
 
