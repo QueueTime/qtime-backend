@@ -112,8 +112,10 @@ def find_all_reward_events_for_user(
     :return: List of reward events for the user
     """
     query = (
-        firestore_db.collection(EVENTS_COLLECTION)
+        firestore_db()
+        .collection(EVENTS_COLLECTION)
         .where("user", "==", user_email)
+        .where("type", "==", EventType.REWARD_POINTS_ADD.value)
         .order_by("created", direction=firestore.Query.DESCENDING)
     )
 
@@ -151,4 +153,4 @@ def _save_to_events_collection(event: Event):
 
     :param event: Event to save
     """
-    firestore_db.collection(EVENTS_COLLECTION).add(event.to_dict())
+    firestore_db().collection(EVENTS_COLLECTION).add(event.to_dict())

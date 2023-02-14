@@ -2,9 +2,7 @@ from datetime import datetime
 
 
 class POI_suggestions:
-    def __init__(
-        self, pid, suggestion_name, notes, submission_time, submitted_by
-    ) -> None:
+    def __init__(self, pid, suggestion_name, notes, submission_time, submitted_by):
         self.pid = pid
         self.suggestion_name = suggestion_name
         self.notes = notes

@@ -69,6 +69,15 @@ class RewardPointsAddPayload:
             RewardSource(dict["source"]), dict["points_change"]
         )
 
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, RewardPointsAddPayload)
+            and self.to_dict() == other.to_dict()
+        )
+
+    def __repr__(self):
+        return f"RewardPointsAddPayload(source={self.source}, points_change={self.points_change})"
+
 
 # TODO: Implement Reward redemption events upon implementing of reward redemption
 class RewardRedemptionPayload:
@@ -124,3 +133,12 @@ class Event:
             created = dict["created"]
 
         return Event(event_type, dict["user"], payload, created)
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, Event) and self.to_dict() == other.to_dict()
+
+    def __hash__(self):
+        return hash((self.type, self.user, self.payload, self.created))
+
+    def __repr__(self):
+        return f"Event(type={self.type}, user={self.user}, payload={self.payload}, created={self.created})"

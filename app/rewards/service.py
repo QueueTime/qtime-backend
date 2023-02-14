@@ -22,7 +22,7 @@ def save_referral_code(code: str):
 
     :param code: The referral code to add
     """
-    firestore_db.collection(REFERRAL_CODES_COLLECTION).document(code).set({})
+    firestore_db().collection(REFERRAL_CODES_COLLECTION).document(code).set({})
 
 
 def delete_referral_code(code: str):
@@ -31,7 +31,7 @@ def delete_referral_code(code: str):
 
     :param code: The referral code to delete
     """
-    firestore_db.collection(REFERRAL_CODES_COLLECTION).document(code).delete()
+    firestore_db().collection(REFERRAL_CODES_COLLECTION).document(code).delete()
 
 
 def _generate_unique_code(CHARS: str, length: int) -> str:
@@ -54,5 +54,5 @@ def _referral_code_exists(code: str) -> bool:
     """
 
     return (
-        firestore_db.collection(REFERRAL_CODES_COLLECTION).document(code).get().exists
+        firestore_db().collection(REFERRAL_CODES_COLLECTION).document(code).get().exists
     )
