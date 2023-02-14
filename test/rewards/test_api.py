@@ -130,9 +130,20 @@ class TestRewardsApi(unittest.TestCase, FlaskTestClientMixin, FirebaseTestMixin)
             .get()
             .to_dict(),
         )
-        self.assertEqual(updated_user.reward_point_balance, 200)
-        self.assertTrue(updated_user.hasUsedReferralCode)
-        self.assertEqual(updated_referrer_user.reward_point_balance, 200)
+        self.assertEqual(
+            updated_user.reward_point_balance,
+            200,
+            "User is missing added reward points",
+        )
+        self.assertTrue(
+            updated_user.hasUsedReferralCode,
+            "User did not have hasUsedReferralCode set to True",
+        )
+        self.assertEqual(
+            updated_referrer_user.reward_point_balance,
+            200,
+            "Referrer user is missing added reward points",
+        )
 
         # Verify events have been created
         events_stream = firestore_db().collection(EVENTS_COLLECTION).stream()
@@ -157,6 +168,10 @@ class TestRewardsApi(unittest.TestCase, FlaskTestClientMixin, FirebaseTestMixin)
         self.assertCountEqual(
             events_created,
             expected_events,
+            (
+                "Referral events do not match expected created referral points events\n"
+                f"Created:{str(events_created)} Expected:{str(expected_events)}"
+            ),
         )
 
     def test_list_reward_events_incorrect_limit(self):
