@@ -56,26 +56,28 @@ class FirebaseTestMixin:
 
         initialize_firebase(cert_path)
 
-    def with_user_accounts(self, *users: User) -> Dict[str, Callable]:
+    def with_user_accounts(self, *users: User):
         """
         Creates users in firebase auth & users collection for testing.
 
         Note: Firebase Auth will lower case all emails when creating user accounts.
 
         :param users: Iterable of users to create
-        :returns: Dictionary of user emails to functions to fetch user auth tokens
         """
-        token_fetchers: Dict[str, Callable] = {}
-
         for user in users:
             _create_user_in_firebase_auth_emulator(
                 user.email, USER_PASSWORD, user.email
             )
             _create_document_in_collection(USERS_COLLECTION, user.to_dict(), user.email)
-            token_fetchers[user.email] = lambda: _fetch_user_auth_token(
-                user.email, USER_PASSWORD
-            )
-        return token_fetchers
+
+    def token(self, email: str) -> str:
+        """
+        Fetches a user auth token for the given email.
+
+        :param email: Email of user to fetch token for
+        :returns: User auth token
+        """
+        return _fetch_user_auth_token(email, USER_PASSWORD)
 
     def clear_all_documents_in_collection(self, collection_name: str):
         """
