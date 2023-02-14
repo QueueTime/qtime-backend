@@ -1,6 +1,6 @@
 # Service class for the Wait Time API
 
-from app.firebase import firestore_db, POI_QUEUE_COLLECTION
+from app.firebase import firestore_db, LOCATION_COLLECTION
 from app.user.user import User
 from app.wait_time.location import Location
 from app.events.service import generate_waittime_submit_event
@@ -8,8 +8,8 @@ from app.locations.poi.service import get_details_for_POI
 from app.rewards.reward_values import POINTS_FOR_TIME_SUBMISSION
 
 
-def poi_queue_collection():
-    return firestore_db().collection(POI_QUEUE_COLLECTION)
+def location_collection():
+    return firestore_db().collection(LOCATION_COLLECTION)
 
 
 def uid_to_aid(uid: str) -> str:
@@ -31,7 +31,7 @@ def update_location(location: Location):
     :param location: Location data to upload
     """
 
-    poi_queue_collection().document(location.aid).set(location.to_dict())
+    location_collection().document(location.aid).set(location.to_dict())
 
 
 def add_wait_time_suggestion(user: User, poi_id: str, time_estimate: int):
