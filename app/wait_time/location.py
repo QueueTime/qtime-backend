@@ -37,12 +37,7 @@ class Location:
 
         :returns: dictionary containing key-value pairs with all User data
         """
-        return {
-            "aid": self.aid,
-            "latitude": self.latitude,
-            "longitude": self.longitude,
-            "timestamp": self.timestamp,
-        }
+        return self.__dict__
 
     def to_json(self) -> str:
         """Return all properties in a JSON string"""
