@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock, MagicMock, ANY, call
 from test.mock_firebase_admin import firebase_admin
 from app.events import service as event_service
 from app.user.api import User
-from app.poi_api.poi import POI
+from app.locations.poi import POI
 
 
 @patch("app.events.service.firestore_db")

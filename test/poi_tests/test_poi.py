@@ -1,5 +1,5 @@
 import unittest
-from app.poi_api.poi import POI
+from app.locations.poi import POI
 
 
 class TestPOI(unittest.TestCase):

@@ -1,5 +1,5 @@
 import unittest
-from app.poi_api.poi_suggestion import POI_suggestion
+from app.locations.poi_suggestion import POI_suggestion
 
 
 class TestPOI(unittest.TestCase):

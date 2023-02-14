@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Dict
 from app.common import BadDataError
-from app.poi_api.errors import POINotFoundError
+from app.locations.errors import POINotFoundError
 import json
 
 
@@ -29,16 +29,9 @@ class POI:
     @staticmethod
     def from_dict(dict: Dict[str, str]) -> "POI":
         """
-        Creates a new POI object from a Python Dictionary
+        Creates a POI object from a dictionary.
 
-        Args:
-            dict: Dictionary of key-value pairs corresponding to the poi.
-
-        Returns:
-            POI: from specified data
-
-        Raises:
-            BadDataError: If required data is missing from the dictionary
+        :param dict: Dictionary of the parameters corresponding to a POI
         """
         try:
             return POI(
@@ -56,10 +49,7 @@ class POI:
 
     def to_dict(self) -> Dict[str, str]:
         """
-        Returns a dictionary containing all properties from the POI
-
-        Returns:
-            dict: containing key-value pairs with all POI data
+        Creates a dictionary from a POI object
         """
         return {
             "_id": self._id,
@@ -73,8 +63,13 @@ class POI:
         }
 
     def to_json(self) -> str:
-        """Return all properties in a JSON string"""
+        """
+        Return all properties in a JSON string
+        """
         return json.dumps(self.to_dict())
 
     def __eq__(self, other):
+        """
+        Checks if two POI objects are equal based on id
+        """
         return self._id == other._id

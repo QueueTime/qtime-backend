@@ -15,7 +15,7 @@ app = connexion.App(__name__)
 app.add_api(
     combine_specifications(
         "./base_swagger.yaml",
-        "./app/poi_api/spec.yaml",
+        "./app/locations/spec.yaml",
         "./app/user/spec.yaml",
         "./app/rewards/spec.yaml",
     )

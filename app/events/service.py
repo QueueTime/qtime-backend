@@ -12,7 +12,7 @@ from .event import (
     RewardPointsAddPayload,
     RewardSource,
 )
-from app.poi_api.poi import POI
+from app.locations.poi import POI
 
 
 def generate_account_signup_event(user: User):
