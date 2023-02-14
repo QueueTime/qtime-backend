@@ -16,3 +16,11 @@ firebase_admin: Any = types.ModuleType(module_name)
 sys.modules[module_name] = firebase_admin
 firebase_admin.firestore = Mock(name=module_name + ".firestore")
 firebase_admin.auth = Mock(name=module_name + ".auth")
+firebase_admin.credentials = Mock(name=module_name + ".credentials")
+firebase_admin.initialize_app = Mock(name=module_name + ".initialize_app")
+firebase_admin._user_mgt = Mock(name=module_name + "._user_mgt")
+
+module_name = "firebase_admin._user_mgt"
+firebase_admin_user_mgt: Any = types.ModuleType(module_name)
+sys.modules[module_name] = firebase_admin_user_mgt
+firebase_admin_user_mgt.UserRecord = Mock(name=module_name + ".UserRecord")

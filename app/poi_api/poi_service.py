@@ -1,5 +1,4 @@
 from app.firebase import firestore_db
-from flask import jsonify
 from .poi_suggestion import POI_suggestions
 from .poi import POI
 from .poi_errors import POINotFoundError, InvalidPOISuggestionError
@@ -9,7 +8,7 @@ from datetime import datetime
 class POI_Service:
     def get_all_POI(self):
         try:
-            poi_ref = firestore_db.collection("POI")
+            poi_ref = firestore_db().collection("POI")
             all_poi = [doc.to_dict() for doc in poi_ref.stream()]
             list_all_poi = []
             for poi in all_poi:
@@ -21,7 +20,7 @@ class POI_Service:
 
     def get_POI(self, poi_id):
         try:
-            poi_ref = firestore_db.collection("POI")
+            poi_ref = firestore_db().collection("POI")
             poi = poi_ref.document(poi_id).get()
             poi_dict = poi.to_dict()
             if poi_dict is not None:
@@ -39,7 +38,7 @@ class POI_Service:
 
     def suggest_new_POI(self, poi_suggestion) -> int:
         try:
-            poi_suggestion_ref = firestore_db.collection("POI_proposal").document()
+            poi_suggestion_ref = firestore_db().collection("POI_proposal").document()
             # Generate id for poi suggestion document
             pid = poi_suggestion_ref.id
             poi_suggestion_instance = self._create_POI_suggestion(pid, poi_suggestion)
