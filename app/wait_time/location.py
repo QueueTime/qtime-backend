@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 from app.common import BadDataError
 import json
@@ -10,7 +10,7 @@ class Location:
         aid: str,
         latitude: float,
         longitude: float,
-        timestamp: datetime = datetime.now(),
+        timestamp: datetime = datetime.now(timezone.utc),
     ):
         self.aid = aid
         self.latitude = latitude
