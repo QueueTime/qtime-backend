@@ -14,17 +14,17 @@ info:
 servers:
   - url: "/api"
 
-# components:
-#   # Security scheme to require a Bearer token
-#   securitySchemes:
-#     jwt:
-#       type: http
-#       scheme: bearer
-#       bearerFormat: JWT
-#       x-bearerInfoFunc: app.auth.validate_token
+components:
+  # Security scheme to require a Bearer token
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: app.auth.validate_token
 
-# security:
-#   - jwt: []
+security:
+  - jwt: []
 
 # /endpoint_name: The relative URL of your API endpoint
 # get: The HTTP method that this URL endpoint will respond to
