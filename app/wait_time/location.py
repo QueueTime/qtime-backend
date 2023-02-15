@@ -51,4 +51,4 @@ class Location:
         return json.dumps(json_dict)
 
     def __eq__(self, other):
-        return self.aid == other.aid
+        return isinstance(other, Location) and self.to_dict() == other.to_dict()
