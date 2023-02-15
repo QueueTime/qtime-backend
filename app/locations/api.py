@@ -3,6 +3,7 @@ from flask import jsonify
 from .errors import POINotFoundError, InvalidPOISuggestionError
 from typing import Dict
 from app.auth import with_auth_user
+from app.user.user import User
 
 # TODO Exception handling
 # TODO type hints
@@ -33,13 +34,15 @@ def get_POI(poi_id: str):
 
 
 @with_auth_user
-def suggest_new_POI(poi_suggestion: Dict[str, str]):
+def suggest_new_POI(poi_suggestion: Dict[str, str], user: User, **kwargs):
     """
     Save a POI suggestion to the poi_proposal collection in Firestore.
 
     :param poi_suggestion: Suggestion to be saved
+    :param user: User object of the user who submitted the suggestion
     """
     try:
+        poi_suggestion["submitted_by"] = user.email
         suggestion = new_POI_suggestion(poi_suggestion)
         return None, 204
     except InvalidPOISuggestionError as e:

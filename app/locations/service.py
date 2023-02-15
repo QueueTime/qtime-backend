@@ -4,11 +4,11 @@ from .poi_suggestion import POI_suggestion
 from .poi import POI
 from .errors import POINotFoundError, InvalidPOISuggestionError
 from app import common
-from datetime import datetime
+from datetime import datetime, timezone
 from app.firebase import firestore_db, POI_COLLECTION, POI_PROPOSAL_COLLECTION
 
-poi_collection = firestore_db.collection(POI_COLLECTION)
-poi_proposal_collection = firestore_db.collection(POI_PROPOSAL_COLLECTION)
+poi_collection = firestore_db().collection(POI_COLLECTION)
+poi_proposal_collection = firestore_db().collection(POI_PROPOSAL_COLLECTION)
 
 
 def list_POI() -> List[POI]:
@@ -66,7 +66,7 @@ def _create_POI_suggestion(pid: str, poi_suggestion: Dict[str, str]) -> POI_sugg
     try:
         suggestion_name = poi_suggestion.get("suggestion_name")
         notes = poi_suggestion.get("notes")
-        submission_time = datetime.now(datetime.timezone.utc)
+        submission_time = datetime.now(timezone.utc)
         submitted_by = poi_suggestion.get("submitted_by")
         if suggestion_name is None or submitted_by is None:
             raise InvalidPOISuggestionError("Invalid POI submission")

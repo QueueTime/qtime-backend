@@ -8,7 +8,7 @@ import json
 class POI:
     def __init__(
         self,
-        _id: str,
+        id: str,
         name: str,
         classification: str,
         hours_of_operation: Dict[str, str],
@@ -17,7 +17,7 @@ class POI:
         location: Dict[str, str],
         image_url: str,
     ):
-        self._id = _id
+        self.id = id
         self.name = name
         self.classification = classification
         self.hours_of_operation = hours_of_operation
@@ -35,7 +35,7 @@ class POI:
         """
         try:
             return POI(
-                _id=dict["_id"],
+                id=dict["_id"],
                 name=dict["name"],
                 classification=dict["class"],
                 hours_of_operation=dict["hours_of_operation"],
@@ -52,7 +52,7 @@ class POI:
         Creates a dictionary from a POI object
         """
         return {
-            "_id": self._id,
+            "_id": self.id,
             "address": self.address,
             "class": self.classification,
             "hours_of_operation": self.hours_of_operation,
@@ -72,4 +72,4 @@ class POI:
         """
         Checks if two POI objects are equal based on id
         """
-        return self._id == other._id
+        return self.id == other.id
