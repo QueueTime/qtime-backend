@@ -71,11 +71,10 @@ In order to test functionality that connects to firebase we use firebase emulato
 
 - Follow the [install steps](https://firebase.google.com/docs/emulator-suite/install_and_configure#install_the_local_emulator_suite) to setup firebase emulators.
   - Run `firebase --version` to ensure you installed the firebase cli.
-- Setup the firestore and auth emulators with the following command
+- Setup the firestore emulator with the following command
 
 ```
 firebase setup:emulators:firestore
-firebase setup:emulators:auth
 ```
 
 - Start the emulators with the command
