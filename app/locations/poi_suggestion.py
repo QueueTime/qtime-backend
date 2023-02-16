@@ -11,11 +11,13 @@ class POI_suggestion:
         pid,
         suggestion_name,
         notes,
+        submitted_by,
         submission_time=datetime.now(timezone.utc),
     ) -> None:
         self.pid = pid
         self.suggestion_name = suggestion_name
         self.notes = notes
+        self.submitted_by = submitted_by
         self.submission_time = submission_time
 
     def get_pid(self) -> str:
@@ -36,7 +38,8 @@ class POI_suggestion:
                 pid=dict["_pid"],
                 suggestion_name=dict["suggestion_name"],
                 notes=dict["notes"],
-                submission_timedict=datetime.now(timezone.utc),
+                submitted_by=dict["submitted_by"],
+                submission_time=datetime.now(timezone.utc),
             )
         except KeyError as e:
             raise BadDataError("Missing data from poi suggestion data: " + str(e))
