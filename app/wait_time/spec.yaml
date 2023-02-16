@@ -19,6 +19,16 @@ components:
           type: number
           description: Current latitude
           example: 43.26221322561139
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error description
+          example: "Invalid data provided"
+
 
 
 
@@ -43,6 +53,12 @@ paths:
       responses:
         "204":
           description: "Successfully updated user location"
+        "400":
+          description: Invalid request (missing data in request body)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /places/{poi_id}/estimate:
     post:
       x-openapi-router-controller: app.wait_time.api
@@ -77,3 +93,15 @@ paths:
       responses:
         "204":
           description: "Successfully submitted wait time estimate"
+        "400":
+          description: Invalid or missing wait time estimate 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: POI ID does not exist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
