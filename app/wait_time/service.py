@@ -41,6 +41,7 @@ def add_wait_time_suggestion(user: User, poi_id: str, time_estimate: int):
     :param user: User submitting the suggestion
     :param poi_id: ID of the POI as a string
     :param time_estimate: Wait time estimate to submit
+    :raises POINotFoundError: If POI ID does not exist
     """
     # TODO: Computation needs to be added here. For now it just creates an event
     # TODO: Should be a generate_waittime_confirm_event if the wait time suggestion matches current wait time
