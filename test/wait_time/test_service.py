@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 from app.user.user import User
 
 from app.wait_time import service as wait_time_service
-from app.wait_time.location import Location
+from app.wait_time.location import UserLocation
 
 SAMPLE_UID = "2Nc3UKvI98YvhTlud9ZEomZHr9p2"
 
@@ -15,7 +15,7 @@ class TestWaitTimeService(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.test_user = User("test@sample.com")
-        self.test_location = Location(
+        self.test_location = UserLocation(
             aid=SAMPLE_UID, latitude=43.263532187492686, longitude=-79.91758503073444
         )
 

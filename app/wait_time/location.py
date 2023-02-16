@@ -4,7 +4,7 @@ from app.common import BadDataError
 import json
 
 
-class Location:
+class UserLocation:
     def __init__(
         self,
         aid: str,
@@ -18,16 +18,16 @@ class Location:
         self.timestamp = timestamp
 
     @staticmethod
-    def from_dict(aid: str, dict: Dict[str, Any]) -> "Location":
+    def from_dict(aid: str, dict: Dict[str, Any]) -> "UserLocation":
         """
-        Creates a new Location object from a Python Dictionary
+        Creates a new UserLocation object from a Python Dictionary
 
         :param dict: Dictionary of key-value pairs corresponding to location.
-        :returns: Location from specified data
+        :returns: UserLocation from specified data
         :raises BadDataError: If required data is missing from the dictionary
         """
         try:
-            return Location(
+            return UserLocation(
                 aid,
                 dict["latitude"],
                 dict["longitude"],
@@ -51,4 +51,4 @@ class Location:
         return json.dumps(json_dict)
 
     def __eq__(self, other):
-        return isinstance(other, Location) and self.to_dict() == other.to_dict()
+        return isinstance(other, UserLocation) and self.to_dict() == other.to_dict()

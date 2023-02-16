@@ -2,7 +2,7 @@ from flask import jsonify
 from app.auth import with_auth_user
 from app.user.user import User
 from typing import Dict, Any
-from .location import Location
+from .location import UserLocation
 from .service import uid_to_aid, update_location, add_wait_time_suggestion
 from app.common import BaseApiError
 
@@ -12,7 +12,9 @@ def update_user_location(
     user: User, location_data: Dict[str, float], token_info: Dict[str, Any]
 ):
     try:
-        user_location = Location.from_dict(uid_to_aid(token_info["uid"]), location_data)
+        user_location = UserLocation.from_dict(
+            uid_to_aid(token_info["uid"]), location_data
+        )
         update_location(user_location)
     except BaseApiError as e:
         return e.buildError()
