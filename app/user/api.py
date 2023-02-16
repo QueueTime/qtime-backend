@@ -3,6 +3,7 @@ from .errors import UserNotFoundError, UserAlreadyExistsError
 from firebase_admin import auth
 from typing import Dict, Any
 from app.auth import with_auth_user
+from app.user.user import User
 
 # Note: this endpoint will NOT use our middleware wrapper, since at this point we have no User record yet. We will default to the parameters connexion gives us
 def new_user_signup(token_info: Dict[str, Any]):
@@ -21,7 +22,7 @@ def new_user_signup(token_info: Dict[str, Any]):
 
 
 @with_auth_user
-def delete_user_profile(user, **kwargs):
+def delete_user_profile(user: User, **kwargs):
     try:
         delete_user(user)
     except UserNotFoundError:
