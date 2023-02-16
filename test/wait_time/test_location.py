@@ -19,6 +19,6 @@ class TestLocation(unittest.TestCase):
 
     def test_to_from_dict(self):
         self.assertEqual(
-            self.sample_location.to_json(),
-            Location.from_dict("abcd1234", self.sample_dict).to_json(),
+            self.sample_location,
+            Location.from_dict("abcd1234", self.sample_dict),
         )
