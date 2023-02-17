@@ -7,5 +7,5 @@ class BaseApiError(Exception):
         self.message = message
         self.error_code = error_code
 
-    def buildError(self):
-        return jsonify({"success": False, "message": self.message}), self.error_code
+    def build_error(self):
+        return {"success": False, "message": self.message}, self.error_code

@@ -12,7 +12,7 @@ from .event import (
     RewardPointsAddPayload,
     RewardSource,
 )
-from app.poi_api.poi import POI
+from app.locations.poi import POI
 
 
 def generate_account_signup_event(user: User):
@@ -48,7 +48,7 @@ def generate_waittime_submit_event(
         Event(
             EventType.WAITTIME_SUBMIT,
             user.email,
-            payload=WaitTimeSubmitPayload(estimate_submitted, poi._id),
+            payload=WaitTimeSubmitPayload(estimate_submitted, poi.id),
         )
     )
     _generate_reward_point_change_event(
@@ -68,7 +68,7 @@ def generate_waittime_confirm_event(user: User, poi: POI, points_awarded: int):
         Event(
             EventType.WAITTIME_CONFIRM,
             user.email,
-            payload=WaitTimeConfirmPayload(poi._id),
+            payload=WaitTimeConfirmPayload(poi.id),
         )
     )
     _generate_reward_point_change_event(
