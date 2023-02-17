@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict
+from typing import Dict, Any
 from app.common import BadDataError
 from app.locations.errors import POINotFoundError
 import json
@@ -11,10 +11,10 @@ class POI:
         id: str,
         name: str,
         classification: str,
-        hours_of_operation: Dict[str, str],
+        hours_of_operation: Dict[str, Any],
         address: str,
         poi_type: str,
-        location: Dict[str, str],
+        location: Dict[str, Any],
         image_url: str,
     ):
         self.id = id
@@ -27,7 +27,7 @@ class POI:
         self.image_url = image_url
 
     @staticmethod
-    def from_dict(dict: Dict[str, str]) -> "POI":
+    def from_dict(dict: Dict[str, Any]) -> "POI":
         """
         Creates a POI object from a dictionary.
 
@@ -47,7 +47,7 @@ class POI:
         except KeyError as e:
             raise BadDataError("Missing data from poi data: " + str(e))
 
-    def to_dict(self) -> Dict[str, str]:
+    def to_dict(self) -> Dict[str, Any]:
         """
         Creates a dictionary from a POI object
         """
