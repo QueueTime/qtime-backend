@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, ANY, call
 
 from app.events import service as event_service
-from app.user.api import User
+from app.user.user import User
 from app.locations.poi import POI
 
 
