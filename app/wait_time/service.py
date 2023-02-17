@@ -4,7 +4,7 @@ from app.firebase import firestore_db, LOCATION_COLLECTION
 from app.user.user import User
 from app.wait_time.location import UserLocation
 from app.events.service import generate_waittime_submit_event
-from app.locations.poi.service import get_details_for_POI
+from app.locations.service import get_details_for_POI
 from app.rewards.reward_values import POINTS_FOR_TIME_SUBMISSION
 
 

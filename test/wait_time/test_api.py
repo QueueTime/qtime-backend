@@ -2,7 +2,7 @@ import unittest
 from app.user.user import User
 from app.firebase import firestore_db, LOCATION_COLLECTION, POI_COLLECTION
 import json
-from app.location.poi import POI
+from app.locations.poi import POI
 
 from test.mixins.flask_client_mixin import FlaskTestClientMixin
 from test.mixins.firebase_mixin import FirebaseTestMixin
