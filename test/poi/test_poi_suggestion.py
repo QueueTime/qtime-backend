@@ -20,9 +20,6 @@ class TestPOI(unittest.TestCase):
             "submitted_by": "alice@gmail.com",
         }
 
-    def test_get_pid(self):
-        self.assertEqual(self.poi_suggestion.get_pid(), "0")
-
     # def test_to_dict(self):
     #     self.assertEquals(self.poi_suggestion.to_dict(), self.poi_suggestion_dict)
 

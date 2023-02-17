@@ -20,12 +20,6 @@ class POI_suggestion:
         self.submitted_by = submitted_by
         self.submission_time = submission_time
 
-    def get_pid(self) -> str:
-        """
-        Returns the pid of the POI suggestion
-        """
-        return self.pid
-
     @staticmethod
     def from_dict(dict: Dict[str, str]) -> "POI_suggestion":
         """
