@@ -17,7 +17,7 @@ def update_user_location(
         )
         update_location(user_location)
     except BaseApiError as e:
-        return e.buildError()
+        return e.build_error()
     except Exception as e:
         return {"error": str(e)}, 500
     return None, 204
@@ -34,7 +34,7 @@ def submit_user_estimate(
             return {"error": "Invalid wait time submission"}, 400
         add_wait_time_suggestion(user, poi_id, estimate_data["wait_time_estimate"])
     except BaseApiError as e:
-        return e.buildError()
+        return e.build_error()
     except Exception as e:
         return {"error", str(e)}, 500
     return None, 204
