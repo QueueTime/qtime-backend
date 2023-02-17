@@ -44,7 +44,9 @@ class TestWaitTimeApi(unittest.TestCase, FlaskTestClientMixin, FirebaseTestMixin
             },
             image_url="https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
         )
-        firestore_db().collection(POI_COLLECTION).add(self.sample_poi.to_dict())
+        firestore_db().collection(POI_COLLECTION).document(self.sample_poi.id).set(
+            self.sample_poi.to_dict()
+        )
 
     def tearDown(self):
         self.delete_user_accounts()
