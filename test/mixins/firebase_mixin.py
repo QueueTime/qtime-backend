@@ -54,7 +54,11 @@ class FirebaseTestMixin:
         if cert_path is None:
             cert_path = FIREBASE_CERT_PATH
 
-        initialize_firebase(cert_path)
+        # Check if app is already initialized
+        try:
+            firestore_db()
+        except ValueError:
+            initialize_firebase(cert_path)
 
     def with_user_accounts(self, *users: User):
         """
