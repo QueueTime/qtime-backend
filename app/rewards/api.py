@@ -30,27 +30,27 @@ class RewardEventApiResponse(SimpleMap):
 def submit_referral_code(user: User, code: str, **kwargs):
     if not re.match(r"^[A-Z]{6}$", code):
         err_msg = "Invalid referral code format, must be 6 capital letters."
-        return BadDataError(err_msg).buildError()
+        return BadDataError(err_msg).build_error()
 
     if user.hasCompletedOnboarding:
         err_msg = "User has already completed onboarding. Cannot use referral code after onboarding."
-        return InvalidReferralOperation(err_msg).buildError()
+        return InvalidReferralOperation(err_msg).build_error()
 
     if user.hasUsedReferralCode:
         err_msg = (
             "User has already used a referral code. Cannot use multiple referral codes."
         )
-        return InvalidReferralOperation(err_msg).buildError()
+        return InvalidReferralOperation(err_msg).build_error()
 
     try:
         user_with_code = find_user_by_referral_code(code)
     except UserNotFoundError:
         err_msg = f"User with referral code {code} not found."
-        return ReferralCodeNotFound(err_msg).buildError()
+        return ReferralCodeNotFound(err_msg).build_error()
 
     if user_with_code.email == user.email:
         err_msg = "Invalid operation. Cannot refer to yourself."
-        return InvalidReferralOperation(err_msg).buildError()
+        return InvalidReferralOperation(err_msg).build_error()
 
     user.reward_point_balance += POINTS_FOR_REFERRAL
     user.hasUsedReferralCode = True
@@ -76,14 +76,14 @@ def list_reward_events(
     :return: List of reward events for the user
     """
     if limit > 100:
-        return BadDataError("Limit cannot be greater than 100").buildError()
+        return BadDataError("Limit cannot be greater than 100").build_error()
 
     try:
         before_datetime = (
             datetime.strptime(before, "%Y-%m-%dT%H:%M:%S.%fZ") if before else None
         )
     except ValueError as e:
-        return BadDataError(str(e)).buildError()
+        return BadDataError(str(e)).build_error()
 
     return [
         RewardEventApiResponse.from_event(e).to_dict()

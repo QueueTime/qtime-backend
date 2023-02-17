@@ -36,8 +36,15 @@ components:
           type: "string"
         notes:
           type: "string"
-        submitted_by:
-          type: "string"
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error description
+          example: "Invalid data provided"
   parameters:
     poi_id:
       name: "poi_id"
@@ -51,7 +58,7 @@ paths:
   # POI API endpoints
   /places/list:
     get:
-      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      x-openapi-router-controller: app.locations.api
       operationId: get_all_POI
       tags:
         - POI
@@ -67,7 +74,7 @@ paths:
                   $ref: "#/components/schemas/POI"
   /places/list/{poi_id}:
     get:
-      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      x-openapi-router-controller: app.locations.api
       operationId: get_POI
       tags:
         - POI
@@ -88,38 +95,28 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/POI"
+                $ref: "#/components/schemas/ErrorResponse"
   /places/suggest:
     post:
-      x-openapi-router-controller: app.poi_api.poi_rest_handler
+      x-openapi-router-controller: app.locations.api
       operationId: suggest_new_POI
       tags:
         - POI
       summary: "Suggest a new POI"
       requestBody:
+        x-body-name: "poi_suggestion"
         description: "POI suggestion to create"
         required: True
         content:
           application/json:
             schema:
-              x-body-name: "poi_suggestion"
               $ref: "#/components/schemas/POI_suggestion"
       responses:
-        "200":
+        "204":
           description: "Successfully read the POI"
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/POI"
         "400":
           description: "Invalid POI submission"
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/POI"
+                $ref: "#/components/schemas/ErrorResponse"

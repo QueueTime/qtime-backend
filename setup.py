@@ -15,7 +15,7 @@ def start_server(name: str):
     app.add_api(
         combine_specifications(
             "./base_swagger.yaml",
-            "./app/poi_api/spec.yaml",
+            "./app/locations/spec.yaml",
             "./app/user/spec.yaml",
             "./app/rewards/spec.yaml",
             "./app/wait_time/spec.yaml",

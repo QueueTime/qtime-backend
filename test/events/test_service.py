@@ -3,7 +3,7 @@ from unittest.mock import patch, ANY, call
 
 from app.events import service as event_service
 from app.user.user import User
-from app.poi_api.poi import POI
+from app.locations.poi import POI
 
 
 @patch("app.events.service.firestore_db")
