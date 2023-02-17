@@ -5,9 +5,9 @@ from typing import Dict
 from app.auth import with_auth_user
 from app.user.user import User
 
-# TODO Exception handling
-# TODO type hints
-def get_all_POI():
+
+@with_auth_user
+def get_all_POI(**kwargs):
     """
     Return a list of all the tracked points of interests.
     """
@@ -18,7 +18,8 @@ def get_all_POI():
         return {"error": str(e)}, 500
 
 
-def get_POI(poi_id: str):
+@with_auth_user
+def get_POI(poi_id: str, **kwargs):
     """
     Returns the details of a single point of interest.
 
