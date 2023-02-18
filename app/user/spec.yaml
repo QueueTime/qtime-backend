@@ -44,7 +44,7 @@ paths:
         "404":
           description: User not found
   /user/signup:
-    put:
+    post:
       x-openapi-router-controller: app.user.api
       operationId: new_user_signup
       tags:
