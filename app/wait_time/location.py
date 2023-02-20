@@ -27,7 +27,7 @@ class UserLocation:
         :raises BadDataError: If required data is missing from the dictionary
         """
         try:
-            return UserLocation(
+            location = UserLocation(
                 aid,
                 dict["latitude"],
                 dict["longitude"],
@@ -35,6 +35,13 @@ class UserLocation:
             )
         except KeyError as e:
             raise BadDataError("Missing data from Location data: " + str(e))
+
+        if not _is_valid_gps_coordinates(location.latitude, location.longitude):
+            raise BadDataError(
+                f"Invalid GPS coordinates: latitude={location.latitude}, longitude={location.longitude}"
+            )
+
+        return location
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -52,3 +59,7 @@ class UserLocation:
 
     def __eq__(self, other):
         return isinstance(other, UserLocation) and self.to_dict() == other.to_dict()
+
+
+def _is_valid_gps_coordinates(latitude, longitude):
+    return latitude >= -90 and latitude <= 90 and longitude >= -180 and longitude <= 180
