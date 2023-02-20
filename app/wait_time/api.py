@@ -50,8 +50,6 @@ def submit_user_estimate(
     # TODO: implement user estimate submission
     # If we need more POI data, change this to fetch the actual POI object instead of just using poi_id
     try:
-        if estimate_data["wait_time_estimate"] < 0:
-            return {"error": "Invalid wait time submission"}, 400
         add_wait_time_suggestion(user, poi_id, estimate_data["wait_time_estimate"])
     except BaseApiError as e:
         return e.build_error()

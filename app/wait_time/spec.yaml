@@ -93,6 +93,7 @@ paths:
                 wait_time_estimate:
                   type: number
                   description: Wait time estimate in minutes
+                  minimum: 0
                   example: 5
       responses:
         "204":
