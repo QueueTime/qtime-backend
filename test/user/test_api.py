@@ -28,7 +28,7 @@ class TestUsersApi(unittest.TestCase, FlaskTestClientMixin, FirebaseTestMixin):
         _create_user_in_firebase_auth_emulator(
             self.sample_user.email, USER_PASSWORD, self.sample_user.email
         )
-        response = self.client.put(
+        response = self.client.post(
             f"{self.base_url}/user/signup",
             headers={"Authorization": f"Bearer {self.token(self.sample_user.email)}"},
         )
