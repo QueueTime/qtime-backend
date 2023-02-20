@@ -14,10 +14,14 @@ components:
         longitude:
           type: number
           description: Current longitude
+          minimum: -180
+          maximum: 180
           example: -79.92049747836754
         latitude:
           type: number
           description: Current latitude
+          minimum: -90
+          maximum: 90
           example: 43.26221322561139
     ErrorResponse:
       type: object

@@ -62,6 +62,14 @@ class TestWaitTimeApi(unittest.TestCase, FlaskTestClientMixin, FirebaseTestMixin
         # Check if location collection is not empty
         self.assertTrue(firestore_db().collection(LOCATION_COLLECTION).limit(1).get())
 
+    def test_update_user_location_bad_coordinates(self):
+        response = self.client.post(
+            f"{self.base_url}/user/location",
+            json={"latitude": -90.59584, "longitude": 181.0332234},
+            headers={"Authorization": f"Bearer {self.token(self.test_user.email)}"},
+        )
+        self.assertEqual(response.status_code, 400)
+
     def test_update_user_location_bad_body(self):
         response = self.client.post(
             f"{self.base_url}/user/location",
