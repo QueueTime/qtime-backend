@@ -32,6 +32,7 @@ def with_auth_user(func):
             firebase_user_record: UserRecord = auth.get_user(token_info["uid"])
             user: User = find_user(firebase_user_record.email)
             kwargs["user"] = user
+            kwargs["token_info"] = token_info
         except ValueError as e:
             return {"error": "Invalid user ID", "message": str(e)}, 400
         except auth.UserNotFoundError as e:

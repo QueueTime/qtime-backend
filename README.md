@@ -108,3 +108,31 @@ POST http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signInWith
 ```
 firebase emulators:export ./sample_firebase_data --project qtime-bd47e
 ```
+
+### Firebase Utility Script
+
+The firebase utility script is used to simplify management tasks for Firebase and the Firestore database. It is located in `scripts/manage_firebase.py`. Currently, the following command line arguments are supported:
+
+- `--add-pois`: Update the `POI` collection on Firestore with a list of POI data given in a file in JSON format. Example: 
+```
+python manage_firebase.py --add-pois ./pois.json
+```
+
+- `--add-property`, `--remove-property`: These options will add a new field to every document in a collection or remove a field from all documents in a collection respectively. To add a new property, the following syntax is used: 
+```
+--add-property collection_path=<COLLECTION_PATH> name=<FIELD_NAME> type=[string | number | boolean | map | array | timestamp] value=<VALUE>
+```
+
+Example commands:
+
+```
+python manage_firebase.py --remove-property collection_path=users name=hasCompletedOnboarding
+```
+This will delete the `hasCompletedOnboarding` field from all documents in the users collection.
+
+```
+python manage_firebase.py --add-property collection_path=users name=has_completed_onboarding type=boolean value=true
+```
+This will add a new boolean field to all documents in the users collection called `has_completed_onboarding` with a default value of true.
+
+Command line help for the utility is also available by providing the `-h` or `--help` argument.

@@ -10,8 +10,7 @@ from app.user.service import find_user_by_referral_code, find_user, update_user
 from app.user.errors import UserNotFoundError
 from app.user.user import User
 from .errors import ReferralCodeNotFound, InvalidReferralOperation
-
-POINTS_FOR_REFERRAL = 200
+from .reward_values import POINTS_FOR_REFERRAL
 
 
 class RewardEventApiResponse(SimpleMap):

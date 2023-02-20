@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: "QueueTime Flask REST API"
+  description: "QueueTime API for finding wait times of various points of interests at McMaster University"
+  version: "1.0.0"
+
+components:
+  schemas:
+    Location:
+      required:
+        - longitude
+        - latitude
+      properties:
+        longitude:
+          type: number
+          description: Current longitude
+          minimum: -180
+          maximum: 180
+          example: -79.92049747836754
+        latitude:
+          type: number
+          description: Current latitude
+          minimum: -90
+          maximum: 90
+          example: 43.26221322561139
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error description
+          example: "Invalid data provided"
+
+
+
+
+paths:
+  /user/location:
+    post:
+      x-openapi-router-controller: app.wait_time.api
+      operationId: update_user_location
+      tags:
+        - User
+        - Sourcing
+      summary: Submit current location of user
+      description: Submit the current GPS coordinates of the user to update their current location
+      requestBody:
+        x-body-name: "location_data"
+        description: "GPS Coordinates of user"
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Location"
+      responses:
+        "204":
+          description: "Successfully updated user location"
+        "400":
+          description: Invalid request (missing data in request body)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /places/{poi_id}/estimate:
+    post:
+      x-openapi-router-controller: app.wait_time.api
+      operationId: submit_user_estimate
+      tags:
+        - POI
+        - Sourcing
+      summary: Submit wait time estimate
+      description: Submit wait time estimate for a specified POI ID
+      parameters:
+        - name: "poi_id"
+          description: "ID of specified POI"
+          in: path
+          required: True
+          schema:
+            type: string
+          example: "tim_hortons_musc"
+      requestBody:
+        x-body-name: "estimate_data"
+        description: "Wait time estimate to submit in minutes"
+        required: True
+        content:
+          application/json:
+            schema:
+              required:
+                - wait_time_estimate
+              properties:
+                wait_time_estimate:
+                  type: number
+                  description: Wait time estimate in minutes
+                  minimum: 0
+                  example: 5
+      responses:
+        "204":
+          description: "Successfully submitted wait time estimate"
+        "400":
+          description: Invalid or missing wait time estimate 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: POI ID does not exist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
