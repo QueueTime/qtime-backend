@@ -8,4 +8,4 @@ def handle_base_api_error(e: BaseApiError):
 
 
 def handle_generic_exception(e: Exception):
-    return {"error": str(e)}, 500
+    return {"success": False, "message": str(e)}, 500
