@@ -3,7 +3,6 @@ from utils import combine_specifications
 from firebase_admin import credentials, initialize_app
 from app.error_handlers import handle_base_api_error, handle_generic_exception
 from app.base_api_error import BaseApiError
-from werkzeug.exceptions import HTTPException
 
 FIREBASE_CERT_PATH = "serviceAccountKey.json"
 
