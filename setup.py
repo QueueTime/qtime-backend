@@ -1,6 +1,8 @@
 import connexion
 from utils import combine_specifications
 from firebase_admin import credentials, initialize_app
+from app.error_handlers import handle_base_api_error, handle_generic_exception
+from app.base_api_error import BaseApiError
 
 FIREBASE_CERT_PATH = "serviceAccountKey.json"
 
@@ -21,4 +23,8 @@ def start_server(name: str):
             "./app/wait_time/spec.yaml",
         )
     )
+    # Register error handlers
+    app.add_error_handler(BaseApiError, handle_base_api_error)
+    app.add_error_handler(Exception, handle_generic_exception)
+
     return app
