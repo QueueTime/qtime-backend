@@ -21,15 +21,8 @@ def update_user_location(
     Latitide is expected to be a float between -90 and 90. Longitude is expected to be
     a float between -180 and 180
     """
-    try:
-        user_location = UserLocation.from_dict(
-            uid_to_aid(token_info["uid"]), location_data
-        )
-        update_location(user_location)
-    except BaseApiError as e:
-        return e.build_error()
-    except Exception as e:
-        return {"error": str(e)}, 500
+    user_location = UserLocation.from_dict(uid_to_aid(token_info["uid"]), location_data)
+    update_location(user_location)
     return None, 204
 
 
@@ -49,10 +42,6 @@ def submit_user_estimate(
     """
     # TODO: implement user estimate submission
     # If we need more POI data, change this to fetch the actual POI object instead of just using poi_id
-    try:
-        add_wait_time_suggestion(user, poi_id, estimate_data["wait_time_estimate"])
-    except BaseApiError as e:
-        return e.build_error()
-    except Exception as e:
-        return {"error", str(e)}, 500
+
+    add_wait_time_suggestion(user, poi_id, estimate_data["wait_time_estimate"])
     return None, 204

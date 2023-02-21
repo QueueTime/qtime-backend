@@ -14,19 +14,10 @@ def new_user_signup(token_info: Dict[str, Any]):
         return {"error": "Invalid user ID", "message": str(e)}, 400
     except auth.UserNotFoundError as e:
         return {"error": "User not found in firebase auth", "message": str(e)}, 404
-    except UserAlreadyExistsError as e:
-        return e.build_error()
-    except Exception as e:
-        return {"error": "Unknown error", "message": str(e)}, 500
-    return "", 204
+    return None, 204
 
 
 @with_auth_user
 def delete_user_profile(user: User, **kwargs):
-    try:
-        delete_user(user)
-    except UserNotFoundError:
-        return {"error": "User not found"}, 404
-    except Exception as e:
-        return {"error": str(e)}, 500
-    return "", 204
+    delete_user(user)
+    return None, 204
