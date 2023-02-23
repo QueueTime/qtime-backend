@@ -2,6 +2,7 @@
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
 from app.common import BadDataError
+from .errors import UserNotInPoolError
 
 
 class POIPool:
@@ -19,12 +20,12 @@ class POIPool:
         """
         :param poi_id: ID of the POI as string
         :param pool_data: Pool data dict formatted as {"user": {"start_time": datetime, "last_seen": datetime}, ...}
-        :param current_average_waittime: Current average time in minutes a user spends in a pool
+        :param current_average_wait_time: Current average time in minutes a user spends in a pool
         """
         self.poi_id = poi_id
         self.pool_data = pool_data
         self.current_average_wait_time = (
-            self._compute_average_wait_time
+            self._compute_average_wait_time()
             if current_average_wait_time is None
             else current_average_wait_time
         )
@@ -37,7 +38,7 @@ class POIPool:
             "current_average_wait_time": float,
             "pool": {
                 "email": {
-                    "start_time": datetime
+                    "start_time": datetime,
                     "last_seen": datetime
                          },...
                     }
@@ -62,7 +63,7 @@ class POIPool:
 
         :returns: dictionary containing key-value pairs with all POIPool data
         """
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         # Delete primary key before returning dict
         del dict["poi_id"]
         return dict
@@ -96,7 +97,10 @@ class POIPool:
 
         :param user: Email of the user to remove
         """
-        del self.pool_data[user]
+        try:
+            del self.pool_data[user]
+        except KeyError:
+            raise UserNotInPoolError(user, self.poi_id)
         self._compute_average_wait_time()
 
     def _compute_average_wait_time(self) -> float:

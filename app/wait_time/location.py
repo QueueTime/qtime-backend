@@ -49,7 +49,7 @@ class UserLocation:
 
         :returns: dictionary containing key-value pairs with all UserLocation data
         """
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         # Delete primary key before returning dict
         del dict["aid"]
         return dict
