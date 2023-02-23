@@ -21,6 +21,7 @@ def update_user_location(
     Latitide is expected to be a float between -90 and 90. Longitude is expected to be
     a float between -180 and 180
     """
+    # TODO: check user proximity to nearby POIs and place them in the appropriate POI pool
     user_location = UserLocation.from_dict(uid_to_aid(token_info["uid"]), location_data)
     update_location(user_location)
     return None, 204

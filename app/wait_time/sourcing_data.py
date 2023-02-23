@@ -2,7 +2,6 @@
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
 from app.common import BadDataError
-from math import ceil
 
 
 class POIPool:
