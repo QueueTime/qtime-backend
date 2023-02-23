@@ -37,7 +37,7 @@ def find_user_by_referral_code(referral_code: str) -> User:
     """
     user_ref = users_collection().where("referral_code", "==", referral_code).get()
     if not user_ref:
-        raise UserNotFoundError(referral_code)
+        raise UserNotFoundError(referral_code=referral_code)
     return User.from_dict(user_ref[0].id, user_ref[0].to_dict())
 
 

@@ -45,9 +45,9 @@ class UserLocation:
 
     def to_dict(self) -> Dict[str, Any]:
         """
-        Returns a dictionary containing all properties from the User
+        Returns a dictionary containing all properties from the UserLocation
 
-        :returns: dictionary containing key-value pairs with all User data
+        :returns: dictionary containing key-value pairs with all UserLocation data
         """
         return self.__dict__
 
