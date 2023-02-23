@@ -8,6 +8,10 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Show GitHub context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Send notification to Discord
         uses: Ilshidur/action-discord@master
         env:
