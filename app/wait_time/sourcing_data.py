@@ -1,6 +1,8 @@
 # Data classes used for sourcing will be placed here
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
+from common import BadDataError
+from math import ceil
 
 
 class POIPool:
@@ -13,58 +15,81 @@ class POIPool:
         self,
         poi_id: str,
         pool_data: Dict[str, Dict[str, datetime]] = {},
-        current_average_waittime: Optional[int] = None,
+        average_wait_per_user: float = 0,
+        total_user_count: int = 0,
     ):
         """
         :param poi_id: ID of the POI as string
-        :param pool_data: Pool data dict formatted as {"email": {"start_time": datetime, "last_seen": datetime}, ...}
-        :param current_average_waittime: Current average wait time of users in pool (if available)
+        :param pool_data: Pool data dict formatted as {"user": {"start_time": datetime, "last_seen": datetime}, ...}
+        :param current_average_waittime: Current average time in minutes a user spends in a pool
+        :param total_user_count: The total number of users who have been in the queue during the lifetime of the pool
         """
         self.poi_id = poi_id
         self.pool_data = pool_data
-        self._current_average_waittime = (
-            self._compute_average_wait_time()
-            if current_average_waittime is None
-            else current_average_waittime
-        )
+        self.average_wait_per_user = average_wait_per_user
+        self.total_user_count = total_user_count
 
-    def _compute_average_wait_time(self):
-        """Recompute current average wait time"""
-        now = datetime.now(timezone.utc)
+    @classmethod
+    def from_dict(poi_id: str, dict: Dict[str, Any]):
+        """
+        Create a new POIPool from a dict in the following format:
+        {
+            "average_wait_per_user": float,
+            "total_user_count": int,
+            "pool": {
+                "email": {
+                    "start_time": datetime
+                    "last_seen": datetime
+                         },...
+                    }
+        }
 
-        total_seconds = 0
-        for time in self.pool_data.values():
-            time_delta: timedelta = now - time
-            total_seconds += time_delta.seconds
+        :param poi_id: ID of the POI
+        :param dict: Dict containing pool data in the above format
+        """
+        pass
 
-        self._current_average_waittime = total_seconds // len(self.pool_data)
-        return self._current_average_waittime
+    def get_wait_time_estimate(self) -> int:
+        return ceil(self.average_wait_per_user * len(self.pool_data))
 
-    def get_average_wait_time(self):
-        """Returns the current average wait time of the pool"""
-        return self._current_average_waittime
-
-    def add_user_to_pool(self, email: str):
+    def add_user_to_pool(self, user: str):
         """
         Add a new user to the pool
 
-        :param email: Email of the user to add
+        :param user: Email of the user to add
         """
         current_timestamp = datetime.now(timezone.utc)
-        if email in self.pool_data:
-            self.pool_data[email]["last_seen"] = current_timestamp
+        if user in self.pool_data:
+            try:
+                self.pool_data[user]["last_seen"] = current_timestamp
+            except KeyError as e:
+                raise BadDataError(f"Missing data from POI Pool entry: {str(e)}")
         else:
-            self.pool_data[email] = {
+            self.pool_data[user] = {
                 "start_time": current_timestamp,
                 "last_seen": current_timestamp,
             }
-            self._compute_average_wait_time()
 
-    def remove_user_from_pool(self, email: str):
-        """
-        Removes a user from the pool
+    def is_user_in_pool(self, user: str) -> bool:
+        return user in self.pool_data
 
-        :param email: Email of the user to remove
+    def remove_user_from_pool(self, user: str):
         """
-        del self.pool_data[email]
-        self._compute_average_wait_time()
+        Removes a user from the pool. Average wait time per user and total users are updated in the pool
+        before removal
+
+        :param user: Email of the user to remove
+        """
+        user_wait_data = self.pool_data[user]
+        total_pool_minutes_waited = self.average_wait_per_user * self.total_user_count
+        # Get outgoing user's wait time in minutes
+        outgoing_user_time_delta = (
+            datetime.now(timezone.utc) - user_wait_data["start_time"]
+        )
+        outgoing_user_wait = outgoing_user_time_delta.seconds / 60
+        # Increment new total user count and update average wait per user
+        self.total_user_count += 1
+        self.average_wait_per_user = (
+            total_pool_minutes_waited + outgoing_user_wait
+        ) / self.total_user_count
+        del self.pool_data[user]
