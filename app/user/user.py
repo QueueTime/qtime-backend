@@ -62,7 +62,10 @@ class User:
         Returns:
             dict: containing key-value pairs with all User data
         """
-        return self.__dict__
+        dict = self.__dict__.copy()
+        # Delete primary key before returning dict
+        del dict["email"]
+        return dict
 
     def to_json(self) -> str:
         """Return all properties in a JSON string"""

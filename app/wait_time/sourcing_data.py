@@ -1,7 +1,7 @@
 # Data classes used for sourcing will be placed here
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
-from common import BadDataError
+from app.common import BadDataError
 from math import ceil
 
 
@@ -63,7 +63,10 @@ class POIPool:
 
         :returns: dictionary containing key-value pairs with all POIPool data
         """
-        return self.__dict__
+        dict = self.__dict__
+        # Delete primary key before returning dict
+        del dict["poi_id"]
+        return dict
 
     def update_user_in_pool(self, user: str):
         """

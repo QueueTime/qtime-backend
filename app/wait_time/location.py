@@ -49,7 +49,10 @@ class UserLocation:
 
         :returns: dictionary containing key-value pairs with all UserLocation data
         """
-        return self.__dict__
+        dict = self.__dict__
+        # Delete primary key before returning dict
+        del dict["aid"]
+        return dict
 
     def to_json(self) -> str:
         """Return all properties in a JSON string"""
