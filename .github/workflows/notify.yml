@@ -18,4 +18,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: "Github Savant"
         with:
-          args: '${{ github.event.sender.login }} has requested a review from <@${{ fromJson(''{ "dhruv423": "FlyHigh23#0643" }'')[github.event.requested_reviewer.login] }}> on [PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})'
+          args: '${{ github.event.sender.login }} has requested a review from <@${{ fromJson(''{ "dhruv423": "519225175489642537" }'')[github.event.requested_reviewer.login] }}> on [PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})'
