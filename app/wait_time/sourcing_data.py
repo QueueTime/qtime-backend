@@ -30,7 +30,7 @@ class POIPool:
         self.total_user_count = total_user_count
 
     @classmethod
-    def from_dict(poi_id: str, dict: Dict[str, Any]):
+    def from_dict(poi_id: str, dict: Dict[str, Any]) -> "POIPool":
         """
         Create a new POIPool from a dict in the following format:
         {
@@ -46,8 +46,25 @@ class POIPool:
 
         :param poi_id: ID of the POI
         :param dict: Dict containing pool data in the above format
+        :returns: POIPool initialized with data from the given dictionary
         """
-        pass
+        try:
+            return POIPool(
+                poi_id=poi_id,
+                pool_data=dict["pool"],
+                average_wait_per_user=dict["average_wait_per_user"],
+                total_user_count=dict["total_user_count"],
+            )
+        except KeyError as e:
+            raise BadDataError(f"Missing data from POIPool data: {str(e)}")
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Returns a dictionary containing all properties from the POIPool
+
+        :returns: dictionary containing key-value pairs with all POIPool data
+        """
+        return self.__dict__
 
     def get_wait_time_estimate(self) -> int:
         return ceil(self.average_wait_per_user * len(self.pool_data))
