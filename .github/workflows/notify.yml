@@ -14,4 +14,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: "Github Savant"
         with:
-          args: "Hey, ${{ github.event.pull_request.sender.name }} has requested a review from @${{ github.event.pull_request.requested_reviewer.name }} on PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }} ${{ github.event.pull_request.html_url }}"
+          args: "Hey, ${{ github.actor.name }} has requested a review from @${{ github.requested_reviewer.name }} on [PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})"
