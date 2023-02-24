@@ -25,7 +25,7 @@ class TestPOIPool(unittest.TestCase):
         }
         self.sample_pool = POIPool(
             "tim_hortons_musc",
-            pool_data=self.sample_pool_dict["pool"],
+            pool=self.sample_pool_dict["pool"],
             recent_wait_times=self.sample_pool_dict["recent_wait_times"],
             current_average_wait_time=self.sample_pool_dict[
                 "current_average_wait_time"
@@ -40,9 +40,9 @@ class TestPOIPool(unittest.TestCase):
 
     def test_update_user_in_pool(self):
         self.sample_pool.update_user_in_pool("test@sample.com")
-        self.assertEqual(len(self.sample_pool.pool_data), 1)
+        self.assertEqual(len(self.sample_pool.pool), 1)
         self.sample_pool.update_user_in_pool("newuser@sample.com")
-        self.assertEqual(len(self.sample_pool.pool_data), 2)
+        self.assertEqual(len(self.sample_pool.pool), 2)
 
     def test_is_user_in_pool(self):
         self.assertTrue(self.sample_pool.is_user_in_pool("test@sample.com"))
@@ -51,7 +51,7 @@ class TestPOIPool(unittest.TestCase):
     def test_remove_user_from_pool(self):
         old_wait_time = self.sample_pool.current_average_wait_time
         self.sample_pool.remove_user_from_pool("test@sample.com")
-        self.assertEqual(len(self.sample_pool.pool_data), 0)
+        self.assertEqual(len(self.sample_pool.pool), 0)
         # This user has a wait time of about 300 seconds, so new average wait time should be less than before
         self.assertLess(self.sample_pool.current_average_wait_time, old_wait_time)
         # Check that outgoing wait time has been added to recent wait times
