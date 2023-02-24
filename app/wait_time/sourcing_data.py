@@ -15,18 +15,18 @@ class POIPool:
     def __init__(
         self,
         poi_id: str,
-        pool_data: Dict[str, Dict[str, datetime]] = {},
+        pool: Dict[str, Dict[str, datetime]] = {},
         recent_wait_times: Dict[str, float] = {},
         current_average_wait_time: Optional[float] = None,
     ):
         """
         :param poi_id: ID of the POI as string
-        :param pool_data: Pool data dict formatted as {"user": {"start_time": datetime, "last_seen": datetime}, ...}
-        :param served_user_data: Recently served user data dict formatted as {"<ISO-timestamp>": float, ...}
+        :param pool: Pool data dict formatted as {"user": {"start_time": datetime, "last_seen": datetime}, ...}
+        :param recent_wait_times: Recently served user data dict formatted as {"<ISO-timestamp>": float, ...}
         :param current_average_wait_time: Current average time in minutes a user spends in a pool
         """
         self.poi_id = poi_id
-        self.pool_data = pool_data
+        self.pool = pool
         self.recent_wait_times = recent_wait_times
         self.current_average_wait_time = (
             self._recompute_average_wait_time()
@@ -59,7 +59,7 @@ class POIPool:
         try:
             return POIPool(
                 poi_id=poi_id,
-                pool_data=dict["pool"],
+                pool=dict["pool"],
                 recent_wait_times=dict["recent_wait_times"],
                 current_average_wait_time=dict["current_average_wait_time"],
             )
@@ -84,19 +84,19 @@ class POIPool:
         :param user: Email of the user to add
         """
         current_timestamp = datetime.now(timezone.utc)
-        if user in self.pool_data:
+        if user in self.pool:
             try:
-                self.pool_data[user]["last_seen"] = current_timestamp
+                self.pool[user]["last_seen"] = current_timestamp
             except KeyError as e:
                 raise BadDataError(f"Missing data from POI Pool entry: {str(e)}")
         else:
-            self.pool_data[user] = {
+            self.pool[user] = {
                 "start_time": current_timestamp,
                 "last_seen": current_timestamp,
             }
 
     def is_user_in_pool(self, user: str) -> bool:
-        return user in self.pool_data
+        return user in self.pool
 
     def remove_user_from_pool(self, user: str):
         """
@@ -108,7 +108,7 @@ class POIPool:
         # Add time taken to serve user to recent wait times
         current_timestamp = datetime.now(timezone.utc)
         try:
-            user_pool_data = self.pool_data[user]
+            user_pool_data = self.pool[user]
         except KeyError:
             raise UserNotInPoolError(user, self.poi_id)
         try:
@@ -118,7 +118,7 @@ class POIPool:
 
         self.recent_wait_times[current_timestamp.isoformat()] = wait_time
 
-        del self.pool_data[user]
+        del self.pool[user]
         self._recompute_average_wait_time()
 
     def clear_stale_pool_users(self, ttl: int = 300):
@@ -130,8 +130,8 @@ class POIPool:
         """
 
         current_timestamp = datetime.now(timezone.utc)
-        for user in self.pool_data.copy():
-            if (current_timestamp - self.pool_data[user]["last_seen"]).seconds >= ttl:
+        for user in self.pool.copy():
+            if (current_timestamp - self.pool[user]["last_seen"]).seconds >= ttl:
                 self.remove_user_from_pool(user)
 
     def clear_stale_wait_times(self, ttl: int = 1800):

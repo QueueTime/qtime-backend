@@ -8,7 +8,7 @@ from app.events.service import generate_waittime_submit_event
 from app.locations.service import get_details_for_POI
 from app.rewards.reward_values import POINTS_FOR_TIME_SUBMISSION
 from .sourcing_data import POIPool
-from .errors import POIPoolNotFoundError
+from .errors import POIPoolNotFoundError, UserAlreadyInPoolError
 from math import ceil
 
 
@@ -66,7 +66,7 @@ def compute_wait_time_for_poi(poi: POI) -> int:
     :returns: int corresponding to wait time in minutes
     """
     # TODO: Histogram and manual time submission calculations to be added to this
-    return ceil(compute_wait_time_from_poi_pool(poi))
+    return ceil(get_wait_time_from_poi_pool(poi))
 
 
 ### POI Pool functions
@@ -99,6 +99,8 @@ def add_user_to_poi_pool(user: User, poi: POI):
     :raises POIPoolNotFoundError: if there is no POIPool for the specified POI
     """
     poi_pool: POIPool = get_pool_for_poi(poi)
+    if get_user_current_poi_pool(user):
+        raise UserAlreadyInPoolError(user.email, poi.id)
     poi_pool.update_user_in_pool(user.email)
     save_poi_pool(poi_pool)
 
@@ -117,9 +119,9 @@ def remove_user_from_poi_pool(user: User, poi: POI):
     save_poi_pool(poi_pool)
 
 
-def compute_wait_time_from_poi_pool(poi: POI) -> float:
+def get_wait_time_from_poi_pool(poi: POI) -> float:
     """
-    Computes the wait time estimated from POIPool data
+    Gets the estimated wait time from POIPool data
 
     :param poi: POI to calculate pool wait time for
     :returns: float corresponding to average wait time in minutes
@@ -135,7 +137,7 @@ def get_user_current_poi_pool(user: User) -> Optional[POIPool]:
     :param user: User to search for in pools
     :returns: POIPool that User is participating in, None if there is none
     """
-    query = poi_pool_collection().where(f"pool.{user.email}", "!=", "")
+    query = poi_pool_collection().where(f"pool.`{user.email}`", "!=", "")
     result = query.get()
     # Raise an error if the user is in more than one pool at once (we should know about this)
     assert len(result) < 2
