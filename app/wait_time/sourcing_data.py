@@ -34,7 +34,7 @@ class POIPool:
             else current_average_wait_time
         )
 
-    @classmethod
+    @staticmethod
     def from_dict(poi_id: str, dict: Dict[str, Any]) -> "POIPool":
         """
         Create a new POIPool from a dict in the following format:
