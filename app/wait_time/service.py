@@ -63,7 +63,7 @@ def compute_wait_time_for_poi(poi: POI) -> int:
     Compute the wait time for a specified POI in minutes
 
     :param poi: Specified poi to calculate wait time
-    :returns:
+    :returns: int corresponding to wait time in minutes
     """
     # TODO: Histogram and manual time submission calculations to be added to this
     return ceil(compute_wait_time_from_poi_pool(poi))

@@ -3,6 +3,7 @@ from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
 from app.common import BadDataError
 from .errors import UserNotInPoolError
+from statistics import mean
 
 
 class POIPool:
@@ -15,17 +16,20 @@ class POIPool:
         self,
         poi_id: str,
         pool_data: Dict[str, Dict[str, datetime]] = {},
+        recent_wait_times: Dict[str, float] = {},
         current_average_wait_time: Optional[float] = None,
     ):
         """
         :param poi_id: ID of the POI as string
         :param pool_data: Pool data dict formatted as {"user": {"start_time": datetime, "last_seen": datetime}, ...}
+        :param served_user_data: Recently served user data dict formatted as {"<ISO-timestamp>": float, ...}
         :param current_average_wait_time: Current average time in minutes a user spends in a pool
         """
         self.poi_id = poi_id
         self.pool_data = pool_data
+        self.recent_wait_times = recent_wait_times
         self.current_average_wait_time = (
-            self._compute_average_wait_time()
+            self._recompute_average_wait_time()
             if current_average_wait_time is None
             else current_average_wait_time
         )
@@ -41,7 +45,11 @@ class POIPool:
                     "start_time": datetime,
                     "last_seen": datetime
                          },...
-                    }
+                    },
+            "recent_wait_times": {
+                "<ISO-timestamp>": float,
+                ...
+            }
         }
 
         :param poi_id: ID of the POI
@@ -52,6 +60,7 @@ class POIPool:
             return POIPool(
                 poi_id=poi_id,
                 pool_data=dict["pool"],
+                recent_wait_times=dict["recent_wait_times"],
                 current_average_wait_time=dict["current_average_wait_time"],
             )
         except KeyError as e:
@@ -85,7 +94,6 @@ class POIPool:
                 "start_time": current_timestamp,
                 "last_seen": current_timestamp,
             }
-            self._compute_average_wait_time()
 
     def is_user_in_pool(self, user: str) -> bool:
         return user in self.pool_data
@@ -97,20 +105,38 @@ class POIPool:
 
         :param user: Email of the user to remove
         """
+        # Add time taken to serve user to recent wait times
+        current_timestamp = datetime.now(timezone.utc)
         try:
-            del self.pool_data[user]
+            user_pool_data = self.pool_data[user]
         except KeyError:
             raise UserNotInPoolError(user, self.poi_id)
-        self._compute_average_wait_time()
+        try:
+            wait_time = (current_timestamp - user_pool_data["start_time"]).seconds / 60
+        except KeyError as e:
+            raise BadDataError(f"Missing data from POI Pool entry: {str(e)}")
 
-    def _compute_average_wait_time(self) -> float:
+        self.recent_wait_times[current_timestamp.isoformat()] = wait_time
+
+        del self.pool_data[user]
+        self._recompute_average_wait_time()
+
+    def clear_stale_wait_times(self, ttl: int = 1800):
+        """
+        Clear stale wait times in the recent_wait_times dict older than `ttl` specified in seconds.
+        Default is 1800 seconds (30 minutes)
+
+        :param ttl: Time to live for each entry in recent wait times in seconds
+        """
+        current_timestamp = datetime.now(timezone.utc)
+        for isotimestamp in self.recent_wait_times:
+            timestamp = datetime.fromisoformat(isotimestamp)
+            if (current_timestamp - timestamp).seconds >= ttl:
+                del self.recent_wait_times[isotimestamp]
+        self._recompute_average_wait_time()
+
+    def _recompute_average_wait_time(self) -> float:
         """Recompute current average wait time"""
-        now = datetime.now(timezone.utc)
 
-        total_seconds = 0
-        for entry in self.pool_data.values():
-            time_delta: timedelta = now - entry["start_time"]
-            total_seconds += time_delta.seconds
-
-        self.current_average_wait_time = (total_seconds / len(self.pool_data)) / 60
+        self.current_average_wait_time = mean(self.recent_wait_times.values())
         return self.current_average_wait_time
