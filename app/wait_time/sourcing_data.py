@@ -17,7 +17,7 @@ class POIPool:
         poi_id: str,
         pool: Dict[str, Dict[str, datetime]] = {},
         recent_wait_times: Dict[str, float] = {},
-        current_average_wait_time: Optional[float] = None,
+        current_average_wait_time: float = -1,
     ):
         """
         :param poi_id: ID of the POI as string
@@ -29,7 +29,7 @@ class POIPool:
         self.pool = pool
         self.recent_wait_times = recent_wait_times
         self.current_average_wait_time = current_average_wait_time
-        if self.current_average_wait_time is None:
+        if self.current_average_wait_time < 0:
             self._recompute_average_wait_time()
 
     @staticmethod
