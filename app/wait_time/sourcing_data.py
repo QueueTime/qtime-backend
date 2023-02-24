@@ -152,6 +152,8 @@ class POIPool:
         # Only compute if recent wait times is nonempty
         if self.recent_wait_times:
             self.current_average_wait_time = mean(self.recent_wait_times.values())
+        else:
+            self.current_average_wait_time = 0
         return self.current_average_wait_time
 
     def __eq__(self, other):
