@@ -121,6 +121,19 @@ class POIPool:
         del self.pool_data[user]
         self._recompute_average_wait_time()
 
+    def clear_stale_pool_users(self, ttl: int = 300):
+        """
+        Clear stale users in the pool last seen before the ttl
+        Default is 300 seconds (5 minutes)
+
+        :param ttl: Time to live for each user in the pool in seconds
+        """
+
+        current_timestamp = datetime.now(timezone.utc)
+        for user in self.pool_data.copy():
+            if (current_timestamp - self.pool_data[user]["last_seen"]).seconds >= ttl:
+                self.remove_user_from_pool(user)
+
     def clear_stale_wait_times(self, ttl: int = 1800):
         """
         Clear stale wait times in the recent_wait_times dict older than `ttl` specified in seconds.
@@ -129,7 +142,7 @@ class POIPool:
         :param ttl: Time to live for each entry in recent wait times in seconds
         """
         current_timestamp = datetime.now(timezone.utc)
-        for isotimestamp in self.recent_wait_times:
+        for isotimestamp in self.recent_wait_times.copy():
             timestamp = datetime.fromisoformat(isotimestamp)
             if (current_timestamp - timestamp).seconds >= ttl:
                 del self.recent_wait_times[isotimestamp]
@@ -138,5 +151,10 @@ class POIPool:
     def _recompute_average_wait_time(self) -> float:
         """Recompute current average wait time"""
 
-        self.current_average_wait_time = mean(self.recent_wait_times.values())
+        # Only compute if recent wait times is nonempty
+        if self.recent_wait_times:
+            self.current_average_wait_time = mean(self.recent_wait_times.values())
         return self.current_average_wait_time
+
+    def __eq__(self, other):
+        return isinstance(other, POIPool) and self.__dict__ == other.__dict__
