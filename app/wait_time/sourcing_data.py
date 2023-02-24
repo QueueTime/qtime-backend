@@ -28,11 +28,9 @@ class POIPool:
         self.poi_id = poi_id
         self.pool = pool
         self.recent_wait_times = recent_wait_times
-        self.current_average_wait_time = (
+        self.current_average_wait_time = current_average_wait_time
+        if self.current_average_wait_time is None:
             self._recompute_average_wait_time()
-            if current_average_wait_time is None
-            else current_average_wait_time
-        )
 
     @staticmethod
     def from_dict(poi_id: str, dict: Dict[str, Any]) -> "POIPool":

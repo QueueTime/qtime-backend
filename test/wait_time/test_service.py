@@ -13,6 +13,47 @@ from app.wait_time.errors import UserNotInPoolError, UserAlreadyInPoolError
 
 SAMPLE_UID = "2Nc3UKvI98YvhTlud9ZEomZHr9p2"
 
+sample_poi = POI(
+    id="tim_hortons_musc",
+    name="Tim Hortons MUSC",
+    classification="queue",
+    hours_of_operation={
+        "Sunday": "Closed",
+        "Monday": "7:30 AM - 9:00 PM",
+        "Tuesday": "7:30 AM - 9:00 PM",
+        "Wednesday": "7:30AM - 9:00 PM",
+        "Thursday": "7:30 AM - 9:00 PM",
+        "Friday": "7:30 AM - 8:00 PM",
+        "Saturday": "Closed",
+    },
+    address="McMaster University Student Centre",
+    poi_type="EATERY",
+    location={
+        "latitude": 43.263532187492686,
+        "longitude": -79.91758503073444,
+    },
+    image_url="https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
+)
+
+other_poi = POI(
+    id="booster_juice_musc",
+    name="Booster Juice MUSC",
+    address="McMaster University Student Centre",
+    poi_type="EATERY",
+    location={"latitude": 43.263532187492686, "longitude": -79.91758503073444},
+    image_url="https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
+    classification="queue",
+    hours_of_operation={
+        "Sunday": "Closed",
+        "Monday": "10:00 AM - 6:30 PM",
+        "Tuesday": "10:00 AM - 6:30 PM",
+        "Wednesday": "10:00 AM - 6:30 PM",
+        "Thursday": "10:00 AM - 6:30 PM",
+        "Friday": "10:00 AM - 6:30 PM",
+        "Saturday": "Closed",
+    },
+)
+
 
 @patch("app.wait_time.service.location_collection")
 class TestWaitTimeService(unittest.TestCase):
@@ -23,27 +64,6 @@ class TestWaitTimeService(unittest.TestCase):
         self.test_user = User("test@sample.com")
         self.test_location = UserLocation(
             aid=SAMPLE_UID, latitude=43.263532187492686, longitude=-79.91758503073444
-        )
-        self.sample_poi = POI(
-            id="tim_hortons_musc",
-            name="Tim Hortons MUSC",
-            classification="queue",
-            hours_of_operation={
-                "Sunday": "Closed",
-                "Monday": "7:30 AM - 9:00 PM",
-                "Tuesday": "7:30 AM - 9:00 PM",
-                "Wednesday": "7:30AM - 9:00 PM",
-                "Thursday": "7:30 AM - 9:00 PM",
-                "Friday": "7:30 AM - 8:00 PM",
-                "Saturday": "Closed",
-            },
-            address="McMaster University Student Centre",
-            poi_type="EATERY",
-            location={
-                "latitude": 43.263532187492686,
-                "longitude": -79.91758503073444,
-            },
-            image_url="https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
         )
 
     def test_uid_to_aid(self, mock_location_collection):
@@ -58,7 +78,7 @@ class TestWaitTimeService(unittest.TestCase):
     def test_add_wait_time_suggestion(
         self, mock_get_poi_func, mock_waittime_submit_func, mock_location_collection
     ):
-        mock_get_poi_func.return_value = self.sample_poi
+        mock_get_poi_func.return_value = sample_poi
         wait_time_service.add_wait_time_suggestion(
             self.test_user, "tim_hortons_musc", 5
         )
@@ -99,7 +119,7 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
             ],
         )
         # Sample POI
-        self.sample_poi = POI(
+        sample_poi = POI(
             id="tim_hortons_musc",
             name="Tim Hortons MUSC",
             classification="queue",
@@ -120,11 +140,12 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
             },
             image_url="https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
         )
-        firestore_db().collection(POI_COLLECTION).document(self.sample_poi.id).set(
-            self.sample_poi.to_dict()
+        firestore_db().collection(POI_COLLECTION).document(sample_poi.id).set(
+            sample_poi.to_dict()
         )
 
         wait_time_service.save_poi_pool(self.sample_pool)
+        wait_time_service.save_poi_pool(POIPool(other_poi.id))
 
     def tearDown(self):
         self.delete_user_accounts()
@@ -132,14 +153,14 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
 
     def test_get_pool_for_poi(self):
         self.assertEqual(
-            wait_time_service.get_pool_for_poi(self.sample_poi), self.sample_pool
+            wait_time_service.get_pool_for_poi(sample_poi), self.sample_pool
         )
 
     def test_save_poi_pool(self):
-        firestore_db().collection(POI_COLLECTION).document(self.sample_poi.id).delete()
+        firestore_db().collection(POI_COLLECTION).document(sample_poi.id).delete()
         wait_time_service.save_poi_pool(self.sample_pool)
         self.assertEqual(
-            wait_time_service.get_pool_for_poi(self.sample_poi), self.sample_pool
+            wait_time_service.get_pool_for_poi(sample_poi), self.sample_pool
         )
 
     def test_add_user_to_pool(self):
@@ -147,20 +168,22 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
             UserAlreadyInPoolError,
             wait_time_service.add_user_to_poi_pool,
             self.test_user,
-            self.sample_poi,
+            other_poi,
         )
-        wait_time_service.remove_user_from_poi_pool(self.test_user, self.sample_poi)
-        wait_time_service.add_user_to_poi_pool(self.test_user, self.sample_poi)
+        wait_time_service.remove_user_from_poi_pool(self.test_user, sample_poi)
+        wait_time_service.add_user_to_poi_pool(self.test_user, sample_poi)
         self.assertTrue(wait_time_service.get_user_current_poi_pool(self.test_user))
+        # Make sure we can update the user's last seen timestamp as well
+        wait_time_service.add_user_to_poi_pool(self.test_user, sample_poi)
 
     def test_remove_user_from_pool(self):
-        wait_time_service.remove_user_from_poi_pool(self.test_user, self.sample_poi)
+        wait_time_service.remove_user_from_poi_pool(self.test_user, sample_poi)
         self.assertFalse(wait_time_service.get_user_current_poi_pool(self.test_user))
         self.assertRaises(
             UserNotInPoolError,
             wait_time_service.remove_user_from_poi_pool,
             self.test_user,
-            self.sample_poi,
+            sample_poi,
         )
 
     def test_get_user_current_poi_pool(self):
@@ -172,5 +195,5 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
     def test_get_wait_time_from_poi_pool(self):
         self.assertEqual(
             self.sample_pool.current_average_wait_time,
-            wait_time_service.get_wait_time_from_poi_pool(self.sample_poi),
+            wait_time_service.get_wait_time_from_poi_pool(sample_poi),
         )

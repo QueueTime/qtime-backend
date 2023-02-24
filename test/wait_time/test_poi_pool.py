@@ -39,8 +39,13 @@ class TestPOIPool(unittest.TestCase):
         )
 
     def test_update_user_in_pool(self):
+        previous_last_seen = self.sample_pool.pool["test@sample.com"]["last_seen"]
         self.sample_pool.update_user_in_pool("test@sample.com")
         self.assertEqual(len(self.sample_pool.pool), 1)
+        self.assertGreater(
+            self.sample_pool.pool["test@sample.com"]["last_seen"],
+            previous_last_seen,
+        )
         self.sample_pool.update_user_in_pool("newuser@sample.com")
         self.assertEqual(len(self.sample_pool.pool), 2)
 

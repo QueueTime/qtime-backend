@@ -99,7 +99,8 @@ def add_user_to_poi_pool(user: User, poi: POI):
     :raises POIPoolNotFoundError: if there is no POIPool for the specified POI
     """
     poi_pool: POIPool = get_pool_for_poi(poi)
-    if get_user_current_poi_pool(user):
+    # Check if user is in a different pool
+    if get_user_current_poi_pool(user) and not poi_pool.is_user_in_pool(user.email):
         raise UserAlreadyInPoolError(user.email, poi.id)
     poi_pool.update_user_in_pool(user.email)
     save_poi_pool(poi_pool)
