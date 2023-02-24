@@ -73,5 +73,6 @@ types-urllib3==1.26.25.5
 typing-extensions==4.4.0
 uritemplate==4.1.1
 urllib3==1.26.14
+waitress==2.1.2
 Werkzeug==2.2.2
 zipp==3.12.0
