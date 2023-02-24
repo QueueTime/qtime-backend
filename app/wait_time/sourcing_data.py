@@ -64,7 +64,7 @@ class POIPool:
                 current_average_wait_time=dict["current_average_wait_time"],
             )
         except KeyError as e:
-            raise BadDataError(f"Missing data from POIPool data: {str(e)}")
+            raise BadDataError(f"Missing data from POIPool data: {str(e)}", 500)
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -88,7 +88,7 @@ class POIPool:
             try:
                 self.pool[user]["last_seen"] = current_timestamp
             except KeyError as e:
-                raise BadDataError(f"Missing data from POI Pool entry: {str(e)}")
+                raise BadDataError(f"Missing data from POI Pool entry: {str(e)}", 500)
         else:
             self.pool[user] = {
                 "start_time": current_timestamp,
@@ -114,7 +114,7 @@ class POIPool:
         try:
             wait_time = (current_timestamp - user_pool_data["start_time"]).seconds / 60
         except KeyError as e:
-            raise BadDataError(f"Missing data from POI Pool entry: {str(e)}")
+            raise BadDataError(f"Missing data from POI Pool entry: {str(e)}", 500)
 
         self.recent_wait_times[current_timestamp.isoformat()] = wait_time
 

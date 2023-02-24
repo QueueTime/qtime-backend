@@ -12,8 +12,8 @@ from app.base_api_error import BaseApiError
 class BadDataError(BaseApiError):
     """Used when receiving unexpected data from Firebase or clients"""
 
-    def __init__(self, message):
-        super().__init__(message, 400)
+    def __init__(self, message: str, error_code: int = 400):
+        super().__init__(message, error_code)
 
 
 class SimpleMap:
