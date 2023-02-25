@@ -37,8 +37,8 @@ jobs:
       - name: Create firebase credentials
         uses: jsdaniell/create-json@v1.2.2
         with:
+          name: serviceAccountKey.json
           json: ${{ secrets.GCP_SA_KEY }}
-          filename: serviceAccountKey.json
       - name: Build docker image
         run: |
           docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
