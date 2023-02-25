@@ -138,9 +138,9 @@ jobs:
             STATUS=$(aws lightsail get-container-services --service-name ${{ env.SERVICE_NAME }} | jq -r .containerServices[0].state)
           done
       - name: Send notification on Discord
-          uses: Ilshidur/action-discord@master
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-            DISCORD_USERNAME: "Github Deployer"
-          with:
-            args: "Successful deployment of ${{ env.SERVICE_NAME }}, service is running on [AWS Lightsail](https://lightsail.aws.amazon.com/ls/webapp/ca-central-1/container-services/qtime/deployments) at [https://queuetime.tech](https://queuetime.tech)."
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: "Github Deployer"
+        with:
+          args: "Successful deployment of ${{ env.SERVICE_NAME }}, service is running on [AWS Lightsail](https://lightsail.aws.amazon.com/ls/webapp/ca-central-1/container-services/qtime/deployments) at [https://queuetime.tech](https://queuetime.tech)."
