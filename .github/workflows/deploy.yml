@@ -35,7 +35,10 @@ jobs:
           curl https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl -o /usr/local/bin/lightsailctl
           chmod +x /usr/local/bin/lightsailctl
       - name: Create firebase credentials
-        run: echo ${{ secrets.GCP_SA_KEY }} > serviceAccountKey.json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          json: ${{ secrets.GCP_SA_KEY }}
+          filename: serviceAccountKey.json
       - name: Build docker image
         run: |
           docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
