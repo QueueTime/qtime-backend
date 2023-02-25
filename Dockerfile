@@ -1,5 +1,5 @@
 # Set base image (host OS)
-FROM python:3.10slim-bullseye
+FROM python:3.9-slim-bullseye
 
 # By default, listen on port 5000
 EXPOSE 5000/tcp
