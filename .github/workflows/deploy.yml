@@ -34,6 +34,8 @@ jobs:
           sudo apt-get update && sudo apt-get -y install curl jq
           curl https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl -o /usr/local/bin/lightsailctl
           chmod +x /usr/local/bin/lightsailctl
+      - name: Create firebase credentials
+        run: echo ${{ secrets.GCP_SA_KEY }} > serviceAccountKey.json
       - name: Build docker image
         run: |
           docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
@@ -63,6 +65,6 @@ jobs:
               \"containerPort\": 5000,
               \"healthCheck\": {
                 \"path\": \"/api/health\",
-                \"successCodes\": 200
+                \"successCodes\": \"200\"
               }
             }"
