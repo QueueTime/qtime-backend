@@ -119,3 +119,28 @@ jobs:
                 \"successCodes\": \"200\"
               }
             }"
+      - name: Monitor if service is sucessfully deployed
+        run: |
+          # wait for service to be deployed (timeout after 15 minutes)
+          TIMEOUT=90
+          INTERVAL=10
+          x=1
+          STATUS=$(aws lightsail get-container-services --service-name ${{ env.SERVICE_NAME }} | jq -r .containerServices[0].state)
+          while [ "$STATUS" != "RUNNING" ]
+          do
+            sleep $INTERVAL
+            x=$(( $x + 1 ))
+            if [ $x -gt 100 ]
+            then
+              echo "Timed out waiting for service to start running."
+              exit 1
+            fi
+            STATUS=$(aws lightsail get-container-services --service-name ${{ env.SERVICE_NAME }} | jq -r .containerServices[0].state)
+          done
+      - name: Send notification on Discord
+          uses: Ilshidur/action-discord@master
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+            DISCORD_USERNAME: "Github Deployer"
+          with:
+            args: "Successful deployment of ${{ env.SERVICE_NAME }}, service is running on [AWS Lightsail](https://lightsail.aws.amazon.com/ls/webapp/ca-central-1/container-services/qtime/deployments) at [https://queuetime.tech](https://queuetime.tech)."
