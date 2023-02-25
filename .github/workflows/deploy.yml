@@ -76,7 +76,7 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
           aws configure set default.region $AWS_DEFAULT_REGION
           aws configure set region $AWS_DEFAULT_REGION
-      - name: Install AWS CLI and lightsail
+      - name: Install AWS lightsail CLI and jq
         # install LightsailCTL Plugin (https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-install-software)
         run: |
           sudo apt-get update && sudo apt-get -y install curl jq
