@@ -143,7 +143,7 @@ Command line help for the utility is also available by providing the `-h` or `--
 
 ## Deploying
 
-The QTime backend is deployed to [AWS Lightsail](https://aws.amazon.com/lightsail/) automatically on push to master using the `Deploy` workflow. The steps to manually deploy are below:
+The QTime backend is deployed to [AWS Lightsail](https://aws.amazon.com/lightsail/) automatically on push to main using the `Deploy` workflow. The steps to manually deploy are below:
 
 1. Install [Docker](https://docs.docker.com/engine/install/), [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and the [Lightsail Plugin](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-install-software) if you haven't already.
 2. Create a docker image of the backend with
