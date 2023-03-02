@@ -113,12 +113,14 @@ firebase emulators:export ./sample_firebase_data --project qtime-bd47e
 
 The firebase utility script is used to simplify management tasks for Firebase and the Firestore database. It is located in `scripts/manage_firebase.py`. Currently, the following command line arguments are supported:
 
-- `--add-pois`: Update the `POI` collection on Firestore with a list of POI data given in a file in JSON format. Example: 
+- `--add-pois`: Update the `POI` collection on Firestore with a list of POI data given in a file in JSON format. Example:
+
 ```
 python manage_firebase.py --add-pois ./pois.json
 ```
 
-- `--add-property`, `--remove-property`: These options will add a new field to every document in a collection or remove a field from all documents in a collection respectively. To add a new property, the following syntax is used: 
+- `--add-property`, `--remove-property`: These options will add a new field to every document in a collection or remove a field from all documents in a collection respectively. To add a new property, the following syntax is used:
+
 ```
 --add-property collection_path=<COLLECTION_PATH> name=<FIELD_NAME> type=[string | number | boolean | map | array | timestamp] value=<VALUE>
 ```
@@ -128,11 +130,62 @@ Example commands:
 ```
 python manage_firebase.py --remove-property collection_path=users name=hasCompletedOnboarding
 ```
+
 This will delete the `hasCompletedOnboarding` field from all documents in the users collection.
 
 ```
 python manage_firebase.py --add-property collection_path=users name=has_completed_onboarding type=boolean value=true
 ```
+
 This will add a new boolean field to all documents in the users collection called `has_completed_onboarding` with a default value of true.
 
 Command line help for the utility is also available by providing the `-h` or `--help` argument.
+
+## Deploying
+
+The QTime backend is deployed to [AWS Lightsail](https://aws.amazon.com/lightsail/) automatically on push to main using the `Deploy` workflow. The steps to manually deploy are below:
+
+1. Install [Docker](https://docs.docker.com/engine/install/), [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and the [Lightsail Plugin](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-install-software) if you haven't already.
+2. Create a docker image of the backend with
+
+```
+docker build -t qtime-container .
+```
+
+Note: (You can run this image as a container with `docker run -p 5000:5000 qtime-container`)
+
+3. Push the image to AWS Lightsail
+
+```
+aws lightsail push-container-image \
+  --service-name qtime \
+  --label qtime-latest  \
+  --image qtime-container:latest
+```
+
+This will return information about the image you just pushed, take note of container number assigned. It should look like `qtime.qtime-latest.X`.
+
+4. Deploy your container to AWS Lightsail, replacing the image name in the command below.
+
+```
+aws lightsail create-container-service-deployment \
+  --service-name qtime \
+  --containers "{
+    "flask": {
+      "image": "qtime.qtime-latest.X",
+      "ports": {
+        "5000": "HTTP"
+      }
+    }
+  }" \
+  --public-endpoint "{
+    "containerName": "flask",
+    "containerPort": 5000,
+    "healthCheck": {
+      "path": "/api/health",
+      "successCodes": "200"
+    }
+  }"
+```
+
+5. It will take a few minutes for the new deployment to finish. Once finished you should be able to access https://queuetime.tech/api/health to verify the service is up.
