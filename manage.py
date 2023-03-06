@@ -27,7 +27,7 @@ if __name__ == "__main__":
         @app.app.after_request
         def after_request_func(response):
             logger.debug(
-                f'[{datetime.now(timezone.utc).strftime("%d/%b/%Y %H:%M:%S")}] "{request.method} {request.path}{"?"+request.query_string.decode("utf-8") if request.query_string else ""} {request.scheme.upper()}" {response.status_code}'
+                f'[{datetime.now(timezone.utc).strftime("%d/%b/%Y %H:%M:%S")}] {request.remote_addr} "{request.method} {request.path}{"?"+request.query_string.decode("utf-8") if request.query_string else ""} {request.scheme.upper()}" {response.status_code}'
                 f'{NEWLINE + str(request.form.to_dict()) if request.form else ""}'
                 f'{NEWLINE + str(request.json) if request.is_json else ""}'
                 f'{NEWLINE + str(response.data.decode("utf-8")).strip() if response.data else ""}'
