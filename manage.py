@@ -28,6 +28,7 @@ if __name__ == "__main__":
 
         @app.app.after_request
         def after_request_func(response):
+            response.direct_passthrough = False  # Allow swagger-ui to work
             logger.debug(
                 f'[{datetime.now(timezone.utc).strftime("%d/%b/%Y %H:%M:%S")}] {request.remote_addr} "{request.method} {request.path}{"?"+request.query_string.decode("utf-8") if request.query_string else ""} {request.scheme.upper()}" {response.status_code}'
                 f'{SEP + str(request.form.to_dict()) if request.form else ""}'
