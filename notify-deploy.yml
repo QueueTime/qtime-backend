@@ -1,0 +1,71 @@
+name: Notify on Deploy
+on:
+  workflow_run:
+    workflows: ["Deploy"]
+    types:
+      - completed
+# on: [push]
+
+env:
+  SERVICE_NAME: qtime
+
+jobs:
+  notify-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Show GitHub context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: Configure AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "ca-central-1"
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set default.region $AWS_DEFAULT_REGION
+          aws configure set region $AWS_DEFAULT_REGION
+      - name: Install AWS lightsail CLI and jq
+        # install LightsailCTL Plugin (https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-install-software)
+        run: |
+          sudo apt-get update && sudo apt-get -y install curl jq
+          curl https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl -o /usr/local/bin/lightsailctl
+          chmod +x /usr/local/bin/lightsailctl
+      - name: Monitor if service is sucessfully deployed
+        id: monitor
+        run: |
+          # wait for service to be deployed (timeout after 15 minutes)
+          TIMEOUT=90
+          INTERVAL=10
+          x=1
+          STATUS=$(aws lightsail get-container-services --service-name ${{ env.SERVICE_NAME }} | jq -r .containerServices[0].state)
+          while [ "$STATUS" != "RUNNING" ] && [ $x -lt $TIMEOUT ]
+          do
+            sleep $INTERVAL
+            x=$(( $x + 1 ))
+            STATUS=$(aws lightsail get-container-services --service-name ${{ env.SERVICE_NAME }} | jq -r .containerServices[0].state)
+          done
+          if [ "$STATUS" != "RUNNING" ]; then
+            echo "success=false" >> $GITHUB_OUTPUT
+          else
+            echo "success=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Send notification on Discord
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: "Github Deployer"
+        with:
+          args: "${{ steps.monitor.outputs.success }} Deployment of ${{ env.SERVICE_NAME }} was successful"
+
+  notify-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion != 'success' }}
+    steps:
+      - name: Show GitHub context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
