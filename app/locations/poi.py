@@ -5,24 +5,12 @@ from app.locations.errors import POINotFoundError
 import json
 
 
-class POIClassification(Enum):
-    """
-    Classification of the POI.
-    Queue if there can exist a line at the POI.
-    Occupancy if we are interested in the occupancy of the POI.
-    POIs cannot be of both types.
-    """
-
-    QUEUE = "queue"
-    OCCUPANCY = "occupancy"
-
-
 class POI:
     def __init__(
         self,
         id: str,
         name: str,
-        classification: POIClassification,
+        classification: str,
         hours_of_operation: Dict[str, Any],
         address: str,
         poi_type: str,
@@ -31,7 +19,7 @@ class POI:
     ):
         self.id = id
         self.name = name
-        self.classification = POIClassification(classification)
+        self.classification = classification
         self.hours_of_operation = hours_of_operation
         self.address = address
         self.poi_type = poi_type
@@ -66,7 +54,7 @@ class POI:
         return {
             "_id": self.id,
             "address": self.address,
-            "class": self.classification.value,
+            "class": self.classification,
             "hours_of_operation": self.hours_of_operation,
             "image_url": self.image_url,
             "location": self.location,

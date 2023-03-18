@@ -2,7 +2,6 @@ from enum import Enum
 from datetime import datetime, timezone
 from typing import Dict, Any
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-from firebase_admin import firestore
 
 from app.common import SimpleMap
 

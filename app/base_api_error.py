@@ -9,8 +9,3 @@ class BaseApiError(Exception):
 
     def build_error(self):
         return {"success": False, "message": self.message}, self.error_code
-
-
-class MissingQueryParameterError(BaseApiError):
-    def __init__(self, parameter_name):
-        super().__init__(f"Missing query parameter: {parameter_name}", 400)

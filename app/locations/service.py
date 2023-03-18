@@ -1,8 +1,7 @@
-import haversine
-from typing import Dict, Tuple, Iterable
-
+from flask import jsonify
+from typing import List, Dict
 from .poi_suggestion import POI_suggestion
-from .poi import POI, POIClassification
+from .poi import POI
 from .errors import POINotFoundError, InvalidPOISuggestionError
 from app import common
 from datetime import datetime, timezone
@@ -17,35 +16,11 @@ def poi_proposal_collection():
     return firestore_db().collection(POI_PROPOSAL_COLLECTION)
 
 
-def list_POI(
-    clazz: POIClassification = None, user_location: Tuple[float, float] = None
-) -> Iterable[POI]:
+def list_POI() -> List[POI]:
     """
-    Returns an iterable of POI objects from the POI collection in Firestore.
-
-    :param clazz: The class of POI to filter by
-    :param user_location: The user's location to use to sort POIs by proximity.
+    Returns a list of POI objects from the POI collection in Firestore.
     """
-    query = poi_collection()
-    if clazz:
-        query = query.where("class", "==", clazz.value)
-    query_results = query.stream()
-
-    if user_location:
-
-        def key_comparator(d):
-            poi = d.to_dict()
-            return _compute_geo_distance(
-                user_location,
-                (poi["location"]["latitude"], poi["location"]["longitude"]),
-            )
-
-        query_results = sorted(
-            query_results,
-            key=key_comparator,
-        )
-
-    return map(lambda d: POI.from_dict(d.to_dict()), query_results)
+    return [POI.from_dict(doc.to_dict()) for doc in poi_collection().stream()]
 
 
 def get_details_for_POI(poi_id: str) -> POI:
@@ -117,14 +92,3 @@ def _fetch_latest_estimated_value(self):
 
 def _generate_histogram_for_POI(self):
     pass
-
-
-def _compute_geo_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
-    """
-    Computes the distance in meters between two points on the earth's surface using the
-    Haversine formula.
-
-    :param p1: A tuple of the latitude and longitude of the first point
-    :param p2: A tuple of the latitude and longitude of the second point
-    """
-    return haversine.haversine(p1, p2, unit=haversine.Unit.METERS)
