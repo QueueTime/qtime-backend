@@ -1,5 +1,5 @@
 import haversine
-from typing import Dict, Tuple, Iterable
+from typing import Dict, Tuple, Iterable, Optional
 
 from .poi_suggestion import POI_suggestion
 from .poi import POI, POIClassification
@@ -18,7 +18,8 @@ def poi_proposal_collection():
 
 
 def list_POI(
-    clazz: POIClassification = None, user_location: Tuple[float, float] = None
+    clazz: Optional[POIClassification] = None,
+    user_location: Optional[Tuple[float, float]] = None,
 ) -> Iterable[POI]:
     """
     Returns an iterable of POI objects from the POI collection in Firestore.
