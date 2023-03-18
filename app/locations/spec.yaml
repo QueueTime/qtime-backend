@@ -63,6 +63,26 @@ paths:
       tags:
         - POI
       summary: "Read the list of POI"
+      parameters:
+        - name: class
+          in: query
+          description: Classification of POIs to get
+          required: False
+          schema:
+            type: string
+            enum: [queue, occupancy]
+        - name: latitude
+          in: query
+          description: Latitude of user location to sort POI by
+          required: False
+          schema:
+            type: number
+        - name: longitude
+          in: query
+          description: Longitude of user location to sort POI by
+          required: False
+          schema:
+            type: number
       responses:
         "200":
           description: "Successfully read POI list"
@@ -72,13 +92,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/POI"
-  /places/list/{poi_id}:
+  /places/{poi_id}/details:
     get:
       x-openapi-router-controller: app.locations.api
       operationId: get_POI
       tags:
         - POI
-      summary: "Read one POI"
+      summary: "Fetch the details of one POI"
       parameters:
         - $ref: "#/components/parameters/poi_id"
       responses:
