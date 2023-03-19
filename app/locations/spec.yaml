@@ -10,6 +10,11 @@ components:
       type: "object"
       required:
         - _id
+        - name
+        - address
+        - class
+        - type
+        - lastUpdated
       properties:
         _id:
           type: "string"
@@ -27,6 +32,13 @@ components:
           type: "object"
         type:
           type: "string"
+        distance:
+          type: "number"
+        estimate:
+          type: "number"
+        lastUpdated:
+          type: "number"
+
     POI_suggestion:
       type: "object"
       required:
@@ -74,15 +86,22 @@ paths:
         - name: latitude
           in: query
           description: Latitude of user location to sort POI by
-          required: False
+          required: True
           schema:
             type: number
         - name: longitude
           in: query
           description: Longitude of user location to sort POI by
-          required: False
+          required: True
           schema:
             type: number
+        - name: sort
+          in: query
+          description: Sort POI by distance or estimate
+          required: False
+          schema:
+            type: string
+            enum: [distance, estimate]
       responses:
         "200":
           description: "Successfully read POI list"

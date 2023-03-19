@@ -4,28 +4,50 @@ from typing import Dict
 from app.auth import with_auth_user
 from app.user.user import User
 from app.base_api_error import MissingQueryParameterError
-from .poi import POIClassification
+from .poi import POIClassification, POI
+
+
+def _build_POI_api_model(
+    poi: POI, estimate: float, distance: float, last_updated: float
+) -> Dict[str, str]:
+    """
+    Build a model to be returned by the POI api. Extends the POI dictionary with additional fields.
+    """
+    return {
+        "estimate": estimate,
+        "distance": distance,
+        "lastUpdated": last_updated,
+        **poi.to_dict(),
+    }
 
 
 @with_auth_user
 def get_all_POI(**kwargs):
     """
-    Return a list of all the tracked points of interests.
+    Return a list of all the tracked points of interests. Requires the geo coordinates of the user's location.
+    Allows filtering by POI class and sorting by distance or estimate.
     """
     lat, long = kwargs.get("latitude"), kwargs.get("longitude")
 
-    if lat is None and long is not None:
+    if lat is None:
         raise MissingQueryParameterError("latitude")
-    elif long is None and lat is not None:
+    elif long is None:
         raise MissingQueryParameterError("longitude")
-    elif (lat, long) == (None, None):
-        user_location = None
-    else:
-        user_location = (lat, long)
+
+    user_location = (lat, long)
 
     class_filter = POIClassification(kwargs.get("class"), None)
-    list_all_poi = list_POI(clazz=class_filter, user_location=user_location)
-    return jsonify([poi.to_dict() for poi in list_all_poi]), 200
+    sort_by = kwargs.get("sort", None)
+    list_all_poi = list_POI(user_location, clazz=class_filter, sort_by=sort_by)
+    return (
+        jsonify(
+            [
+                _build_POI_api_model(poi, estimate, distance, last_updated)
+                for poi, estimate, distance, last_updated in list_all_poi
+            ]
+        ),
+        200,
+    )
 
 
 @with_auth_user

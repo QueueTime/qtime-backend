@@ -18,35 +18,47 @@ def poi_proposal_collection():
 
 
 def list_POI(
+    user_location: Tuple[float, float],
     clazz: Optional[POIClassification] = None,
-    user_location: Optional[Tuple[float, float]] = None,
-) -> Iterable[POI]:
+    sort_by: Optional[str] = None,
+) -> Iterable[Tuple[POI, float, float, float]]:
     """
-    Returns an iterable of POI objects from the POI collection in Firestore.
+    Compute an iterable of (POI, estimate, distance, last_updated) computed from the POI collection in Firestore.
 
     :param clazz: The class of POI to filter by
     :param user_location: The user's location to use to sort POIs by proximity.
+    :param sort_by: The field to sort the iterable by. Allowed values are "distance" and "estimate"
+    :return: An iterable of (POI, estimate, distance, last_updated) tuples
     """
     query = poi_collection()
     if clazz:
         query = query.where("class", "==", clazz.value)
-    query_results = query.stream()
 
-    if user_location:
+    def compute_query_results(d):
+        poi = d.to_dict()
+        # TODO: Compute the estimate (time or capacity) for each POI
+        SAMPLE_ESTIMATE = 5
+        # TODO: Compute the last_updated value for each POI
+        SAMPLE_LAST_UPDATED = 7
+        user_distance = _compute_geo_distance(
+            user_location,
+            (poi["location"]["latitude"], poi["location"]["longitude"]),
+        )
+        return (POI.from_dict(poi), SAMPLE_ESTIMATE, user_distance, SAMPLE_LAST_UPDATED)
 
-        def key_comparator(d):
-            poi = d.to_dict()
-            return _compute_geo_distance(
-                user_location,
-                (poi["location"]["latitude"], poi["location"]["longitude"]),
-            )
+    query_results = map(compute_query_results, query.stream())
 
+    if sort_by == "distance":
         query_results = sorted(
             query_results,
-            key=key_comparator,
+            key=lambda x: x[2],  # sort by distance
         )
+    elif sort_by == "estimate":
+        query_results = sorted(
+            query_results, key=lambda x: x[1]
+        )  # sort by estimate (time or capacity)
 
-    return map(lambda d: POI.from_dict(d.to_dict()), query_results)
+    return query_results
 
 
 def get_details_for_POI(poi_id: str) -> POI:
