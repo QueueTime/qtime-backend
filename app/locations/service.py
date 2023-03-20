@@ -1,5 +1,7 @@
 import haversine
 from typing import Dict, Tuple, Iterable, Optional
+import math
+from random import random
 
 from .poi_suggestion import POI_suggestion
 from .poi import POI, POIClassification
@@ -37,9 +39,9 @@ def list_POI(
     def compute_query_results(d):
         poi = d.to_dict()
         # TODO: Compute the estimate (time or capacity) for each POI
-        SAMPLE_ESTIMATE = 5
+        SAMPLE_ESTIMATE = math.ceil(random() * 9)
         # TODO: Compute the last_updated value for each POI
-        SAMPLE_LAST_UPDATED = 7
+        SAMPLE_LAST_UPDATED = math.ceil(random() * 7)
         user_distance = _compute_geo_distance(
             user_location,
             (poi["location"]["latitude"], poi["location"]["longitude"]),
