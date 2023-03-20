@@ -1,5 +1,5 @@
 import haversine
-from typing import Dict, Tuple, Iterable, Optional
+from typing import Dict, Tuple, Iterable, Optional, List
 import math
 from random import random
 
@@ -23,7 +23,7 @@ def list_POI(
     user_location: Tuple[float, float],
     clazz: Optional[POIClassification] = None,
     sort_by: Optional[str] = None,
-) -> Iterable[Tuple[POI, float, float, float]]:
+) -> List[Tuple[POI, float, float, float]]:
     """
     Compute an iterable of (POI, estimate, distance, last_updated) computed from the POI collection in Firestore.
 
@@ -48,7 +48,7 @@ def list_POI(
         )
         return (POI.from_dict(poi), SAMPLE_ESTIMATE, user_distance, SAMPLE_LAST_UPDATED)
 
-    query_results = map(compute_query_results, query.stream())
+    query_results = list(map(compute_query_results, query.stream()))
 
     if sort_by == "distance":
         query_results = sorted(

@@ -1,15 +1,16 @@
-from .service import list_POI, get_details_for_POI, new_POI_suggestion
 from flask import jsonify
-from typing import Dict
+from typing import Dict, Any
+
 from app.auth import with_auth_user
 from app.user.user import User
 from app.base_api_error import MissingQueryParameterError
 from .poi import POIClassification, POI
+from .service import list_POI, get_details_for_POI, new_POI_suggestion
 
 
 def _build_POI_api_model(
     poi: POI, estimate: float, distance: float, last_updated: float
-) -> Dict[str, str]:
+) -> Dict[str, Any]:
     """
     Build a model to be returned by the POI api. Extends the POI dictionary with additional fields.
     """
