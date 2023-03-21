@@ -1,5 +1,5 @@
 from flask import jsonify
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from app.auth import with_auth_user
 from app.user.user import User
@@ -26,23 +26,25 @@ def _build_POI_api_model(
 
 
 @with_auth_user
-def get_all_POI(**kwargs):
+def get_all_POI(
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None,
+    sort: Optional[str] = None,
+    **kwargs
+):
     """
     Return a list of all the tracked points of interests. Requires the geo coordinates of the user's location.
     Allows filtering by POI class and sorting by distance or estimate.
     """
-    lat, long = kwargs.get("latitude"), kwargs.get("longitude")
-
-    if lat is None:
+    if latitude is None:
         raise MissingQueryParameterError("latitude")
-    elif long is None:
+    elif longitude is None:
         raise MissingQueryParameterError("longitude")
 
-    user_location = (lat, long)
+    user_location = (latitude, longitude)
 
     class_filter = POIClassification(kwargs.get("class"), None)
-    sort_by = kwargs.get("sort", None)
-    list_all_poi = list_POI(user_location, clazz=class_filter, sort_by=sort_by)
+    list_all_poi = list_POI(user_location, classification=class_filter, sort_by=sort)
     return (
         jsonify(
             [
