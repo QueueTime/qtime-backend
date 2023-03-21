@@ -10,23 +10,28 @@ components:
       type: "object"
       required:
         - _id
+        - name
+        - class
+        - type
+        - distance
+        - estimate
+        - lastUpdated
       properties:
         _id:
           type: "string"
         name:
           type: "string"
-        address:
-          type: "string"
         class:
           type: "string"
-        hours_of_operation:
-          type: "object"
-        image_url:
-          type: "string"
-        location:
-          type: "object"
         type:
           type: "string"
+        distance:
+          type: "number"
+        estimate:
+          type: "number"
+        lastUpdated:
+          type: "number"
+
     POI_suggestion:
       type: "object"
       required:
@@ -63,6 +68,33 @@ paths:
       tags:
         - POI
       summary: "Read the list of POI"
+      parameters:
+        - name: class
+          in: query
+          description: Classification of POIs to get
+          required: False
+          schema:
+            type: string
+            enum: [queue, occupancy]
+        - name: latitude
+          in: query
+          description: Latitude of user location to sort POI by
+          required: True
+          schema:
+            type: number
+        - name: longitude
+          in: query
+          description: Longitude of user location to sort POI by
+          required: True
+          schema:
+            type: number
+        - name: sort
+          in: query
+          description: Sort POI by distance or estimate
+          required: False
+          schema:
+            type: string
+            enum: [distance, estimate]
       responses:
         "200":
           description: "Successfully read POI list"
@@ -72,13 +104,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/POI"
-  /places/list/{poi_id}:
+  /places/{poi_id}/details:
     get:
       x-openapi-router-controller: app.locations.api
       operationId: get_POI
       tags:
         - POI
-      summary: "Read one POI"
+      summary: "Fetch the details of one POI"
       parameters:
         - $ref: "#/components/parameters/poi_id"
       responses:
@@ -87,9 +119,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/POI"
+                $ref: "#/components/schemas/POI"
+
         "404":
           description: "POI with specified id name not found"
           content:

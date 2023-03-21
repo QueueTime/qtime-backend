@@ -1,7 +1,10 @@
-from flask import jsonify
-from typing import List, Dict
+import haversine
+from typing import Dict, Tuple, Iterable, Optional, List
+import math
+from random import random
+
 from .poi_suggestion import POI_suggestion
-from .poi import POI
+from .poi import POI, POIClassification
 from .errors import POINotFoundError, InvalidPOISuggestionError
 from app import common
 from datetime import datetime, timezone
@@ -16,11 +19,48 @@ def poi_proposal_collection():
     return firestore_db().collection(POI_PROPOSAL_COLLECTION)
 
 
-def list_POI() -> List[POI]:
+def list_POI(
+    user_location: Tuple[float, float],
+    classification: Optional[POIClassification] = None,
+    sort_by: Optional[str] = None,
+) -> List[Tuple[POI, float, float, float]]:
     """
-    Returns a list of POI objects from the POI collection in Firestore.
+    Compute an iterable of (POI, estimate, distance, last_updated) computed from the POI collection in Firestore.
+
+    :param clazz: The class of POI to filter by
+    :param user_location: The user's location to use to sort POIs by proximity.
+    :param sort_by: The field to sort the iterable by. Allowed values are "distance" and "estimate"
+    :return: An iterable of (POI, estimate, distance, last_updated) tuples
     """
-    return [POI.from_dict(doc.to_dict()) for doc in poi_collection().stream()]
+    query = poi_collection()
+    if classification:
+        query = query.where("class", "==", classification.value)
+
+    def compute_query_results(d):
+        poi = d.to_dict()
+        # TODO: Compute the estimate (time or capacity) for each POI
+        SAMPLE_ESTIMATE = math.ceil(random() * 9)
+        # TODO: Compute the last_updated value for each POI
+        SAMPLE_LAST_UPDATED = math.ceil(random() * 7)
+        user_distance = _compute_geo_distance(
+            user_location,
+            (poi["location"]["latitude"], poi["location"]["longitude"]),
+        )
+        return (POI.from_dict(poi), SAMPLE_ESTIMATE, user_distance, SAMPLE_LAST_UPDATED)
+
+    query_results = list(map(compute_query_results, query.stream()))
+
+    if sort_by == "distance":
+        query_results = sorted(
+            query_results,
+            key=lambda x: x[2],  # sort by distance
+        )
+    elif sort_by == "estimate":
+        query_results = sorted(
+            query_results, key=lambda x: x[1]
+        )  # sort by estimate (time or capacity)
+
+    return query_results
 
 
 def get_details_for_POI(poi_id: str) -> POI:
@@ -92,3 +132,14 @@ def _fetch_latest_estimated_value(self):
 
 def _generate_histogram_for_POI(self):
     pass
+
+
+def _compute_geo_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
+    """
+    Computes the distance in meters between two points on the earth's surface using the
+    Haversine formula.
+
+    :param p1: A tuple of the latitude and longitude of the first point
+    :param p2: A tuple of the latitude and longitude of the second point
+    """
+    return haversine.haversine(p1, p2, unit=haversine.Unit.METERS)

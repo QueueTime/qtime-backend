@@ -17,7 +17,7 @@ class TestEventService(unittest.TestCase):
         self.points_awarded = 25
         self.user = User(self.email, "XJFEKDG", 0)
         self.poi = POI(
-            self.poi_id, "Testing poi", "Testing", None, None, None, None, None
+            self.poi_id, "Testing poi", "queue", None, None, None, None, None
         )
 
     def test_generate_account_signup_event(self, firebase_mock):

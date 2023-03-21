@@ -1,128 +1,128 @@
 [
-    {
-        "_id": "tim_hortons_musc",
-        "name": "Tim Hortons MUSC",
-        "address": "McMaster University Student Centre",
-        "type": "EATERY",
-        "location": {
-            "latitude": 43.263532187492686,
-            "longitude": -79.91758503073444
-        },
-        "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Tim-Hortons-Student-Centre.jpg",
-        "class": "queue",
-        "hours_of_operation": {
-            "Sunday": "Closed",
-            "Monday": "7:30 AM - 9:00 PM",
-            "Tuesday": "7:30 AM - 9:00 PM",
-            "Wednesday": "7:30AM - 9:00 PM",
-            "Thursday": "7:30 AM - 9:00 PM",
-            "Friday": "7:30 AM - 8:00 PM",
-            "Saturday": "Closed"
-        }
+  {
+    "_id": "tim_hortons_musc",
+    "name": "Tim Hortons MUSC",
+    "address": "McMaster University Student Centre",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.263532187492686,
+      "longitude": -79.91758503073444
     },
-    {
-        "_id": "booster_juice_musc",
-        "name": "Booster Juice MUSC",
-        "address": "McMaster University Student Centre",
-        "type": "EATERY",
-        "location": {
-            "latitude": 43.263532187492686,
-            "longitude": -79.91758503073444
-        },
-        "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
-        "class": "queue",
-        "hours_of_operation": {
-            "Sunday": "Closed",
-            "Monday": "10:00 AM - 6:30 PM",
-            "Tuesday": "10:00 AM - 6:30 PM",
-            "Wednesday": "10:00 AM - 6:30 PM",
-            "Thursday": "10:00 AM - 6:30 PM",
-            "Friday": "10:00 AM - 6:30 PM",
-            "Saturday": "Closed"
-        }
-    },
-    {
-        "_id": "la_piazza",
-        "name": "La Piazza",
-        "address": "McMaster University Student Centre",
-        "type": "EATERY",
-        "location": {
-            "latitude": 43.26361739207197,
-            "longitude": -79.91741026252909
-        },
-        "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/La-Piazza.jpg",
-        "class": "capacity",
-        "hours_of_operation": {
-            "Sunday": "Closed",
-            "Monday": "8:00 AM - 7:30 PM",
-            "Tuesday": "8:00 AM - 7:30 PM",
-            "Wednesday": "8:00 AM - 7:30 PM",
-            "Thursday": "8:00 AM - 7:30 PM",
-            "Friday": "8:00 AM - 4:00 PM",
-            "Saturday": "Closed"
-        }
-    },
-    {
-        "_id": "bistro_mkr",
-        "name": "East Meets West Bistro",
-        "address": "Mary E. Keyes Residence",
-        "type": "EATERY",
-        "location": {
-            "latitude": 43.26254775157367,
-            "longitude": -79.92245421385566
-        },
-        "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/East-Meets-West.jpg",
-        "class": "capacity",
-        "hours_of_operation": {
-            "Sunday": "Closed",
-            "Monday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
-            "Tuesday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
-            "Wednesday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
-            "Thursday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
-            "Friday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
-            "Saturday": "Closed"
-        }
-    },
-    {
-        "_id": "bistro_2_go",
-        "name": "Bistro 2 Go",
-        "address": "Mary E. Keyes Residence",
-        "type": "EATERY",
-        "location": {
-            "latitude": 43.26254775157367,
-            "longitude": -79.92245421385566
-        },
-        "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/My-Mini-Mac.jpg",
-        "class": "queue",
-        "hours_of_operation": {
-            "Sunday": "10:00 AM - 8:00 PM",
-            "Monday": "7:30 AM - 11:00 PM",
-            "Tuesday": "7:30 AM - 11:00 PM",
-            "Wednesday": "7:30 AM - 11:00 PM",
-            "Thursday": "7:30 AM - 11:00 PM",
-            "Friday": "7:30 AM - 11:00 PM",
-            "Saturday": "10:00 AM - 8:00 PM"
-        }
-    },
-    {
-        "_id": "centro",
-        "name": "Centro",
-        "address": "Commons Building, 2nd Floor",
-        "type": "EATERY",
-        "location": {
-            "latitude": 43.265768201316504,
-            "longitude": -79.91924333369231
-        },
-        "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/CentroCommons.jpg",
-        "class": "capacity",
-        "hours_of_operation": {
-            "Sunday": "10:00 AM - 10:00 PM",
-            "Monday": "7:00 AM - 11:00 PM",
-            "Tuesday": "7:00 AM - 11:00 PM",
-            "Wednesday": "7:00 AM - 11:00 PM",
-            "Thursday": "7:00 AM - 11:00 PM",
-            "Friday": "7:00 AM - 11:00 PM",
-            "Saturday": "10:00 AM - 10:00 PM"
-        }
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Tim-Hortons-Student-Centre.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Sunday": "Closed",
+      "Monday": "7:30 AM - 9:00 PM",
+      "Tuesday": "7:30 AM - 9:00 PM",
+      "Wednesday": "7:30AM - 9:00 PM",
+      "Thursday": "7:30 AM - 9:00 PM",
+      "Friday": "7:30 AM - 8:00 PM",
+      "Saturday": "Closed"
     }
+  },
+  {
+    "_id": "booster_juice_musc",
+    "name": "Booster Juice MUSC",
+    "address": "McMaster University Student Centre",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.263532187492686,
+      "longitude": -79.91758503073444
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Sunday": "Closed",
+      "Monday": "10:00 AM - 6:30 PM",
+      "Tuesday": "10:00 AM - 6:30 PM",
+      "Wednesday": "10:00 AM - 6:30 PM",
+      "Thursday": "10:00 AM - 6:30 PM",
+      "Friday": "10:00 AM - 6:30 PM",
+      "Saturday": "Closed"
+    }
+  },
+  {
+    "_id": "la_piazza",
+    "name": "La Piazza",
+    "address": "McMaster University Student Centre",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.26361739207197,
+      "longitude": -79.91741026252909
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/La-Piazza.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "Closed",
+      "Monday": "8:00 AM - 7:30 PM",
+      "Tuesday": "8:00 AM - 7:30 PM",
+      "Wednesday": "8:00 AM - 7:30 PM",
+      "Thursday": "8:00 AM - 7:30 PM",
+      "Friday": "8:00 AM - 4:00 PM",
+      "Saturday": "Closed"
+    }
+  },
+  {
+    "_id": "bistro_mkr",
+    "name": "East Meets West Bistro",
+    "address": "Mary E. Keyes Residence",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.26254775157367,
+      "longitude": -79.92245421385566
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/East-Meets-West.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "Closed",
+      "Monday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
+      "Tuesday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
+      "Wednesday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
+      "Thursday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
+      "Friday": "11:00 AM - 3:00 PM, 4:00 PM - 8:30PM",
+      "Saturday": "Closed"
+    }
+  },
+  {
+    "_id": "bistro_2_go",
+    "name": "Bistro 2 Go",
+    "address": "Mary E. Keyes Residence",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.26254775157367,
+      "longitude": -79.92245421385566
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/My-Mini-Mac.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Sunday": "10:00 AM - 8:00 PM",
+      "Monday": "7:30 AM - 11:00 PM",
+      "Tuesday": "7:30 AM - 11:00 PM",
+      "Wednesday": "7:30 AM - 11:00 PM",
+      "Thursday": "7:30 AM - 11:00 PM",
+      "Friday": "7:30 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 8:00 PM"
+    }
+  },
+  {
+    "_id": "centro",
+    "name": "Centro",
+    "address": "Commons Building, 2nd Floor",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.265768201316504,
+      "longitude": -79.91924333369231
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/CentroCommons.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "10:00 AM - 10:00 PM",
+      "Monday": "7:00 AM - 11:00 PM",
+      "Tuesday": "7:00 AM - 11:00 PM",
+      "Wednesday": "7:00 AM - 11:00 PM",
+      "Thursday": "7:00 AM - 11:00 PM",
+      "Friday": "7:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 10:00 PM"
+    }
+  }
 ]
