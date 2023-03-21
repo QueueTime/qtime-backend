@@ -43,7 +43,9 @@ def get_all_POI(
 
     user_location = (latitude, longitude)
 
-    class_filter = POIClassification(kwargs.get("class"), None)
+    class_filter = kwargs.get("class", None)
+    if class_filter:
+        class_filter = POIClassification(class_filter)
     list_all_poi = list_POI(user_location, classification=class_filter, sort_by=sort)
     return (
         jsonify(
