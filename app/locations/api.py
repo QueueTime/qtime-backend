@@ -15,10 +15,13 @@ def _build_POI_api_model(
     Build a model to be returned by the POI api. Extends the POI dictionary with additional fields.
     """
     return {
+        "_id": poi.id,
+        "name": poi.name,
+        "type": poi.poi_type,
+        "class": poi.classification.value,
         "estimate": estimate,
         "distance": distance,
         "lastUpdated": last_updated,
-        **poi.to_dict(),
     }
 
 
