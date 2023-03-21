@@ -21,7 +21,7 @@ def poi_proposal_collection():
 
 def list_POI(
     user_location: Tuple[float, float],
-    clazz: Optional[POIClassification] = None,
+    classification: Optional[POIClassification] = None,
     sort_by: Optional[str] = None,
 ) -> List[Tuple[POI, float, float, float]]:
     """
@@ -33,8 +33,8 @@ def list_POI(
     :return: An iterable of (POI, estimate, distance, last_updated) tuples
     """
     query = poi_collection()
-    if clazz:
-        query = query.where("class", "==", clazz.value)
+    if classification:
+        query = query.where("class", "==", classification.value)
 
     def compute_query_results(d):
         poi = d.to_dict()
