@@ -19,6 +19,7 @@ def _build_POI_api_model(
         "name": poi.name,
         "type": poi.poi_type,
         "class": poi.classification.value,
+        "location": poi.location,
         "estimate": estimate,
         "distance": distance,
         "lastUpdated": last_updated,
