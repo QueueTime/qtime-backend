@@ -60,7 +60,7 @@ def get_all_POI(
 
 
 @with_auth_user
-def get_POI(poi_id: str, **kwargs):
+def get_POI_details(poi_id: str, **kwargs):
     """
     Returns the details of a single point of interest.
 

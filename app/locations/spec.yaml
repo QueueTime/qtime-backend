@@ -191,7 +191,7 @@ paths:
   /places/{poi_id}/details:
     get:
       x-openapi-router-controller: app.locations.api
-      operationId: get_POI
+      operationId: get_POI_details
       tags:
         - POI
       summary: "Fetch the details of one POI"
