@@ -1,5 +1,5 @@
 from flask import jsonify
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 from app.auth import with_auth_user
 from app.user.user import User
@@ -23,6 +23,26 @@ def _build_POI_api_model(
         "estimate": estimate,
         "distance": distance,
         "lastUpdated": last_updated,
+    }
+
+
+def _build_POI_details_api_response(
+    poi: POI,
+    estimate: float,
+    distance: float,
+    last_updated: float,
+    histogram: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """
+    Build the dictionary to return as JSON for the POI details API endpoint.
+    Extends the POI to_dict() with the distance, estimate, lastUpdated and histogram fields.
+    """
+    return {
+        "histogram": histogram,
+        "distance": distance,
+        "estimate": estimate,
+        "lastUpdated": last_updated,
+        **poi.to_dict(),
     }
 
 
@@ -66,8 +86,23 @@ def get_POI_details(poi_id: str, **kwargs):
 
     :param poi_id: The id of the point of interest
     """
-    get_poi = get_details_for_POI(poi_id)
-    return jsonify(get_poi.to_dict()), 200
+    poi = get_details_for_POI(poi_id)
+    SAMPLE_DISTANCE = 6.0
+    SAMPLE_ESTIMATE = 10.0
+    SAMPLE_LAST_UPDATED = 1580000000.0
+    SAMPLE_HISTOGRAM = []
+    return (
+        jsonify(
+            _build_POI_details_api_response(
+                poi,
+                SAMPLE_ESTIMATE,
+                SAMPLE_DISTANCE,
+                SAMPLE_LAST_UPDATED,
+                SAMPLE_HISTOGRAM,
+            )
+        ),
+        200,
+    )
 
 
 @with_auth_user
