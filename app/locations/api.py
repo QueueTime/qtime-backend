@@ -79,13 +79,27 @@ def get_all_POI(
     )
 
 
-@with_auth_user
-def get_POI_details(poi_id: str, **kwargs):
+# @with_auth_user
+def get_POI_details(
+    poi_id: str,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None,
+    **kwargs
+):
     """
     Returns the details of a single point of interest.
 
     :param poi_id: The id of the point of interest
+    :param latitude: The latitude of the user's location
+    :param longitude: The longitude of the user's location
     """
+    if latitude is None:
+        raise MissingQueryParameterError("latitude")
+    elif longitude is None:
+        raise MissingQueryParameterError("longitude")
+
+    user_location = (latitude, longitude)
+
     poi = get_details_for_POI(poi_id)
     SAMPLE_DISTANCE = 6.0
     SAMPLE_ESTIMATE = 10.0

@@ -134,14 +134,6 @@ components:
           type: string
           description: Error description
           example: "Invalid data provided"
-  parameters:
-    poi_id:
-      name: "poi_id"
-      description: "Point of interest name of the POI to get"
-      in: path
-      required: True
-      schema:
-        type: "string"
 
 paths:
   # POI API endpoints
@@ -189,6 +181,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/POI"
   /places/{poi_id}/details:
+    security: []
     get:
       x-openapi-router-controller: app.locations.api
       operationId: get_POI_details
@@ -196,7 +189,24 @@ paths:
         - POI
       summary: "Fetch the details of one POI"
       parameters:
-        - $ref: "#/components/parameters/poi_id"
+        - name: poi_id
+          in: path
+          description: "Point of interest name of the POI to get"
+          required: True
+          schema:
+            type: "string"
+        - name: latitude
+          in: query
+          description: Latitude of user location to sort POI by
+          required: True
+          schema:
+            type: number
+        - name: longitude
+          in: query
+          description: Longitude of user location to sort POI by
+          required: True
+          schema:
+            type: number
       responses:
         "200":
           description: "Successfully read the POI"
