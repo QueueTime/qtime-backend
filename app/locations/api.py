@@ -52,7 +52,7 @@ def _build_POI_details_api_response(
         **poi.to_dict(),
         "hoursOfOperation": poi.hours_of_operation,
     }
-    del hours_of_operation  # remove hours_of_operation (incorrect naming)
+    del d["hours_of_operation"]  # remove hours_of_operation (incorrect naming)
     return d
 
 
@@ -89,7 +89,7 @@ def get_all_POI(
     )
 
 
-@with_auth_user
+# @with_auth_user
 def get_POI_details(
     poi_id: str,
     latitude: Optional[float] = None,
