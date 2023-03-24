@@ -19,7 +19,7 @@ class TestPOI(unittest.TestCase):
             "_id": "0",
             "name": "test",
             "class": "queue",
-            "hoursOfOperation": {"Monday": "11:00"},
+            "hours_of_operation": {"Monday": "11:00"},
             "address": "123 McMaster",
             "type": "test",
             "location": {"longitude": "0", "latitude": "0"},

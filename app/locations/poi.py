@@ -67,7 +67,7 @@ class POI:
             "_id": self.id,
             "address": self.address,
             "class": self.classification.value,
-            "hoursOfOperation": self.hours_of_operation,
+            "hours_of_operation": self.hours_of_operation,
             "image_url": self.image_url,
             "location": self.location,
             "name": self.name,
