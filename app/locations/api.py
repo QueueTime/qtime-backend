@@ -44,13 +44,16 @@ def _build_POI_details_api_response(
     Build the dictionary to return as JSON for the POI details API endpoint.
     Extends the POI to_dict() with the distance, estimate, lastUpdated and histogram fields.
     """
-    return {
+    d = {
         "histogram": histogram,
         "distance": distance,
         "estimate": estimate,
         "lastUpdated": last_updated,
         **poi.to_dict(),
+        "hoursOfOperation": poi.hours_of_operation,
     }
+    del hours_of_operation  # remove hours_of_operation (incorrect naming)
+    return d
 
 
 @with_auth_user
