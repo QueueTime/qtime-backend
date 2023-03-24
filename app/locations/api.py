@@ -1,11 +1,18 @@
 from flask import jsonify
 from typing import Dict, Any, Optional, List
+import math
+from random import random, randint
 
 from app.auth import with_auth_user
 from app.user.user import User
 from app.base_api_error import MissingQueryParameterError
 from .poi import POIClassification, POI
-from .service import list_POI, get_details_for_POI, new_POI_suggestion
+from .service import (
+    list_POI,
+    get_details_for_POI,
+    new_POI_suggestion,
+    get_distance_to_POI,
+)
 
 
 def _build_POI_api_model(
@@ -79,7 +86,7 @@ def get_all_POI(
     )
 
 
-# @with_auth_user
+@with_auth_user
 def get_POI_details(
     poi_id: str,
     latitude: Optional[float] = None,
@@ -97,20 +104,26 @@ def get_POI_details(
         raise MissingQueryParameterError("latitude")
     elif longitude is None:
         raise MissingQueryParameterError("longitude")
-
     user_location = (latitude, longitude)
 
     poi = get_details_for_POI(poi_id)
-    SAMPLE_DISTANCE = 6.0
-    SAMPLE_ESTIMATE = 10.0
-    SAMPLE_LAST_UPDATED = 1580000000.0
-    SAMPLE_HISTOGRAM = []
+    distance = get_distance_to_POI(poi, user_location)
+    # TODO: Compute the estimate (time or capacity)
+    SAMPLE_ESTIMATE = math.ceil(random() * 9)
+    # TODO: Compute the last_updated value
+    SAMPLE_LAST_UPDATED = math.ceil(random() * 7)
+    # TODO: Compute the histogram values that match this format
+    SAMPLE_HISTOGRAM = [
+        {"time": t, "estimate": e}
+        for t, e in zip(range(7, 24), [randint(1, 15) for _ in range(17)])
+    ]
+
     return (
         jsonify(
             _build_POI_details_api_response(
                 poi,
                 SAMPLE_ESTIMATE,
-                SAMPLE_DISTANCE,
+                distance,
                 SAMPLE_LAST_UPDATED,
                 SAMPLE_HISTOGRAM,
             )

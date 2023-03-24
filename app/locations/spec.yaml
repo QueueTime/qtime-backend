@@ -181,7 +181,6 @@ paths:
                 items:
                   $ref: "#/components/schemas/POI"
   /places/{poi_id}/details:
-    security: []
     get:
       x-openapi-router-controller: app.locations.api
       operationId: get_POI_details
