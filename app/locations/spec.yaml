@@ -52,6 +52,19 @@ components:
           type: "string"
     POIDetails:
       type: object
+      required:
+        - _id
+        - name
+        - address
+        - class
+        - type
+        - location
+        - imageUrl
+        - hoursOfOperation
+        - histogram
+        - distance
+        - estimate
+        - lastUpdated
       properties:
         _id:
           type: string
