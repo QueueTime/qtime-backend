@@ -50,9 +50,11 @@ def _build_POI_details_api_response(
         "estimate": estimate,
         "lastUpdated": last_updated,
         "hoursOfOperation": poi.hours_of_operation,
+        "imageUrl": poi.image_url,
         **poi.to_dict(),
     }
     del d["hours_of_operation"]  # remove hours_of_operation (incorrect naming)
+    del d["image_url"]  # remove image_url (incorrect naming)
     return d
 
 

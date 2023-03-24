@@ -114,6 +114,9 @@ components:
           type: array
           items:
             type: object
+            required:
+              - hour
+              - estimate
             properties:
               hour:
                 type: number
