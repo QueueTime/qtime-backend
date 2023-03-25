@@ -134,6 +134,18 @@ def _generate_histogram_for_POI(self):
     pass
 
 
+def get_distance_to_POI(poi: POI, user_location: Tuple[float, float]) -> float:
+    """
+    Computes the distance in meters between the given POI and the user's location.
+
+    :param poi: The POI to compute the distance to
+    :param user_location: The user's location to compute the distance from
+    """
+    return _compute_geo_distance(
+        user_location, (poi.location["latitude"], poi.location["longitude"])
+    )
+
+
 def _compute_geo_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
     """
     Computes the distance in meters between two points on the earth's surface using the
