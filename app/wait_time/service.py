@@ -112,7 +112,7 @@ def remove_user_from_poi_pool(
     user: User,
     poi: POI,
     add_to_recent_wait_times: bool = True,
-    pool_entry: POIPoolEntry = None,
+    pool_entry: Optional[POIPoolEntry] = None,
 ):
     """
     Removes a user from the POI pool correpsonding to the specified POI

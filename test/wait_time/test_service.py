@@ -9,7 +9,7 @@ from app.wait_time.service import poi_pool_collection
 from app.wait_time import service as wait_time_service
 from app.wait_time.location import UserLocation
 from app.wait_time.sourcing_data import POIPoolEntry, RecentWaitTime
-from app.locations.poi import POI
+from app.locations.poi import POI, POIClassification
 from app.locations.service import poi_collection
 from app.wait_time.errors import UserNotInPoolError, UserAlreadyInPoolError
 
@@ -18,7 +18,7 @@ SAMPLE_UID = "2Nc3UKvI98YvhTlud9ZEomZHr9p2"
 sample_poi = POI(
     id="tim_hortons_musc",
     name="Tim Hortons MUSC",
-    classification="queue",
+    classification=POIClassification("queue"),
     hours_of_operation={
         "Sunday": "Closed",
         "Monday": "7:30 AM - 9:00 PM",
@@ -44,7 +44,7 @@ other_poi = POI(
     poi_type="EATERY",
     location={"latitude": 43.263532187492686, "longitude": -79.91758503073444},
     image_url="https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
-    classification="queue",
+    classification=POIClassification("queue"),
     hours_of_operation={
         "Sunday": "Closed",
         "Monday": "10:00 AM - 6:30 PM",
