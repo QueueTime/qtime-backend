@@ -8,7 +8,7 @@ class TestPOI(unittest.TestCase):
         self.poi = POI(
             id="0",
             name="test",
-            classification="TEST",
+            classification="queue",
             hours_of_operation={"Monday": "11:00"},
             address="123 McMaster",
             poi_type="test",
@@ -18,7 +18,7 @@ class TestPOI(unittest.TestCase):
         self.poi_dict = {
             "_id": "0",
             "name": "test",
-            "class": "TEST",
+            "class": "queue",
             "hours_of_operation": {"Monday": "11:00"},
             "address": "123 McMaster",
             "type": "test",

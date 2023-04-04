@@ -143,6 +143,7 @@ def _generate_reward_point_change_event(
             EventType.REWARD_POINTS_ADD,
             email,
             payload=RewardPointsAddPayload(source, points_change),
+            created=firestore.SERVER_TIMESTAMP,
         )
     )
 
