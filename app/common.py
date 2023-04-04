@@ -21,3 +21,7 @@ class SimpleMap:
 
     def to_dict(self) -> Dict[str, Any]:
         return self.__dict__
+
+    @staticmethod
+    def from_dict(dict: Dict[str, Any]):
+        return SimpleMap(**dict)
