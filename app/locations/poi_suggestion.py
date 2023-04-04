@@ -48,4 +48,4 @@ class POI_suggestion:
         """
         Checks if two POI_suggestion objects are equal based on pid
         """
-        return self.pid == other.pid
+        return isinstance(other, POI_suggestion) and self.to_dict() == other.to_dict()

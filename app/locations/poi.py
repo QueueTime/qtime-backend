@@ -72,4 +72,4 @@ class POI:
         """
         Checks if two POI objects are equal based on id
         """
-        return self.id == other.id
+        return isinstance(other, POI) and self.to_dict() == other.to_dict()

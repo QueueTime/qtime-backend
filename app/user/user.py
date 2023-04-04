@@ -72,4 +72,4 @@ class User:
         return json.dumps(self.to_dict())
 
     def __eq__(self, other):
-        return self.email == other.email
+        return isinstance(other, User) and self.to_dict() == other.to_dict()
