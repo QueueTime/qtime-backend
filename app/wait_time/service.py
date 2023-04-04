@@ -8,7 +8,7 @@ from app.locations.poi import POI
 from app.events.service import generate_waittime_submit_event
 from app.locations.service import get_details_for_POI
 from app.rewards.reward_values import POINTS_FOR_TIME_SUBMISSION
-from .sourcing_data import POIPool, POIPoolEntry, POIPoolSummary, RecentWaitTime
+from .sourcing_data import POIPoolEntry, POIPoolSummary, RecentWaitTime
 from .errors import POIPoolNotFoundError, UserAlreadyInPoolError, UserNotInPoolError
 from math import ceil
 from datetime import datetime, timezone, timedelta
@@ -109,22 +109,35 @@ def update_user_in_poi(user: User, poi: POI):
 
 
 def remove_user_from_poi_pool(
-    user: User, poi: POI, add_to_recent_wait_times: bool = True
+    user: User,
+    poi: POI,
+    add_to_recent_wait_times: bool = True,
+    pool_entry: POIPoolEntry = None,
 ):
     """
     Removes a user from the POI pool correpsonding to the specified POI
 
     :param user: User to remove from pool
     :param poi: POI corresponding to desired POIPool
+    :param add_to_recent_wait_times: boolean specifying if the entry should be added to recent wait times or not
+    :param pool_entry: POIPoolEntry that can be optionally given to prevent the entry from being needlessly fetched again
     :raises POIPoolNotFoundError: if there is no POIPool for the specified POI
     :raises UserNotInPoolError: if specified user is not in the desired pool
     """
-    wait_time_in_minutes = (
-        datetime.now(timezone.utc) - pool_entry.start_time
-    ).seconds / 60
+
     if add_to_recent_wait_times:
-        pool_entry = _get_poi_pool_entry(user, poi)
+        if not pool_entry:
+            pool_entry = _get_poi_pool_entry(user, poi)
+        wait_time_in_minutes = (
+            datetime.now(timezone.utc) - pool_entry.start_time
+        ).seconds / 60
         add_recent_wait_time_to_poi(poi, wait_time_in_minutes)
+    elif not pool_entry:
+        wait_time_in_minutes = 0
+    else:
+        wait_time_in_minutes = (
+            datetime.now(timezone.utc) - pool_entry.start_time
+        ).seconds / 60
 
     # Update user statistics
     user.num_lines_participated += 1
@@ -149,9 +162,7 @@ def add_recent_wait_time_to_poi(
     :param wait_time: float containing wait time in minutes to add
     """
 
-    _add_recent_wait_time(
-        poi, RecentWaitTime(datetime.now(timezone.utc), wait_time).to_dict()
-    )
+    _add_recent_wait_time(poi, RecentWaitTime(datetime.now(timezone.utc), wait_time))
 
     # Compute new average wait time
     if not skip_recompute:
@@ -194,7 +205,7 @@ def clear_stale_wait_times(poi: POI, ttl: int = 1800):
 
     removed_wait_times: List[float] = []
 
-    for entry in query:
+    for entry in query.stream():
         wait_time_entry: RecentWaitTime = RecentWaitTime.from_dict(entry.to_dict())
         wait_time = wait_time = (
             current_timestamp - wait_time_entry.timestamp
@@ -244,7 +255,7 @@ def get_user_current_poi(user: User) -> Optional[POI]:
     # Raise an error if the user is in more than one pool at once (we should know about this)
     assert len(result) < 2
     if result:
-        return get_details_for_POI(result[0].id)
+        return get_details_for_POI(result[0].reference.parent.parent.id)
 
     return None
 
@@ -270,9 +281,10 @@ def _update_average_wait_time(poi: POI, new_wait_times: List[float]):
     total_wait_time_minutes = (
         pool_summary.current_average_wait_time * recent_wait_time_count
     ) + sum(new_wait_times)
-    new_average = total_wait_time_minutes / (
-        recent_wait_time_count - len(new_wait_times)
-    )
+    if recent_wait_time_count:
+        new_average = total_wait_time_minutes / recent_wait_time_count
+    else:
+        new_average = 0
     pool_summary.current_average_wait_time = new_average
     _update_poi_pool_summary(pool_summary, poi)
 
