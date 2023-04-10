@@ -1,0 +1,26 @@
+[
+    {
+        "poi_name": "bistro_mkr",
+        "class": "occupancy"
+    },
+    {
+        "poi_name": "bistro_2_go",
+        "class": "queue"
+    },
+    {
+        "poi_name": "booster_juice_musc",
+        "class": "queue"
+    },
+    {
+        "poi_name": "centro",
+        "class": "occupancy"
+    },
+    {
+        "poi_name": "la_piazza",
+        "class": "occupancy"
+    },
+    {
+        "poi_name": "tim_hortons_musc",
+        "class": "queue"
+    }
+]

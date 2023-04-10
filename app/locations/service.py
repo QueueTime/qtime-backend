@@ -1,14 +1,19 @@
 import haversine
-from typing import Dict, Tuple, Iterable, Optional, List
+from typing import Dict, Tuple, Iterable, Optional, List, Any
 import math
 from random import random
 
 from .poi_suggestion import POI_suggestion
-from .poi import POI, POIClassification
+from .poi import POI, POIClassification, Histogram
 from .errors import POINotFoundError, InvalidPOISuggestionError
 from app import common
 from datetime import datetime, timezone
-from app.firebase import firestore_db, POI_COLLECTION, POI_PROPOSAL_COLLECTION
+from app.firebase import (
+    firestore_db,
+    POI_COLLECTION,
+    POI_PROPOSAL_COLLECTION,
+    HISTOGRAM_COLLECTION,
+)
 
 
 def poi_collection():
@@ -17,6 +22,10 @@ def poi_collection():
 
 def poi_proposal_collection():
     return firestore_db().collection(POI_PROPOSAL_COLLECTION)
+
+
+def histogram_collection():
+    return firestore_db().collection(HISTOGRAM_COLLECTION)
 
 
 def list_POI(
@@ -126,14 +135,6 @@ def _create_POI_suggestion(pid: str, poi_suggestion: Dict[str, str]) -> POI_sugg
         raise common.BadDataError("Missing data from poi suggestion data: " + str(e))
 
 
-def _fetch_latest_estimated_value(self):
-    pass
-
-
-def _generate_histogram_for_POI(self):
-    pass
-
-
 def get_distance_to_POI(poi: POI, user_location: Tuple[float, float]) -> float:
     """
     Computes the distance in meters between the given POI and the user's location.
@@ -155,3 +156,106 @@ def _compute_geo_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> f
     :param p2: A tuple of the latitude and longitude of the second point
     """
     return haversine.haversine(p1, p2, unit=haversine.Unit.METERS)
+
+
+def generate_histogram_for_POI(poi_name: str, day: str = "") -> List[Any]:
+    """
+    Returns the histogram of the wait time/occupancy for opening hours for a specified POI
+
+    :param poi_name: Name of the point of interest (also known as the POI id)
+    :param day: Specific day to get the wait time/occupancy histogram from (Optional)
+    """
+    histogram_instance = histogram_for_POI(poi_name)
+    histogram = histogram_instance.to_dict()
+    histogram_data = histogram["histogram_data"]
+    if day == "":
+        day = datetime.today().strftime("%A")
+
+    if day not in histogram_data:
+        return [{"time": 0, "estimate": 0}]
+
+    return [
+        {"time": int(t), "estimate": histogram_data[day]["hours"][t]}
+        for t in histogram_data[day]["hours"]
+    ]
+
+
+def fetch_latest_estimated_value(
+    poi_name: str, day: str = "", current_hour: int = 0, current_minute: int = 0
+) -> int:
+    """
+    Returns the estimated wait time/occupancy of a specified POI
+
+    :param poi_name: Name of the point of interest (also known as the POI id)
+    :param day: Specific day to get the wait time/occupancy histogram from (Optional)
+    :param current_hour: The hours of the day in 24hr format (Optional)
+    :param current_minute: The minute of the day (Optional)
+    """
+    wait_time_estimate = 0
+    histogram_instance = histogram_for_POI(poi_name)
+    histogram_dict = histogram_instance.to_dict()
+    histogram_data = histogram_dict["histogram_data"]
+    if day == "":
+        day = datetime.today().strftime("%A")
+
+    if day not in histogram_data:
+        return wait_time_estimate
+
+    histogram_hourly_data = histogram_data[day]["hours"]
+
+    current_date_time = datetime.now()
+    if current_hour == 0:
+        current_hour = int(current_date_time.strftime("$H"))
+    if current_minute == 0:
+        current_minute = int(current_date_time.strftime("$M"))
+
+    if str(current_hour) in histogram_hourly_data:
+        wait_time_estimate = histogram_hourly_data[str(current_hour)]
+    else:
+        return wait_time_estimate
+
+    poi_class = histogram_dict["class"]
+    # For wait time queue
+    if poi_class == "queue":
+        # Add 5 minutes to queue time during peak times
+        if current_minute >= 20 and current_minute <= 30:
+            wait_time_estimate += 5
+    if poi_class == "occupancy":
+        # Add 10% to occupancy during peak times
+        if current_minute >= 20 and current_minute <= 30:
+            wait_time_estimate += 10
+
+    return wait_time_estimate
+
+
+# Create histogram object
+def histogram_for_POI(poi_id: str) -> Histogram:
+    """
+    Returns the Histogram object of the wait time/occupancy for opening hours for a specified POI
+
+    :param poi_name: Name of the point of interest (also known as the POI id)
+    """
+    # Getting information from histogram base collection
+    histogram_base_ref = histogram_collection().document(poi_id)
+    histogram_base_doc = histogram_base_ref.get()
+    if not histogram_base_doc.exists:
+        raise POINotFoundError(poi_id)
+    histogram_base_doc_dict = histogram_base_doc.to_dict()
+    poi_name = histogram_base_doc_dict["poi_name"]
+    class_type = histogram_base_doc_dict["class"]
+
+    # Getting histogram data for each day for a poi
+    histogram_docs = (
+        histogram_collection().document(poi_id).collection("histogram_data").stream()
+    )
+    histogram_data_dict = {
+        doc.to_dict()["day"]: doc.to_dict() for doc in histogram_docs
+    }
+
+    histogram_dict = {
+        "poi_name": poi_name,
+        "class": class_type,
+        "histogram_data": histogram_data_dict,
+    }
+
+    return Histogram.from_dict(histogram_dict)

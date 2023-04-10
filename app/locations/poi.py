@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Any
+from typing import Dict, Any, List
 from app.common import BadDataError
 from app.locations.errors import POINotFoundError
 import json
@@ -85,3 +85,41 @@ class POI:
         Checks if two POI objects are equal based on id
         """
         return self.id == other.id
+
+
+class Histogram:
+    def __init__(
+        self,
+        poi_name: str,
+        classification: POIClassification,
+        histogram_data: List[Dict[Any, Any]],
+    ) -> None:
+        self.poi_name = poi_name
+        self.classification = POIClassification(classification)
+        self.histogram_data = histogram_data
+
+    @staticmethod
+    def from_dict(dict: Dict[str, Any]) -> "Histogram":
+        """
+        Creates a POI object from a dictionary.
+
+        :param dict: Dictionary of the parameters corresponding to a POI
+        """
+        try:
+            return Histogram(
+                poi_name=dict["poi_name"],
+                classification=dict["class"],
+                histogram_data=dict["histogram_data"],
+            )
+        except KeyError as e:
+            raise BadDataError("Missing data from histogram data: " + str(e))
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Creates a dictionary from a POI object
+        """
+        return {
+            "poi_name": self.poi_name,
+            "class": self.classification.value,
+            "histogram_data": self.histogram_data,
+        }

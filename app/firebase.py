@@ -6,6 +6,7 @@ REFERRAL_CODES_COLLECTION = "referral_codes"
 LOCATION_COLLECTION = "location"
 POI_COLLECTION = "POI"
 POI_PROPOSAL_COLLECTION = "POI_proposal"
+HISTOGRAM_COLLECTION = "histogram"
 
 
 def firestore_db():
