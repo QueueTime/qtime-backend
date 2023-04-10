@@ -124,5 +124,136 @@
       "Friday": "7:00 AM - 11:00 PM",
       "Saturday": "10:00 AM - 10:00 PM"
     }
+  },
+  {
+    "_id": "mills_library",
+    "name": "Mills Memorial Library",
+    "address": "Mills Memorial Library",
+    "type": "LIBRARY",
+    "location": {
+      "latitude": 43.26285416242843,
+      "longitude": -79.91763748052452
+    },
+    "image_url": "https://facilities.mcmaster.ca/app/uploads/2018/10/mills-memorial-library-1400x600.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "12:00 AM - 11:59 PM",
+      "Monday": "8:00 AM - 2:00 AM",
+      "Tuesday": "8:00 AM - 2:00 AM",
+      "Wednesday": "12:00 AM - 11:59 PM",
+      "Thursday": "12:00 AM - 11:59 PM",
+      "Friday": "12:00 AM - 11:59 PM",
+      "Saturday": "12:00 AM - 11:59 PM"
+    }
+  },
+  {
+    "_id": "thode_library",
+    "name": "H.G. Thode Library",
+    "address": "H.G. Thode Library",
+    "type": "LIBRARY",
+    "location": {
+      "latitude": 43.26128078127837,
+      "longitude": -79.92253685794334
+    },
+    "image_url": "https://library.mcmaster.ca/sites/default/files/inline-images/ThodeLibrary.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "12:00 AM - 11:59 PM",
+      "Monday": "8:00 AM - 2:00 AM",
+      "Tuesday": "8:00 AM - 2:00 AM",
+      "Wednesday": "12:00 AM - 11:59 PM",
+      "Thursday": "12:00 AM - 11:59 PM",
+      "Friday": "12:00 AM - 11:59 PM",
+      "Saturday": "12:00 AM - 11:59 PM"
+    }
+  },
+  {
+    "_id": "health_sciences_library",
+    "name": "Health Sciences Library",
+    "address": "Health Sciences Library",
+    "type": "LIBRARY",
+    "location": {
+      "latitude": 43.260599509928056,
+      "longitude": -79.91832688970713
+    },
+    "image_url": "https://hsl.mcmaster.ca/app/uploads/2022/08/med-library-5.png",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "12:00 PM - 7:45 PM",
+      "Monday": "9:00 AM - 8:45 PM",
+      "Tuesday": "9:00 AM - 8:45 PM",
+      "Wednesday": "9:00 AM - 8:45 PM",
+      "Thursday": "9:00 AM - 8:45 PM",
+      "Friday": "9:00 AM - 8:45 PM",
+      "Saturday": "12:00 PM - 4:45 PM"
+    }
+  },
+  {
+    "_id": "HSR_university",
+    "name": "HSR Stop: Sterling at University",
+    "address": "McMaster University",
+    "type": "TRANSPORT",
+    "location": {
+      "latitude": 43.262261617298144,
+      "longitude": -79.91833785870858
+    },
+    "image_url": "",
+    "class": "occupancy",
+    "hours_of_operation": {}
+  },
+  {
+    "_id": "the_pulse",
+    "name": "The Pulse",
+    "address": "David Braley Athletic Centre",
+    "type": "GYM",
+    "location": {
+      "latitude": 43.26530775811373,
+      "longitude": -79.91653835644168
+    },
+    "image_url": "https://rec.mcmaster.ca/sites/default/files/styles/rec_image/public/facility_images/pulse-1.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "8:30 AM - 10:30 PM",
+      "Monday": "6:00 AM - 12:30 AM",
+      "Tuesday": "6:00 AM - 12:30 AM",
+      "Wednesday": "6:00 AM - 12:30 AM",
+      "Thursday": "6:00 AM - 12:30 AM",
+      "Friday": "6:00 AM - 12:30 AM",
+      "Saturday": "8:30 AM - 10:30 PM"
+    }
+  },
+  {
+    "_id": "GO_bus_station",
+    "name": "GO Bus Station",
+    "address": "McMaster University",
+    "type": "TRANSPORT",
+    "location": {
+      "latitude": 43.26168998595332,
+      "longitude": -79.92279913486357
+    },
+    "image_url": "",
+    "class": "occupancy",
+    "hours_of_operation": {}
+  },
+  {
+    "_id": "campus_store",
+    "name": "Campus Store",
+    "address": "McMaster University",
+    "type": "SHOP",
+    "location": {
+      "latitude": 43.26327119806526,
+      "longitude": -79.91851467328435
+    },
+    "image_url": "https://brand-resources.mcmaster.ca/asset-bank/servlet/file?contentDispositionFilename=MzEwMzM3.jpg-s.jpg&signature=6a4455386f71384d4c596877526e524b58416c7432636b57683434696261537252435a2b616c3962552b48426f326950786f71646c6c64336b43782f6f4f36704b61514571344e6e765a6d4d7735776f7370444a36666a4e5a4a7037766a6849655a71437879436d4e4e493d&contentDisposition=inline&lastModified=2022-01-13T21:40:22Z&contentIdentifier=48b/nBLf9kbWMPBDfBOb89VwIUSBHQNA.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Sunday": "Closed",
+      "Monday": "10:00 AM - 5:00 PM",
+      "Tuesday": "10:00 AM - 5:00 PM",
+      "Wednesday": "10:00 AM - 5:00 PM",
+      "Thursday": "10:00 AM - 5:00 PM",
+      "Friday": "Closed",
+      "Saturday": "Closed"
+    }
   }
 ]
