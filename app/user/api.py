@@ -1,5 +1,6 @@
 from .service import create_user, delete_user
 from .errors import UserNotFoundError, UserAlreadyExistsError
+from common import BadDataError
 from firebase_admin import auth
 from typing import Dict, Any
 from app.auth import with_auth_user
@@ -10,9 +11,9 @@ def new_user_signup(token_info: Dict[str, Any]):
     try:
         firebase_user_record: auth.UserRecord = auth.get_user(token_info["uid"])
     except ValueError as e:
-        return {"error": "Invalid user ID", "message": str(e)}, 400
+        return BadDataError("Invalid user ID").build_error()
     except auth.UserNotFoundError as e:
-        return {"error": "User not found in firebase auth", "message": str(e)}, 404
+        return UserNotFoundError("User not found in firebase auth").build_error()
 
     create_user(firebase_user_record.email)
     return None, 204
