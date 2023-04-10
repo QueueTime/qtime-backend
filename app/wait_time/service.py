@@ -69,7 +69,10 @@ def compute_wait_time_for_poi(poi: POI) -> int:
     :returns: int corresponding to wait time in minutes
     """
     # TODO: Histogram and manual time submission calculations to be added to this
-    return ceil(get_wait_time_from_poi_pool(poi))
+    # Temporarily ignore pool data and just use histogram
+    # return ceil(get_wait_time_from_poi_pool(poi))
+    # All wait times temporarily 0
+    return 0
 
 
 ### POI Pool functions
