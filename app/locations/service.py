@@ -48,9 +48,9 @@ def list_POI(
     def compute_query_results(d):
         poi = d.to_dict()
         # TODO: Compute the estimate (time or capacity) for each POI
-        SAMPLE_ESTIMATE = math.ceil(random() * 9)
+        SAMPLE_ESTIMATE = fetch_latest_estimated_value(poi["_id"])
         # TODO: Compute the last_updated value for each POI
-        SAMPLE_LAST_UPDATED = math.ceil(random() * 7)
+        SAMPLE_LAST_UPDATED = 3
         user_distance = _compute_geo_distance(
             user_location,
             (poi["location"]["latitude"], poi["location"]["longitude"]),
