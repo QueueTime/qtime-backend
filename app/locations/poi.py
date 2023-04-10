@@ -92,7 +92,7 @@ class Histogram:
         self,
         poi_name: str,
         classification: POIClassification,
-        histogram_data: List[Dict[Any, Any]],
+        histogram_data: Dict[Any, Any],
     ) -> None:
         self.poi_name = poi_name
         self.classification = POIClassification(classification)

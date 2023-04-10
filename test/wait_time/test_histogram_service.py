@@ -2,17 +2,28 @@ import unittest
 from unittest.mock import patch, Mock
 from test.mixins.firebase_mixin import FirebaseTestMixin
 
-from datetime import datetime, timezone, timedelta
-from app.firebase import firestore_db
-from app.user.user import User
-from app.wait_time.location import UserLocation
-from app.locations.poi import POI, POIClassification
+from app.locations.poi import Histogram, POIClassification
 from app.locations.service import (
-    poi_collection,
+    histogram_collection,
     histogram_for_POI,
     generate_histogram_for_POI,
     fetch_latest_estimated_value,
 )
+
+centro_base = {"poi_name": "centro", "class": "occupancy"}
+centro_hist_data = {"poi_name": "centro", "day": "Sunday", "hours": {"1": 10, "4": 90}}
+
+tim_hortons_musc_base = {"poi_name": "tim_hortons_musc", "class": "queue"}
+tim_hortons_musc_hist_data_sunday = {
+    "poi_name": "tim_hortons_musc",
+    "day": "Sunday",
+    "hours": {"1": 1, "2": 2},
+}
+tim_hortons_musc_hist_data_monday = {
+    "poi_name": "tim_hortons_musc",
+    "day": "Monday",
+    "hours": {"2": 2},
+}
 
 
 class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
@@ -21,6 +32,19 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
         self.with_firebase_emulators(self)
 
     def setUp(self):
+        histogram_collection().document("centro").set(centro_base)
+        histogram_collection().document("tim_hortons_musc").set(tim_hortons_musc_base)
+
+        histogram_collection().document("centro").collection("histogram_data").document(
+            "Sunday"
+        ).set(centro_hist_data)
+        histogram_collection().document("tim_hortons_musc").collection(
+            "histogram_data"
+        ).document("Sunday").set(tim_hortons_musc_hist_data_sunday)
+        histogram_collection().document("tim_hortons_musc").collection(
+            "histogram_data"
+        ).document("Monday").set(tim_hortons_musc_hist_data_monday)
+
         self.poi_id = "tim_hortons_musc"
         self.poi_id_occ = "centro"
         self.sample_histogram = {
@@ -64,7 +88,7 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
         self.sample_wait_time_estimate_peak_occ = 20
 
     def tearDown(self):
-        pass
+        self.clear_all_firestore_data()
 
     def test_histogram_for_POI_queue(self):
         self.maxDiff = None
