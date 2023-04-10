@@ -197,9 +197,17 @@
       "latitude": 43.262261617298144,
       "longitude": -79.91833785870858
     },
-    "image_url": "",
-    "class": "occupancy",
-    "hours_of_operation": {}
+    "image_url": "https://i.cbc.ca/1.4960677.1680718028!/fileImage/httpImage/hamilton-bus.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Sunday": "5:00 AM - 1:00 AM",
+      "Monday": "5:00 AM - 1:00 AM",
+      "Tuesday": "5:00 AM - 1:00 AM",
+      "Wednesday": "5:00 AM - 1:00 AM",
+      "Thursday": "5:00 AM - 1:00 AM",
+      "Friday": "5:00 AM - 1:00 AM",
+      "Saturday": "5:00 AM - 1:00 AM"
+    }
   },
   {
     "_id": "the_pulse",
@@ -223,17 +231,25 @@
     }
   },
   {
-    "_id": "GO_bus_station",
-    "name": "GO Bus Station",
+    "_id": "GO_bus_47",
+    "name": "GO Bus 47",
     "address": "McMaster University",
     "type": "TRANSPORT",
     "location": {
-      "latitude": 43.26168998595332,
-      "longitude": -79.92279913486357
+      "latitude": 43.261907982957915,
+      "longitude": -79.92258358437064
     },
-    "image_url": "",
-    "class": "occupancy",
-    "hours_of_operation": {}
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/GO_Transit_SuperLo_Enviro500_8308.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Sunday": "9:00 AM - 10:30 PM",
+      "Monday": "6:00 AM - 11:00 PM",
+      "Tuesday": "6:00 AM - 11:00 PM",
+      "Wednesday": "6:00 AM - 11:00 PM",
+      "Thursday": "6:00 AM - 11:00 PM",
+      "Friday": "6:00 AM - 11:00 PM",
+      "Saturday": "9:00 AM - 10:30 PM"
+    }
   },
   {
     "_id": "campus_store",
@@ -254,6 +270,158 @@
       "Thursday": "10:00 AM - 5:00 PM",
       "Friday": "Closed",
       "Saturday": "Closed"
+    }
+  },
+  {
+    "_id": "iahs_library",
+    "name": "IAHS Library",
+    "address": "Institude for Applied Health Sciences",
+    "type": "LIBRARY",
+    "location": {
+      "latitude": 43.259569,
+      "longitude": -79.920281
+    },
+    "image_url": "https://libapps-ca.s3.amazonaws.com/accounts/979/images/iahs-cms.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Monday": "8:00 AM - 8:00 PM",
+      "Tuesday": "8:00 AM - 8:00 PM",
+      "Wednesday": "8:00 AM - 8:00 PM",
+      "Thursday": "8:00 AM - 8:00 PM",
+      "Friday": "8:00 AM - 8:00 PM"
+    }
+  },
+  {
+    "_id": "the_buttery",
+    "name": "The Buttery",
+    "address": "Alumni Memorial Hall",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.26347578661572,
+      "longitude": -79.91894100914054
+    },
+    "image_url": "https://hospitality.mcmaster.ca/app/uploads/2022/04/buttery-5-resized.jpg",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Monday": "11:30 AM - 2:00 PM",
+      "Tuesday": "11:30 AM - 2:00 PM",
+      "Wednesday": "11:30 AM - 2:00 PM",
+      "Thursday": "11:30 AM - 2:00 PM",
+      "Friday": "11:30 AM - 2:00 PM"
+    }
+  },
+  {
+    "_id": "chopped_leaf",
+    "name": "Chopped Leaf",
+    "address": "Peter George Centre for Living and Learning",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.26545296416863,
+      "longitude": -79.91828945199912
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2021/09/CLbanner.png",
+    "class": "occupancy",
+    "hours_of_operation": {
+      "Monday": "12:00 PM - 6:00 PM",
+      "Tuesday": "12:00 PM - 6:00 PM",
+      "Wednesday": "12:00 PM - 6:00 PM",
+      "Thursday": "12:00 PM - 6:00 PM",
+      "Friday": "12:00 PM - 6:00 PM"
+    }
+  },
+  {
+    "_id": "caffeine_the_elements",
+    "name": "Caffeine The Elements",
+    "address": "Burke Science Building",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.262275459687146,
+      "longitude": -79.92034823090748
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Caffeine-the-Elements.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Monday": "8:00 AM - 5:00 PM",
+      "Tuesday": "8:00 AM - 5:00 PM",
+      "Wednesday": "8:00 AM - 5:00 PM",
+      "Thursday": "8:00 AM - 5:00 PM",
+      "Friday": "8:00 AM - 3:00 PM"
+    }
+  },
+  {
+    "_id": "by_mac",
+    "name": "ByMac",
+    "address": "David Braley Athletic Centre",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.26532747874063,
+      "longitude": -79.91630460404694
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Bymac.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Monday": "8:30 AM - 4:00 PM",
+      "Tuesday": "8:30 AM - 4:00 PM",
+      "Wednesday": "8:30 AM - 4:00 PM",
+      "Thursday": "8:30 AM - 4:00 PM",
+      "Friday": "8:30 AM - 3:00 PM"
+    }
+  },
+  {
+    "_id": "iahs_cafe",
+    "name": "IAHS Cafe",
+    "address": "Institude for Applied Health Sciences",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.259835864887314,
+      "longitude": -79.92020179885442
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/IAHS.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Monday": "8:00 AM - 5:30 PM",
+      "Tuesday": "8:00 AM - 5:30 PM",
+      "Wednesday": "8:00 AM - 5:30 PM",
+      "Thursday": "8:00 AM - 5:30 PM",
+      "Friday": "8:00 AM - 4:00 PM"
+    }
+  },
+  {
+    "_id": "starbucks",
+    "name": "Starbucks",
+    "address": "McMaster University Student Centre",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.26317900676659,
+      "longitude": -79.91829942295905
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Starbucks.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Monday": "7:30 AM - 8:00 PM",
+      "Tuesday": "7:30 AM - 8:00 PM",
+      "Wednesday": "7:30 AM - 8:00 PM",
+      "Thursday": "7:30 AM - 8:00 PM",
+      "Friday": "7:30 AM - 6:00 PM"
+    }
+  },
+  {
+    "_id": "williams_fresh_cafe",
+    "name": "Williams Fresh Cafe",
+    "address": "Health Sciences Center",
+    "type": "EATERY",
+    "location": {
+      "latitude": 43.2602883645966,
+      "longitude": -79.91816254066076
+    },
+    "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Williams-Fresh-Cafe.jpg",
+    "class": "queue",
+    "hours_of_operation": {
+      "Monday": "8:00 AM - 4:00 PM",
+      "Tuesday": "8:00 AM - 4:00 PM",
+      "Wednesday": "8:00 AM - 4:00 PM",
+      "Thursday": "8:00 AM - 4:00 PM",
+      "Friday": "8:00 AM - 4:00 PM"
     }
   }
 ]
