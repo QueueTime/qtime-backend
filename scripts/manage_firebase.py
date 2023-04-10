@@ -60,6 +60,10 @@ def parse_value_with_type(value: str, type: str) -> Any:
 # Add new command line arguments here
 parser = argparse.ArgumentParser()
 parser.add_argument("--add-pois", metavar="poi_json_path")
+parser.add_argument("--add-wait-time-base", metavar="wait_time_base_json_path")
+parser.add_argument(
+    "--add-wait-time-histogram", metavar="wait_time_histogram_json_path"
+)
 parser.add_argument("--firebase-key", "-k", default=DEFAULT_FIREBASE_KEY_PATH)
 parser.add_argument(
     "--add-property",
@@ -94,6 +98,10 @@ cred = credentials.Certificate(firebase_key_path)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+# Add new wait time base document given JSON file
+wait_time_base_json_path = args.add_wait_time_base
+# Add new wait time histogram
+wait_time_histogram_json_path = args.add_wait_time_histogram
 # Add new POI from given JSON file
 poi_json_path = args.add_pois
 if poi_json_path:
@@ -103,6 +111,37 @@ if poi_json_path:
             for poi in poi_list:
                 new_poi_ref = db.collection("POI").document(poi["_id"])
                 new_poi_ref.set(poi, merge=True)
+    except FileNotFoundError as e:
+        print(e)
+        quit(1)
+# Add wait time base collection
+elif wait_time_base_json_path:
+    try:
+        with open(wait_time_base_json_path, "r") as json_file:
+            wait_time_base_list = json.loads(json_file.read())
+            for wait_time_poi in wait_time_base_list:
+                new_wait_time_poi_ref = db.collection("histogram").document(
+                    wait_time_poi["poi_name"]
+                )
+                new_wait_time_poi_ref.set(wait_time_poi, merge=True)
+    except FileNotFoundError as e:
+        print(e)
+        quit(1)
+# Add wait time histograms
+elif wait_time_histogram_json_path:
+    try:
+        with open(wait_time_histogram_json_path, "r") as json_file:
+            wait_time_histogram_list = json.loads(json_file.read())
+            for wait_time_hist in wait_time_histogram_list:
+                poi_name = wait_time_hist["poi_name"]
+                day_key = wait_time_hist["day"]
+                new_wait_time_hist_ref = (
+                    db.collection("histogram")
+                    .document(poi_name)
+                    .collection("histogram_data")
+                    .document(day_key)
+                )
+                new_wait_time_hist_ref.set(wait_time_hist, merge=True)
     except FileNotFoundError as e:
         print(e)
         quit(1)
