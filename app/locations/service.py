@@ -205,9 +205,9 @@ def fetch_latest_estimated_value(
 
     current_date_time = datetime.now()
     if current_hour == 0:
-        current_hour = int(current_date_time.strftime("$H"))
+        current_hour = int(current_date_time.strftime("%H"))
     if current_minute == 0:
-        current_minute = int(current_date_time.strftime("$M"))
+        current_minute = int(current_date_time.strftime("%M"))
 
     if str(current_hour) in histogram_hourly_data:
         wait_time_estimate = histogram_hourly_data[str(current_hour)]
