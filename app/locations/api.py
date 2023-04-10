@@ -12,6 +12,8 @@ from .service import (
     get_details_for_POI,
     new_POI_suggestion,
     get_distance_to_POI,
+    generate_histogram_for_POI,
+    fetch_latest_estimated_value,
 )
 
 
@@ -114,14 +116,11 @@ def get_POI_details(
     poi = get_details_for_POI(poi_id)
     distance = get_distance_to_POI(poi, user_location)
     # TODO: Compute the estimate (time or capacity)
-    SAMPLE_ESTIMATE = math.ceil(random() * 9)
+    SAMPLE_ESTIMATE = fetch_latest_estimated_value(poi_id)
     # TODO: Compute the last_updated value
-    SAMPLE_LAST_UPDATED = math.ceil(random() * 7)
+    SAMPLE_LAST_UPDATED = 3
     # TODO: Compute the histogram values that match this format
-    SAMPLE_HISTOGRAM = [
-        {"time": t, "estimate": e}
-        for t, e in zip(range(7, 24), [randint(1, 15) for _ in range(17)])
-    ]
+    SAMPLE_HISTOGRAM = generate_histogram_for_POI(poi_id)
 
     return (
         jsonify(
