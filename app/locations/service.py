@@ -169,16 +169,23 @@ def generate_histogram_for_POI(poi_name: str, day: str = "") -> List[Any]:
     histogram_instance = histogram_for_POI(poi_name)
     histogram = histogram_instance.to_dict()
     histogram_data = histogram["histogram_data"]
+
+    est = pytz.timezone("US/Eastern")
     if day == "":
-        day = datetime.today().strftime("%A")
+        day = datetime.now().astimezone(est).strftime("%A")
 
     if day not in histogram_data:
         return [{"time": 0, "estimate": 0}]
 
-    return [
-        {"time": int(t), "estimate": histogram_data[day]["hours"][t]}
-        for t in histogram_data[day]["hours"]
-    ]
+    return list(
+        sorted(
+            (
+                {"time": int(t), "estimate": histogram_data[day]["hours"][t]}
+                for t in histogram_data[day]["hours"]
+            ),
+            key=lambda x: x["time"],
+        )
+    )
 
 
 def fetch_latest_estimated_value(
