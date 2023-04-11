@@ -49,7 +49,7 @@ def list_POI(
     def compute_query_results(d):
         poi = d.to_dict()
         # TODO: Compute the estimate (time or capacity) for each POI
-        SAMPLE_ESTIMATE = fetch_latest_estimated_value(poi["_id"])
+        SAMPLE_ESTIMATE = fetch_latest_estimated_value(poi["_id"], poi["class"])
         # TODO: Compute the last_updated value for each POI
         SAMPLE_LAST_UPDATED = 3
         user_distance = _compute_geo_distance(
@@ -189,7 +189,11 @@ def generate_histogram_for_POI(poi_name: str, day: str = "") -> List[Any]:
 
 
 def fetch_latest_estimated_value(
-    poi_name: str, day: str = "", current_hour: int = 0, current_minute: int = 0
+    poi_name: str,
+    classification: str,
+    day: str = "",
+    current_hour: int = 0,
+    current_minute: int = 0,
 ) -> int:
     """
     Returns the estimated wait time/occupancy of a specified POI
@@ -200,9 +204,9 @@ def fetch_latest_estimated_value(
     :param current_minute: The minute of the day (Optional)
     """
     wait_time_estimate = 0
-    histogram_instance = histogram_for_POI(poi_name)
-    histogram_dict = histogram_instance.to_dict()
-    histogram_data = histogram_dict["histogram_data"]
+    # histogram_instance = histogram_for_POI(poi_name)
+    # histogram_dict = histogram_instance.to_dict()
+    # histogram_data = histogram_dict["histogram_data"]
 
     est = pytz.timezone("US/Eastern")
     now = datetime.now().astimezone(est)
@@ -210,28 +214,40 @@ def fetch_latest_estimated_value(
     if day == "":
         day = now.strftime("%A")
 
-    if day not in histogram_data:
-        return wait_time_estimate
-
-    histogram_hourly_data = histogram_data[day]["hours"]
-
     if current_hour == 0:
         current_hour = int(now.strftime("%H"))
     if current_minute == 0:
         current_minute = int(now.strftime("%M"))
+
+    try:
+        histogram_hourly_data = (
+            histogram_collection()
+            .document(poi_name)
+            .collection("histogram_data")
+            .document(day)
+            .get()
+            .to_dict()["hours"]
+        )
+    except Exception as e:
+        return wait_time_estimate
+
+    # if day not in histogram_data:
+    #     return wait_time_estimate
+
+    # histogram_hourly_data = histogram_data[day]["hours"]
 
     if str(current_hour) in histogram_hourly_data:
         wait_time_estimate = histogram_hourly_data[str(current_hour)]
     else:
         return wait_time_estimate
 
-    poi_class = histogram_dict["class"]
+    # poi_class = histogram_dict["class"]
     # For wait time queue
-    if poi_class == "queue":
+    if classification == "queue":
         # Add 5 minutes to queue time during peak times
         if current_minute >= 20 and current_minute <= 30:
             wait_time_estimate += 5
-    if poi_class == "occupancy":
+    if classification == "occupancy":
         # Add 10% to occupancy during peak times
         if current_minute >= 20 and current_minute <= 30:
             wait_time_estimate += 10
