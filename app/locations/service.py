@@ -1,6 +1,7 @@
 import haversine
 from typing import Dict, Tuple, Iterable, Optional, List, Any
 import math
+import pytz
 from random import random
 
 from .poi_suggestion import POI_suggestion
@@ -195,19 +196,22 @@ def fetch_latest_estimated_value(
     histogram_instance = histogram_for_POI(poi_name)
     histogram_dict = histogram_instance.to_dict()
     histogram_data = histogram_dict["histogram_data"]
+
+    est = pytz.timezone("US/Eastern")
+    now = datetime.now().astimezone(est)
+
     if day == "":
-        day = datetime.today().strftime("%A")
+        day = now.strftime("%A")
 
     if day not in histogram_data:
         return wait_time_estimate
 
     histogram_hourly_data = histogram_data[day]["hours"]
 
-    current_date_time = datetime.now()
     if current_hour == 0:
-        current_hour = int(current_date_time.strftime("%H"))
+        current_hour = int(now.strftime("%H"))
     if current_minute == 0:
-        current_minute = int(current_date_time.strftime("%M"))
+        current_minute = int(now.strftime("%M"))
 
     if str(current_hour) in histogram_hourly_data:
         wait_time_estimate = histogram_hourly_data[str(current_hour)]
