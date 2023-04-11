@@ -261,7 +261,7 @@
       "longitude": -79.91851467328435
     },
     "image_url": "https://brand-resources.mcmaster.ca/asset-bank/servlet/file?contentDispositionFilename=MzEwMzM3.jpg-s.jpg&signature=6a4455386f71384d4c596877526e524b58416c7432636b57683434696261537252435a2b616c3962552b48426f326950786f71646c6c64336b43782f6f4f36704b61514571344e6e765a6d4d7735776f7370444a36666a4e5a4a7037766a6849655a71437879436d4e4e493d&contentDisposition=inline&lastModified=2022-01-13T21:40:22Z&contentIdentifier=48b/nBLf9kbWMPBDfBOb89VwIUSBHQNA.jpg",
-    "class": "occupancy",
+    "class": "queue",
     "hours_of_operation": {
       "Sunday": "Closed",
       "Monday": "10:00 AM - 5:00 PM",
@@ -284,11 +284,13 @@
     "image_url": "https://libapps-ca.s3.amazonaws.com/accounts/979/images/iahs-cms.jpg",
     "class": "occupancy",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "8:00 AM - 8:00 PM",
       "Tuesday": "8:00 AM - 8:00 PM",
       "Wednesday": "8:00 AM - 8:00 PM",
       "Thursday": "8:00 AM - 8:00 PM",
-      "Friday": "8:00 AM - 8:00 PM"
+      "Friday": "8:00 AM - 8:00 PM",
+      "Saturday": "Closed"
     }
   },
   {
@@ -303,11 +305,13 @@
     "image_url": "https://hospitality.mcmaster.ca/app/uploads/2022/04/buttery-5-resized.jpg",
     "class": "occupancy",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "11:30 AM - 2:00 PM",
       "Tuesday": "11:30 AM - 2:00 PM",
       "Wednesday": "11:30 AM - 2:00 PM",
       "Thursday": "11:30 AM - 2:00 PM",
-      "Friday": "11:30 AM - 2:00 PM"
+      "Friday": "11:30 AM - 2:00 PM",
+      "Saturday": "Closed"
     }
   },
   {
@@ -322,11 +326,13 @@
     "image_url": "https://discover.mcmaster.ca/app/uploads/2021/09/CLbanner.png",
     "class": "occupancy",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "12:00 PM - 6:00 PM",
       "Tuesday": "12:00 PM - 6:00 PM",
       "Wednesday": "12:00 PM - 6:00 PM",
       "Thursday": "12:00 PM - 6:00 PM",
-      "Friday": "12:00 PM - 6:00 PM"
+      "Friday": "12:00 PM - 6:00 PM",
+      "Saturday": "Closed"
     }
   },
   {
@@ -341,11 +347,13 @@
     "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Caffeine-the-Elements.jpg",
     "class": "queue",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "8:00 AM - 5:00 PM",
       "Tuesday": "8:00 AM - 5:00 PM",
       "Wednesday": "8:00 AM - 5:00 PM",
       "Thursday": "8:00 AM - 5:00 PM",
-      "Friday": "8:00 AM - 3:00 PM"
+      "Friday": "8:00 AM - 3:00 PM",
+      "Saturday": "Closed"
     }
   },
   {
@@ -360,11 +368,13 @@
     "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Bymac.jpg",
     "class": "queue",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "8:30 AM - 4:00 PM",
       "Tuesday": "8:30 AM - 4:00 PM",
       "Wednesday": "8:30 AM - 4:00 PM",
       "Thursday": "8:30 AM - 4:00 PM",
-      "Friday": "8:30 AM - 3:00 PM"
+      "Friday": "8:30 AM - 3:00 PM",
+      "Saturday": "Closed"
     }
   },
   {
@@ -379,11 +389,13 @@
     "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/IAHS.jpg",
     "class": "queue",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "8:00 AM - 5:30 PM",
       "Tuesday": "8:00 AM - 5:30 PM",
       "Wednesday": "8:00 AM - 5:30 PM",
       "Thursday": "8:00 AM - 5:30 PM",
-      "Friday": "8:00 AM - 4:00 PM"
+      "Friday": "8:00 AM - 4:00 PM",
+      "Saturday": "Closed"
     }
   },
   {
@@ -398,11 +410,13 @@
     "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Starbucks.jpg",
     "class": "queue",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "7:30 AM - 8:00 PM",
       "Tuesday": "7:30 AM - 8:00 PM",
       "Wednesday": "7:30 AM - 8:00 PM",
       "Thursday": "7:30 AM - 8:00 PM",
-      "Friday": "7:30 AM - 6:00 PM"
+      "Friday": "7:30 AM - 6:00 PM",
+      "Saturday": "Closed"
     }
   },
   {
@@ -417,11 +431,13 @@
     "image_url": "https://discover.mcmaster.ca/app/uploads/2019/06/Williams-Fresh-Cafe.jpg",
     "class": "queue",
     "hours_of_operation": {
+      "Sunday": "Closed",
       "Monday": "8:00 AM - 4:00 PM",
       "Tuesday": "8:00 AM - 4:00 PM",
       "Wednesday": "8:00 AM - 4:00 PM",
       "Thursday": "8:00 AM - 4:00 PM",
-      "Friday": "8:00 AM - 4:00 PM"
+      "Friday": "8:00 AM - 4:00 PM",
+      "Saturday": "Closed"
     }
   }
 ]
