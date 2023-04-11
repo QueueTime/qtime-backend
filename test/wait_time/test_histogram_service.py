@@ -79,8 +79,8 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
             {"time": 2, "estimate": 2},
         ]
         self.sample_generate_histogram_for_POI_occupancy = [
-            {"time": 4, "estimate": 90},
             {"time": 1, "estimate": 10},
+            {"time": 4, "estimate": 90},
         ]
         self.sample_wait_time_estimate = 1
         self.sample_wait_time_estimate_peak = 6
