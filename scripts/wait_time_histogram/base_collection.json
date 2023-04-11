@@ -55,5 +55,33 @@
   {
     "poi_name": "campus_store",
     "class": "queue"
+  },
+  {
+    "poi_name": "the_buttery",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "chopped_leaf",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "health_sciences_library",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "mills_library",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "iahs_library",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "thode_library",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "the_pulse",
+    "class": "occupancy"
   }
 ]
