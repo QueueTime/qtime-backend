@@ -116,7 +116,7 @@ def get_POI_details(
     poi = get_details_for_POI(poi_id)
     distance = get_distance_to_POI(poi, user_location)
     # TODO: Compute the estimate (time or capacity)
-    SAMPLE_ESTIMATE = fetch_latest_estimated_value(poi_id)
+    SAMPLE_ESTIMATE = fetch_latest_estimated_value(poi_id, poi.classification.value)
     # TODO: Compute the last_updated value
     SAMPLE_LAST_UPDATED = 3
     # TODO: Compute the histogram values that match this format
