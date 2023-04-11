@@ -1,11 +1,15 @@
 # Service class for the Wait Time API
 
 from app.firebase import firestore_db, LOCATION_COLLECTION
+from app.user.service import update_user
 from app.user.user import User
 from app.wait_time.location import UserLocation
 from app.events.service import generate_waittime_submit_event
 from app.locations.service import get_details_for_POI
 from app.rewards.reward_values import POINTS_FOR_TIME_SUBMISSION
+
+
+POINTS_FOR_SUBMITTING_WAIT_TIME_ESTIMATE = 10
 
 
 def location_collection():
@@ -45,6 +49,9 @@ def add_wait_time_suggestion(user: User, poi_id: str, time_estimate: int):
     """
     # TODO: Computation needs to be added here. For now it just creates an event
     # TODO: Should be a generate_waittime_confirm_event if the wait time suggestion matches current wait time
+    user.reward_point_balance += POINTS_FOR_SUBMITTING_WAIT_TIME_ESTIMATE
+    update_user(user)
+
     generate_waittime_submit_event(
         user, get_details_for_POI(poi_id), time_estimate, POINTS_FOR_TIME_SUBMISSION
     )
