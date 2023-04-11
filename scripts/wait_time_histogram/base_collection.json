@@ -1,26 +1,59 @@
 [
-    {
-        "poi_name": "bistro_mkr",
-        "class": "occupancy"
-    },
-    {
-        "poi_name": "bistro_2_go",
-        "class": "queue"
-    },
-    {
-        "poi_name": "booster_juice_musc",
-        "class": "queue"
-    },
-    {
-        "poi_name": "centro",
-        "class": "occupancy"
-    },
-    {
-        "poi_name": "la_piazza",
-        "class": "occupancy"
-    },
-    {
-        "poi_name": "tim_hortons_musc",
-        "class": "queue"
-    }
+  {
+    "poi_name": "bistro_mkr",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "bistro_2_go",
+    "class": "queue"
+  },
+  {
+    "poi_name": "booster_juice_musc",
+    "class": "queue"
+  },
+  {
+    "poi_name": "centro",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "la_piazza",
+    "class": "occupancy"
+  },
+  {
+    "poi_name": "tim_hortons_musc",
+    "class": "queue"
+  },
+
+  {
+    "poi_name": "HSR_university",
+    "class": "queue"
+  },
+  {
+    "poi_name": "GO_bus_47",
+    "class": "queue"
+  },
+  {
+    "poi_name": "caffeine_the_elements",
+    "class": "queue"
+  },
+  {
+    "poi_name": "by_mac",
+    "class": "queue"
+  },
+  {
+    "poi_name": "iahs_cafe",
+    "class": "queue"
+  },
+  {
+    "poi_name": "starbucks",
+    "class": "queue"
+  },
+  {
+    "poi_name": "williams_fresh_cafe",
+    "class": "queue"
+  },
+  {
+    "poi_name": "campus_store",
+    "class": "queue"
+  }
 ]
