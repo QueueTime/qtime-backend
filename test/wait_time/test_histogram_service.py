@@ -118,24 +118,24 @@ class TestWaitTimeComputation(unittest.TestCase, FirebaseTestMixin):
 
     def test_fetch_latest_estimated_value_queue(self):
         self.assertEqual(
-            fetch_latest_estimated_value(self.poi_id, "Sunday", 1, 10),
+            fetch_latest_estimated_value(self.poi_id, "queue", "Sunday", 1, 10),
             self.sample_wait_time_estimate,
         )
 
     def test_fetch_latest_estimated_value_peak_queur(self):
         self.assertEqual(
-            fetch_latest_estimated_value(self.poi_id, "Sunday", 1, 25),
+            fetch_latest_estimated_value(self.poi_id, "queue", "Sunday", 1, 25),
             self.sample_wait_time_estimate_peak,
         )
 
     def test_fetch_latest_estimated_value_occupancy(self):
         self.assertEqual(
-            fetch_latest_estimated_value(self.poi_id_occ, "Sunday", 1, 10),
+            fetch_latest_estimated_value(self.poi_id_occ, "occupancy", "Sunday", 1, 10),
             self.sample_wait_time_estimate_occ,
         )
 
     def test_fetch_latest_estimated_value_peak_occupancy(self):
         self.assertEqual(
-            fetch_latest_estimated_value(self.poi_id_occ, "Sunday", 1, 25),
+            fetch_latest_estimated_value(self.poi_id_occ, "occupancy", "Sunday", 1, 25),
             self.sample_wait_time_estimate_peak_occ,
         )
