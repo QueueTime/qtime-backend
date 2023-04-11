@@ -9,7 +9,7 @@ from app.locations.service import get_details_for_POI
 from app.rewards.reward_values import POINTS_FOR_TIME_SUBMISSION
 
 
-POINTS_FOR_SUBMITTING_WAIT_TIME_ESTIMATE = 10
+POINTS_FOR_SUBMITTING_WAIT_TIME_ESTIMATE = 25
 
 
 def location_collection():
