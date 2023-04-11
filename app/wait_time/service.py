@@ -9,7 +9,7 @@ from app.locations.service import get_details_for_POI
 from app.rewards.reward_values import POINTS_FOR_TIME_SUBMISSION
 
 
-POINTS_FOR_SUGGESTION = 10
+POINTS_FOR_SUBMITTING_WAIT_TIME_ESTIMATE = 10
 
 
 def location_collection():
@@ -49,7 +49,7 @@ def add_wait_time_suggestion(user: User, poi_id: str, time_estimate: int):
     """
     # TODO: Computation needs to be added here. For now it just creates an event
     # TODO: Should be a generate_waittime_confirm_event if the wait time suggestion matches current wait time
-    user.reward_point_balance += POINTS_FOR_SUGGESTION
+    user.reward_point_balance += POINTS_FOR_SUBMITTING_WAIT_TIME_ESTIMATE
     update_user(user)
 
     generate_waittime_submit_event(
